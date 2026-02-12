@@ -12,7 +12,8 @@
       "Bash(lsof:*)",
       "Bash(pkill:*)",
       "Bash(ls:*)",
-      "Bash(pnpm validate:openapi:*)"
+      "Bash(pnpm validate:openapi:*)",
+      "Bash(git push:*)"
     ]
   }
 }
