@@ -190,7 +190,8 @@ curl -u username:password http://localhost:9981/api/...
 
 ### Monitoring & Automation
 
-- Check server status: `GET /api/status`
+- Check server info: `GET /api/serverinfo`
+- Monitor active connections: `GET /api/status/connections`
 - Monitor recordings: `GET /api/dvr/entry/grid?status=recording`
 - Auto-record by keywords: `POST /api/dvr/autorec/create`
 - View system logs: `GET /api/log`

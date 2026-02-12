@@ -1,38 +1,5 @@
 # Status and monitoring API endpoints
 
-/api/status:
-  get:
-    summary: Get server status
-    description: |
-      Get comprehensive server status including uptime, resource usage, and health.
-
-      **Common Use Cases:**
-      - Health monitoring
-      - Dashboard displays
-      - Disk space alerts
-    operationId: getStatus
-    tags:
-      - Status
-    security:
-      - BasicAuth: []
-    responses:
-      '200':
-        description: Server status information
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/status.yaml#/ServerStatus'
-            example:
-              name: "TVHeadend"
-              version: "4.3.2024"
-              api_version: 18
-              time: 1704067200
-              uptime: 86400
-              freediskspace: 107374182400
-              totaldiskspace: 536870912000
-      '401':
-        $ref: '../components/responses/errors.yaml#/Unauthorized'
-
 /api/status/connections:
   get:
     summary: List active connections

@@ -82,9 +82,9 @@ TVHeadend uses a fine-grained privilege system. Each user can be assigned one or
 - Example: `/api/config/save` (admin required)
 
 **Status Endpoints:**
-- **admin** - Full status access
-- **streaming** - Limited status info
-- Example: `/api/status` (streaming), `/api/status/connections` (admin)
+- **admin** - Full status access (connections, inputs)
+- **streaming** - Server info access
+- Example: `/api/serverinfo` (streaming), `/api/status/connections` (admin)
 
 ### Typical User Profiles
 
