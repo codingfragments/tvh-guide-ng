@@ -1,0 +1,160 @@
+# Configuration API endpoints
+
+/api/config/load:
+  get:
+    summary: Load configuration
+    description: |
+      Load configuration for a specific node or the entire configuration tree.
+      Requires admin privileges.
+
+      **Common Use Cases:**
+      - Get DVR profile settings
+      - Retrieve channel configuration
+      - Load EPG grabber settings
+    operationId: loadConfig
+    tags:
+      - Config
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/NodeParameter'
+    responses:
+      '200':
+        description: Configuration data
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/config.yaml#/ConfigNode'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/config/save:
+  post:
+    summary: Save configuration
+    description: |
+      Save configuration changes.
+      Requires admin privileges.
+
+      **Warning:** Incorrect configuration can cause service disruption.
+    operationId: saveConfig
+    tags:
+      - Config
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              node:
+                type: string
+                description: Configuration node
+              conf:
+                type: object
+                description: Configuration data
+                additionalProperties: true
+          example:
+            node: "dvr/config/profile"
+            conf:
+              retention_days: 30
+              pre_extra_time: 2
+              post_extra_time: 5
+    responses:
+      '200':
+        description: Configuration saved
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/config/grid:
+  get:
+    summary: List DVR profiles
+    description: |
+      Get all DVR configuration profiles.
+      Profiles define default recording settings (padding, retention, storage location, etc.).
+    operationId: getDvrConfigGrid
+    tags:
+      - Config
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+    responses:
+      '200':
+        description: DVR profiles list
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../components/schemas/grid.yaml#/GridResponse'
+                - type: object
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        $ref: '../components/schemas/config.yaml#/DvrConfig'
+            example:
+              entries:
+                - uuid: "profile-uuid-default"
+                  enabled: true
+                  name: "Default Profile"
+                  retention_days: 30
+                  pre_extra_time: 2
+                  post_extra_time: 5
+                  storage: "/storage/recordings"
+              total: 1
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/serverinfo:
+  get:
+    summary: Get server information
+    description: |
+      Get basic server information including version, API version, and capabilities.
+      Does not require authentication.
+    operationId: getServerInfo
+    tags:
+      - Config
+    responses:
+      '200':
+        description: Server information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                version:
+                  type: string
+                sw_version:
+                  type: string
+                api_version:
+                  type: integer
+                capabilities:
+                  type: array
+                  items:
+                    type: string
+              example:
+                name: "TVHeadend"
+                version: "4.3.2024"
+                sw_version: "4.3-2024"
+                api_version: 18
+                capabilities: ["epg", "dvr", "imagecache", "timeshift"]

@@ -1,0 +1,194 @@
+# Status and system information schemas for TVHeadend API
+
+ServerStatus:
+  type: object
+  description: |
+    Server status and health information.
+    Includes uptime, version, resource usage, and service status.
+  properties:
+    name:
+      type: string
+      description: Server name
+      example: "TVHeadend"
+    version:
+      type: string
+      description: TVHeadend version
+      example: "4.3.2024"
+    sw_version:
+      type: string
+      description: Software version
+      example: "4.3-2024"
+    api_version:
+      type: integer
+      description: API version number
+      example: 18
+    capabilities:
+      type: array
+      description: Server capabilities
+      items:
+        type: string
+      example: ["epg", "dvr", "imagecache"]
+    time:
+      $ref: './common.yaml#/Timestamp'
+      description: Current server time
+    gmtoffset:
+      type: integer
+      description: GMT offset (minutes)
+      example: 0
+    uptime:
+      type: integer
+      description: Server uptime (seconds)
+      example: 86400
+    freediskspace:
+      type: integer
+      format: int64
+      description: Free disk space (bytes)
+      example: 107374182400
+    totaldiskspace:
+      type: integer
+      format: int64
+      description: Total disk space (bytes)
+      example: 536870912000
+
+ServiceStatus:
+  type: object
+  description: Individual service status
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    type:
+      type: string
+      description: Service type
+      enum: [DVB-S, DVB-T, DVB-C, IPTV, Other]
+      example: "DVB-T"
+    network:
+      type: string
+      description: Network name
+      example: "Freeview"
+    mux:
+      type: string
+      description: Multiplex name
+      example: "626MHz"
+    svcname:
+      type: string
+      description: Service name
+      example: "BBC One HD"
+    channel:
+      type: string
+      description: Linked channel UUID
+    quality:
+      type: integer
+      minimum: 0
+      maximum: 100
+      description: Signal quality percentage
+      example: 95
+    weight:
+      type: integer
+      description: Service weight/priority
+      default: 0
+
+InputStatus:
+  type: object
+  description: Input/adapter status
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    type:
+      type: string
+      description: Adapter type
+      example: "DVB-T"
+    name:
+      type: string
+      description: Adapter name
+      example: "/dev/dvb/adapter0"
+    active:
+      type: boolean
+      description: Currently active
+      example: false
+    signal:
+      type: integer
+      minimum: 0
+      maximum: 100
+      description: Signal strength
+      example: 90
+    snr:
+      type: integer
+      minimum: 0
+      maximum: 100
+      description: Signal-to-noise ratio
+      example: 85
+    ber:
+      type: integer
+      description: Bit error rate
+      example: 0
+    unc:
+      type: integer
+      description: Uncorrected blocks
+      example: 0
+    subscribers:
+      type: integer
+      description: Active subscriber count
+      default: 0
+
+ConnectionStatus:
+  type: object
+  description: Active connection/subscription
+  properties:
+    id:
+      type: integer
+      description: Connection ID
+      example: 1
+    type:
+      type: string
+      description: Connection type
+      enum: [HTTP, HTSP, SAT>IP]
+      example: "HTSP"
+    peer:
+      type: string
+      description: Client IP address
+      example: "192.168.1.100"
+    user:
+      type: string
+      description: Username
+      example: "client1"
+    started:
+      $ref: './common.yaml#/Timestamp'
+      description: Connection start time
+    channel:
+      type: string
+      description: Current channel (if streaming)
+      example: "BBC One HD"
+    service:
+      type: string
+      description: Service name
+    input:
+      type: integer
+      format: int64
+      description: Bytes received
+      example: 104857600
+    output:
+      type: integer
+      format: int64
+      description: Bytes sent
+      example: 104857600
+
+SystemLog:
+  type: object
+  description: System log entry
+  properties:
+    time:
+      $ref: './common.yaml#/Timestamp'
+    severity:
+      type: string
+      enum: [DEBUG, INFO, WARNING, ERROR, ALERT]
+      example: "INFO"
+    subsystem:
+      type: string
+      description: Component that logged
+      example: "epggrab"
+    message:
+      type: string
+      description: Log message
+      example: "EPG grabbing completed successfully"

@@ -1,0 +1,65 @@
+# Pagination parameters used in grid endpoints
+
+StartParameter:
+  name: start
+  in: query
+  description: Starting offset for pagination (0-based). Use this with limit to paginate through results.
+  required: false
+  schema:
+    type: integer
+    minimum: 0
+    default: 0
+  example: 0
+
+LimitParameter:
+  name: limit
+  in: query
+  description: Maximum number of entries to return. Use 0 or omit for no limit (returns all entries).
+  required: false
+  schema:
+    type: integer
+    minimum: 0
+    default: 50
+  example: 50
+
+SortParameter:
+  name: sort
+  in: query
+  description: Field name to sort results by. Available fields depend on the endpoint.
+  required: false
+  schema:
+    type: string
+  examples:
+    byName:
+      value: "name"
+      summary: Sort by name
+    byNumber:
+      value: "number"
+      summary: Sort by channel number
+    byStart:
+      value: "start"
+      summary: Sort by start time
+
+DirParameter:
+  name: dir
+  in: query
+  description: Sort direction
+  required: false
+  schema:
+    type: string
+    enum:
+      - ASC
+      - DESC
+    default: ASC
+  example: "DESC"
+
+AllParameter:
+  name: all
+  in: query
+  description: Return all entries without pagination (equivalent to limit=0)
+  required: false
+  schema:
+    type: integer
+    enum: [0, 1]
+    default: 0
+  example: 1

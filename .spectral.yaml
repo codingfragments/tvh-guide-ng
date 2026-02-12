@@ -1,0 +1,17 @@
+extends: spectral:oas
+
+rules:
+  # Direct equivalents from Redocly config
+  operation-description: error
+  operation-operationId-unique: error
+  path-params: error
+
+  # Disable similar to Redocly's operation-singular-tag: off
+  operation-tag-defined: off
+
+  # Reduce strictness on examples to match Redocly behavior
+  oas3-valid-media-example: warn
+  oas3-valid-schema-example: warn
+
+  # Reduce strictness on schema validation (OpenAPI 3.1 compatibility)
+  oas3-schema: warn

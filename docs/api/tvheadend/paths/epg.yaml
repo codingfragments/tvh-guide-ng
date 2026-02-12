@@ -1,0 +1,264 @@
+# EPG (Electronic Program Guide) API endpoints
+
+/api/epg/events/grid:
+  get:
+    summary: Query EPG events
+    description: |
+      Retrieve EPG events with pagination, sorting, and filtering.
+      This is the primary endpoint for querying the program guide.
+
+      **Common Use Cases:**
+      - Get current/upcoming programs for specific channels
+      - Search for programs by title/description
+      - Filter by content type (movies, sports, news)
+      - Find programs within a time range
+
+      **Performance Tips:**
+      - Use channel filter to reduce result set
+      - Limit time range for better performance
+      - Use pagination for large result sets
+    operationId: getEpgEventsGrid
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+      - $ref: '../components/parameters/filter.yaml#/FilterParameter'
+      - $ref: '../components/parameters/filter.yaml#/ChannelFilterParameter'
+      - $ref: '../components/parameters/filter.yaml#/ChannelTagFilterParameter'
+      - $ref: '../components/parameters/filter.yaml#/ContentTypeFilterParameter'
+      - $ref: '../components/parameters/filter.yaml#/DurationFilterParameter'
+      - $ref: '../components/parameters/filter.yaml#/FulltextParameter'
+      - name: mode
+        in: query
+        description: Query mode (now, upcoming, window)
+        schema:
+          type: string
+          enum: [now, upcoming, window]
+        example: now
+      - name: language
+        in: query
+        description: Filter by audio language
+        schema:
+          $ref: '../components/schemas/common.yaml#/Language'
+    responses:
+      '200':
+        description: Successful response with EPG events
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/epg.yaml#/EpgGridResponse'
+            examples:
+              currentPrograms:
+                summary: Current programs on multiple channels
+                value:
+                  entries:
+                    - eventId: 123456
+                      channelName: "BBC One HD"
+                      channelUuid: "uuid-bbc-one"
+                      start: 1704067200
+                      stop: 1704070800
+                      title: "News at Six"
+                      hd: true
+                  total: 1
+                  start: 0
+                  limit: 50
+              filteredByContentType:
+                summary: Movies only
+                value:
+                  entries:
+                    - eventId: 789012
+                      channelName: "Film4 HD"
+                      channelUuid: "uuid-film4"
+                      start: 1704070800
+                      stop: 1704078000
+                      title: "Inception"
+                      contentType: 16
+                      hd: true
+                  total: 1
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '500':
+        $ref: '../components/responses/errors.yaml#/InternalServerError'
+
+/api/epg/events/load:
+  post:
+    summary: Load detailed event information
+    description: |
+      Load full details for one or more EPG events including extended metadata,
+      cast/crew information, and related events.
+
+      Use this endpoint to get comprehensive information after finding events via /grid.
+    operationId: loadEpgEvents
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              eventId:
+                oneOf:
+                  - type: integer
+                    format: int64
+                    description: Single event ID
+                  - type: array
+                    description: Multiple event IDs
+                    items:
+                      type: integer
+                      format: int64
+            required:
+              - eventId
+          examples:
+            singleEvent:
+              summary: Load single event
+              value:
+                eventId: 123456
+            multipleEvents:
+              summary: Load multiple events
+              value:
+                eventId: [123456, 123457, 123458]
+    responses:
+      '200':
+        description: Detailed event information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/epg.yaml#/EpgEventDetail'
+            example:
+              entries:
+                - eventId: 123456
+                  channelName: "BBC One HD"
+                  start: 1704067200
+                  stop: 1704070800
+                  title: "Planet Earth II"
+                  subtitle: "Islands"
+                  description: "Full description..."
+                  credits:
+                    - name: "David Attenborough"
+                      role: "presenter"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/epg/content_type/list:
+  get:
+    summary: List content types
+    description: |
+      Get all available content type categories (genres) with their codes and names.
+      Use these codes for filtering events by content type.
+
+      **Common Content Types:**
+      - 0x10 (16) - Movie/Drama
+      - 0x20 (32) - News/Current affairs
+      - 0x30 (48) - Show/Game show
+      - 0x40 (64) - Sports
+      - 0x50 (80) - Children's/Youth
+      - 0x60 (96) - Music/Ballet/Dance
+      - 0x70 (112) - Arts/Culture
+      - 0x80 (128) - Social/Political/Economics
+      - 0x90 (144) - Education/Science/Factual
+      - 0xA0 (160) - Leisure hobbies
+    operationId: listContentTypes
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: List of content types
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/epg.yaml#/ContentTypeListResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/epg/events/alternative:
+  get:
+    summary: Find alternative broadcasts
+    description: |
+      Find alternative broadcasts of the same program on different channels.
+      Useful for finding the same program at different times or in different quality (SD/HD).
+    operationId: getAlternativeEvents
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/EventIdParameter'
+    responses:
+      '200':
+        description: Alternative broadcasts found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/epg.yaml#/EpgEvent'
+            example:
+              entries:
+                - eventId: 123457
+                  channelName: "BBC One SD"
+                  start: 1704067200
+                  stop: 1704070800
+                  title: "Planet Earth II"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/epg/events/related:
+  get:
+    summary: Find related events
+    description: |
+      Find related events such as other episodes in the same series,
+      or programs with similar content.
+    operationId: getRelatedEvents
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/EventIdParameter'
+    responses:
+      '200':
+        description: Related events found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/epg.yaml#/EpgEvent'
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'

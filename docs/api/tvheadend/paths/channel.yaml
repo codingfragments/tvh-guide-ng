@@ -1,0 +1,239 @@
+# Channel API endpoints
+
+/api/channel/grid:
+  get:
+    summary: List all channels
+    description: |
+      Retrieve all TV channels with full details in grid format.
+      Supports pagination, sorting, and filtering.
+
+      **Common Use Cases:**
+      - Get all available channels
+      - Filter channels by tag (HD, favorites, etc.)
+      - Search channels by name
+      - Get enabled channels only
+    operationId: getChannelGrid
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+      - $ref: '../components/parameters/filter.yaml#/FilterParameter'
+      - name: tags
+        in: query
+        description: Filter by channel tag UUID(s)
+        schema:
+          type: string
+        example: "tag-uuid-hd"
+    responses:
+      '200':
+        description: Successful response with channels
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/channel.yaml#/ChannelGridResponse'
+            examples:
+              allChannels:
+                summary: All channels
+                value:
+                  entries:
+                    - uuid: "uuid-bbc-one"
+                      enabled: true
+                      name: "BBC One HD"
+                      number: 101
+                      icon: "imagecache/1"
+                  total: 1
+              hdChannelsOnly:
+                summary: HD channels filtered by tag
+                value:
+                  entries:
+                    - uuid: "uuid-bbc-one-hd"
+                      enabled: true
+                      name: "BBC One HD"
+                      number: 101
+                      tags: ["tag-uuid-hd"]
+                  total: 1
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '500':
+        $ref: '../components/responses/errors.yaml#/InternalServerError'
+
+/api/channel/list:
+  get:
+    summary: Simple channel list
+    description: |
+      Get a simplified list of channels (UUID and name only).
+      Useful for populating dropdowns and quick lookups.
+      More efficient than /grid when full details aren't needed.
+    operationId: getChannelList
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Simple channel list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/channel.yaml#/ChannelListResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/channel/create:
+  post:
+    summary: Create new channel
+    description: |
+      Create a new TV channel with specified configuration.
+      Requires admin privileges.
+
+      **Note:** Most users should use auto-discovery instead of manual creation.
+    operationId: createChannel
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              conf:
+                type: object
+                description: Channel configuration
+                properties:
+                  name:
+                    type: string
+                    description: Channel name
+                  number:
+                    type: integer
+                    description: Channel number
+                  enabled:
+                    type: boolean
+                  services:
+                    type: array
+                    description: Service UUIDs to link
+                    items:
+                      type: string
+                required:
+                  - name
+          example:
+            conf:
+              name: "My Channel"
+              number: 999
+              enabled: true
+    responses:
+      '200':
+        description: Channel created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  type: string
+                  description: UUID of created channel
+              example:
+                uuid: "new-channel-uuid-123"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/channel/class:
+  get:
+    summary: Get channel configuration schema
+    description: |
+      Retrieve the configuration class/schema for channels.
+      Describes available properties, types, and validation rules.
+      Useful for building dynamic configuration UIs.
+    operationId: getChannelClass
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Channel configuration schema
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/channel.yaml#/ChannelClass'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/channeltag/grid:
+  get:
+    summary: List channel tags
+    description: |
+      Retrieve all channel tags for organizing and filtering channels.
+      Tags can represent categories like "HD", "Favorites", "News Channels", etc.
+    operationId: getChannelTagGrid
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Channel tags list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/channel.yaml#/ChannelTagGridResponse'
+            example:
+              entries:
+                - uuid: "tag-uuid-hd"
+                  name: "HD Channels"
+                  enabled: true
+                - uuid: "tag-uuid-favorites"
+                  name: "Favorites"
+                  enabled: true
+              total: 2
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/channeltag/list:
+  get:
+    summary: Simple channel tag list
+    description: Get simplified list of channel tags (UUID and name only)
+    operationId: getChannelTagList
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Simple tag list
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                      val:
+                        type: string
+              example:
+                entries:
+                  - key: "tag-uuid-hd"
+                    val: "HD Channels"
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'

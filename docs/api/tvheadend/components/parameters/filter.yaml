@@ -1,0 +1,190 @@
+# Filter parameter documentation for TVHeadend grid endpoints
+# The filter parameter is complex and supports multiple formats
+
+FilterParameter:
+  name: filter
+  in: query
+  description: |
+    Complex filter parameter supporting multiple formats for querying grid data.
+
+    **Filter Formats:**
+
+    1. **Simple String Search** - Searches across multiple fields
+       - Example: `?filter=news`
+       - Searches title, description, etc. for "news"
+
+    2. **Single Field Filter** - Filter on specific field
+       - Format: JSON object `{"field":"fieldName","type":"string","value":"searchValue"}`
+       - Example: `?filter={"field":"title","type":"string","value":"news"}`
+
+    3. **Multiple Filters** - Array of field filters (AND logic)
+       - Format: JSON array of filter objects
+       - Example: `?filter=[{"field":"channelname","type":"string","value":"BBC"},{"field":"start","type":"numeric","value":1704067200,"comparison":"gt"}]`
+
+    **Field Types:**
+    - `string` - Text matching (case-insensitive substring by default)
+    - `numeric` - Number comparison (supports gt, lt, gte, lte, eq)
+    - `boolean` - Boolean matching (0 or 1)
+
+    **Comparison Operators** (for numeric/string types):
+    - `eq` - Equal to
+    - `gt` - Greater than
+    - `gte` - Greater than or equal
+    - `lt` - Less than
+    - `lte` - Less than or equal
+    - `contains` - Contains substring (default for strings)
+    - `starts` - Starts with
+    - `ends` - Ends with
+  required: false
+  schema:
+    oneOf:
+      - type: string
+        description: Simple string search across multiple fields
+        example: "news"
+
+      - type: object
+        description: Single field filter
+        properties:
+          field:
+            type: string
+            description: Name of the field to filter on
+            example: "title"
+          type:
+            type: string
+            enum: [string, numeric, boolean]
+            description: Data type of the field
+            default: string
+          value:
+            oneOf:
+              - type: string
+              - type: number
+              - type: boolean
+            description: Value to filter by
+          comparison:
+            type: string
+            enum: [eq, gt, gte, lt, lte, contains, starts, ends]
+            description: Comparison operator (optional, defaults based on type)
+            default: contains
+        required:
+          - field
+          - value
+        example:
+          field: "title"
+          type: "string"
+          value: "news"
+          comparison: "contains"
+
+      - type: array
+        description: Multiple field filters (AND logic)
+        items:
+          type: object
+          properties:
+            field:
+              type: string
+            type:
+              type: string
+              enum: [string, numeric, boolean]
+            value:
+              oneOf:
+                - type: string
+                - type: number
+                - type: boolean
+            comparison:
+              type: string
+              enum: [eq, gt, gte, lt, lte, contains, starts, ends]
+          required:
+            - field
+            - value
+        example:
+          - field: "channelname"
+            type: "string"
+            value: "BBC"
+          - field: "start"
+            type: "numeric"
+            value: 1704067200
+            comparison: "gt"
+
+  examples:
+    simpleSearch:
+      value: "news"
+      summary: Simple search for "news"
+
+    titleFilter:
+      value: '{"field":"title","type":"string","value":"documentary"}'
+      summary: Filter by title containing "documentary"
+
+    channelFilter:
+      value: '{"field":"channelname","type":"string","value":"BBC"}'
+      summary: Filter by channel name
+
+    timeRangeFilter:
+      value: '[{"field":"start","type":"numeric","value":1704067200,"comparison":"gte"},{"field":"stop","type":"numeric","value":1704153600,"comparison":"lte"}]'
+      summary: Filter by time range (between two timestamps)
+
+    multipleFilters:
+      value: '[{"field":"channelname","type":"string","value":"BBC"},{"field":"title","type":"string","value":"news"}]'
+      summary: Multiple filters (channel AND title)
+
+ChannelFilterParameter:
+  name: channel
+  in: query
+  description: Filter by channel UUID. Can be a single UUID or comma-separated list of UUIDs.
+  required: false
+  schema:
+    type: string
+  examples:
+    single:
+      value: "1a2b3c4d5e6f7890abcdef1234567890"
+      summary: Single channel
+    multiple:
+      value: "1a2b3c4d5e6f7890abcdef1234567890,9876543210fedcba0987654321fedcba"
+      summary: Multiple channels (comma-separated)
+
+ChannelTagFilterParameter:
+  name: channelTag
+  in: query
+  description: Filter by channel tag UUID
+  required: false
+  schema:
+    type: string
+    format: uuid
+  example: "tag-uuid-1234"
+
+ContentTypeFilterParameter:
+  name: contentType
+  in: query
+  description: Filter by content type ID (e.g., 0x10 for movies, 0x40 for sports)
+  required: false
+  schema:
+    type: integer
+  examples:
+    movie:
+      value: 16
+      summary: Movies (0x10)
+    sports:
+      value: 64
+      summary: Sports (0x40)
+    news:
+      value: 32
+      summary: News (0x20)
+
+DurationFilterParameter:
+  name: duration
+  in: query
+  description: Filter by minimum duration in seconds
+  required: false
+  schema:
+    type: integer
+    minimum: 0
+  example: 3600
+
+FulltextParameter:
+  name: fulltext
+  in: query
+  description: Enable full-text search across all text fields (0 = disabled, 1 = enabled)
+  required: false
+  schema:
+    type: integer
+    enum: [0, 1]
+    default: 0
+  example: 1

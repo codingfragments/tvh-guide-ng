@@ -1,0 +1,73 @@
+# Grid response pattern used across TVHeadend API
+# This pattern is used by 50+ endpoints for paginated data
+
+GridResponse:
+  type: object
+  description: |
+    Standard grid/pagination response wrapper used across TVHeadend API.
+    Contains a paginated list of entries and total count for navigation.
+    The actual entry type varies by endpoint - use allOf to combine with specific types.
+  properties:
+    entries:
+      type: array
+      description: Array of data entries for current page
+      items:
+        type: object
+        description: Entry type varies by endpoint
+    total:
+      type: integer
+      minimum: 0
+      description: Total number of entries matching the query (across all pages)
+      example: 142
+    start:
+      type: integer
+      minimum: 0
+      description: Starting offset of this page (0-based)
+      example: 0
+    limit:
+      type: integer
+      minimum: 0
+      description: Maximum number of entries per page
+      example: 50
+  required:
+    - entries
+    - total
+  example:
+    entries: []
+    total: 142
+    start: 0
+    limit: 50
+
+GridMetadata:
+  type: object
+  description: Pagination metadata included in some grid responses
+  properties:
+    total:
+      type: integer
+      minimum: 0
+      description: Total number of entries
+    start:
+      type: integer
+      minimum: 0
+      description: Starting offset (0-based)
+    limit:
+      type: integer
+      minimum: 0
+      description: Page size
+    currentPage:
+      type: integer
+      minimum: 1
+      description: Current page number (1-based)
+    totalPages:
+      type: integer
+      minimum: 0
+      description: Total number of pages
+
+SortDirection:
+  type: string
+  enum:
+    - ASC
+    - DESC
+  description: Sort direction for grid results
+  default: ASC
+  example: "DESC"

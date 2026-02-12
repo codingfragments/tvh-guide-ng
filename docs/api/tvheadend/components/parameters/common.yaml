@@ -1,0 +1,84 @@
+# Common parameters used across multiple endpoints
+
+UuidParameter:
+  name: uuid
+  in: query
+  description: Universally unique identifier for the entity
+  required: true
+  schema:
+    type: string
+    format: uuid
+  example: "1a2b3c4d5e6f7890abcdef1234567890"
+
+UuidPathParameter:
+  name: uuid
+  in: path
+  description: Entity UUID in URL path
+  required: true
+  schema:
+    type: string
+    format: uuid
+  example: "1a2b3c4d5e6f7890abcdef1234567890"
+
+LanguageParameter:
+  name: language
+  in: query
+  description: ISO 639-2/B three-letter language code for filtering content
+  required: false
+  schema:
+    type: string
+    pattern: "^[a-z]{3}$"
+  example: "eng"
+
+NodeParameter:
+  name: node
+  in: query
+  description: Configuration node identifier (used in config API)
+  required: false
+  schema:
+    type: string
+  example: "channel"
+
+OpParameter:
+  name: op
+  in: query
+  description: Operation type for the request
+  required: false
+  schema:
+    type: string
+    enum:
+      - get
+      - set
+      - list
+      - create
+      - delete
+  example: "get"
+
+ConfParameter:
+  name: conf
+  in: body
+  description: Configuration object for create/update operations
+  required: true
+  schema:
+    type: object
+    description: Configuration varies by entity type
+    additionalProperties: true
+
+EventIdParameter:
+  name: eventId
+  in: query
+  description: EPG event ID
+  required: true
+  schema:
+    type: integer
+    format: int64
+  example: 123456
+
+EntryIdParameter:
+  name: id
+  in: query
+  description: DVR entry ID
+  required: true
+  schema:
+    type: string
+  example: "dvr-entry-123"

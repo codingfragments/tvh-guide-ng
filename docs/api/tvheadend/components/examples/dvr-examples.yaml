@@ -1,0 +1,131 @@
+# DVR API request and response examples
+
+# Request Examples
+createManualRecording:
+  summary: Create manual recording
+  value:
+    conf:
+      channel: "channel-uuid-bbc-one"
+      start: 1704067200
+      stop: 1704070800
+      title: "Custom Recording"
+      subtitle: "Test"
+      pri: 2
+      start_extra: 2
+      stop_extra: 5
+
+recordEpgEvent:
+  summary: Record from EPG event
+  value:
+    event_id: 123456
+
+createSeriesRecording:
+  summary: Auto-record series
+  value:
+    conf:
+      name: "Planet Earth II - Complete Series"
+      title: "Planet Earth II.*"
+      channel: "channel-uuid-bbc-one"
+      start_extra: 2
+      stop_extra: 5
+
+createKeywordRecording:
+  summary: Record by keyword
+  value:
+    conf:
+      name: "All Documentaries"
+      fulltext: true
+      title: "documentary"
+      contentType: 144
+      minduration: 3600
+
+cancelRecording:
+  summary: Cancel recording
+  value:
+    uuid: "dvr-uuid-123"
+
+# Response Examples
+dvrEntryComplete:
+  summary: Completed recording
+  value:
+    uuid: "dvr-uuid-123"
+    enabled: true
+    channel: "channel-uuid-bbc-one"
+    channelname: "BBC One HD"
+    start: 1704067200
+    stop: 1704070800
+    start_real: 1704067080
+    stop_real: 1704070920
+    start_extra: 2
+    stop_extra: 5
+    duration: 3600
+    title: "Planet Earth II"
+    disp_title: "Planet Earth II: Islands"
+    subtitle: "Islands"
+    summary: "Wildlife documentary"
+    description: "David Attenborough narrates..."
+    pri: 2
+    retention: 30
+    removal: 0
+    playposition: 0
+    playcount: 0
+    status: "completedOK"
+    sched_status: "completed"
+    errors: 0
+    data_errors: 0
+    filename: "/storage/recordings/planet-earth-ii-islands.mkv"
+    filesize: 4294967296
+    url: "dvrfile/dvr-uuid-123"
+    creator: "admin"
+    eventId: 123456
+
+dvrEntryScheduled:
+  summary: Scheduled recording
+  value:
+    uuid: "dvr-uuid-456"
+    enabled: true
+    channelname: "ITV HD"
+    start: 1704153600
+    stop: 1704155400
+    title: "News at Ten"
+    status: "scheduled"
+    sched_status: "scheduled"
+
+autorecRule:
+  summary: Auto-recording rule
+  value:
+    uuid: "autorec-uuid-123"
+    enabled: true
+    name: "Planet Earth II - Complete Series"
+    comment: "Record all episodes"
+    channel: "channel-uuid-bbc-one"
+    channelname: "BBC One HD"
+    title: "Planet Earth II.*"
+    fulltext: false
+    contentType: 144
+    minduration: 3600
+    start_extra: 2
+    stop_extra: 5
+    pri: 2
+    retention: 30
+    removal: 0
+    owner: "admin"
+    creator: "admin"
+
+timerecRule:
+  summary: Time-based recording rule
+  value:
+    uuid: "timerec-uuid-123"
+    enabled: true
+    name: "Morning News Daily"
+    comment: "Record news every weekday morning"
+    channel: "channel-uuid-bbc-news"
+    channelname: "BBC News HD"
+    title: "Morning News %F"
+    start: 420
+    stop: 480
+    weekdays: [1, 2, 3, 4, 5]
+    pri: 2
+    retention: 7
+    owner: "admin"
+    creator: "admin"

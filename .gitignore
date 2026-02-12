@@ -35,3 +35,6 @@ pnpm-debug.log*
 # Misc
 .cache/
 .turbo/
+
+# Generated documentation
+docs/api/tvheadend/api-docs.html

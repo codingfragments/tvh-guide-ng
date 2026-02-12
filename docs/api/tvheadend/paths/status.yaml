@@ -1,0 +1,225 @@
+# Status and monitoring API endpoints
+
+/api/status:
+  get:
+    summary: Get server status
+    description: |
+      Get comprehensive server status including uptime, resource usage, and health.
+
+      **Common Use Cases:**
+      - Health monitoring
+      - Dashboard displays
+      - Disk space alerts
+    operationId: getStatus
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Server status information
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/status.yaml#/ServerStatus'
+            example:
+              name: "TVHeadend"
+              version: "4.3.2024"
+              api_version: 18
+              time: 1704067200
+              uptime: 86400
+              freediskspace: 107374182400
+              totaldiskspace: 536870912000
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/status/connections:
+  get:
+    summary: List active connections
+    description: |
+      Get all active client connections and subscriptions.
+
+      **Common Use Cases:**
+      - Monitor active streams
+      - See who's watching what
+      - Troubleshoot connection issues
+    operationId: getConnections
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Active connections list
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/status.yaml#/ConnectionStatus'
+            example:
+              entries:
+                - id: 1
+                  type: "HTSP"
+                  peer: "192.168.1.100"
+                  user: "client1"
+                  started: 1704067200
+                  channel: "BBC One HD"
+                  input: 104857600
+                  output: 104857600
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/status/inputs:
+  get:
+    summary: Get input/adapter status
+    description: |
+      Get status of all TV input adapters/tuners.
+
+      **Common Use Cases:**
+      - Monitor signal quality
+      - Check tuner availability
+      - Troubleshoot reception issues
+    operationId: getInputs
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Input adapters status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/status.yaml#/InputStatus'
+            example:
+              entries:
+                - uuid: "adapter-uuid-123"
+                  type: "DVB-T"
+                  name: "/dev/dvb/adapter0"
+                  active: false
+                  signal: 90
+                  snr: 85
+                  ber: 0
+                  unc: 0
+                  subscribers: 0
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/service/grid:
+  get:
+    summary: List services
+    description: |
+      Get all TV services (underlying broadcast streams that channels map to).
+
+      **Common Use Cases:**
+      - View all available services
+      - Check service quality
+      - Debug channel mapping issues
+    operationId: getServiceGrid
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Services list
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../components/schemas/grid.yaml#/GridResponse'
+                - type: object
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        $ref: '../components/schemas/status.yaml#/ServiceStatus'
+            example:
+              entries:
+                - uuid: "service-uuid-123"
+                  enabled: true
+                  type: "DVB-T"
+                  network: "Freeview"
+                  mux: "626MHz"
+                  svcname: "BBC One HD"
+                  quality: 95
+              total: 1
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/log:
+  get:
+    summary: Get system logs
+    description: |
+      Retrieve recent system log entries.
+
+      **Common Use Cases:**
+      - Troubleshoot errors
+      - Monitor EPG grabbing
+      - Debug recording issues
+    operationId: getLog
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: start
+        in: query
+        description: Starting offset
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum entries
+        schema:
+          type: integer
+          default: 50
+      - name: level
+        in: query
+        description: Minimum log level
+        schema:
+          type: string
+          enum: [DEBUG, INFO, WARNING, ERROR, ALERT]
+          default: INFO
+    responses:
+      '200':
+        description: Log entries
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/status.yaml#/SystemLog'
+                total:
+                  type: integer
+            example:
+              entries:
+                - time: 1704067200
+                  severity: "INFO"
+                  subsystem: "epggrab"
+                  message: "EPG grabbing completed successfully"
+              total: 1
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'

@@ -1,0 +1,209 @@
+# Channel schemas for TVHeadend API
+
+Channel:
+  type: object
+  description: |
+    TV channel entity with configuration and service mappings.
+    Channels are user-facing entities that map to underlying TV services.
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+      description: Channel UUID
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    name:
+      type: string
+      description: Channel display name
+      example: "BBC One HD"
+    number:
+      $ref: './common.yaml#/ChannelNumber'
+    icon:
+      $ref: './common.yaml#/ChannelIcon'
+    iconPublicUrl:
+      type: string
+      format: uri
+      description: Public URL for channel icon
+      example: "http://localhost:9981/imagecache/123"
+    epgauto:
+      type: boolean
+      description: Automatically update EPG
+      default: true
+      example: true
+    epggrab:
+      type: array
+      description: EPG source IDs
+      items:
+        type: string
+      example: ["eit"]
+    dvr_pre_time:
+      type: integer
+      description: Recording padding before (minutes)
+      default: 0
+      example: 2
+    dvr_pst_time:
+      type: integer
+      description: Recording padding after (minutes)
+      default: 0
+      example: 5
+    services:
+      type: array
+      description: Linked service UUIDs
+      items:
+        type: string
+        format: uuid
+      example: ["service-uuid-123"]
+    tags:
+      type: array
+      description: Channel tag UUIDs
+      items:
+        type: string
+        format: uuid
+      example: ["tag-uuid-hd", "tag-uuid-favorites"]
+    bouquet:
+      type: string
+      description: Bouquet name
+      example: "Freeview HD"
+  required:
+    - uuid
+    - name
+
+ChannelListItem:
+  type: object
+  description: Simplified channel info for list endpoints
+  properties:
+    key:
+      type: string
+      description: Channel UUID (legacy field name)
+      example: "uuid-123"
+    val:
+      type: string
+      description: Channel display name
+      example: "BBC One HD"
+  required:
+    - key
+    - val
+
+ChannelTag:
+  type: object
+  description: |
+    Channel tag for grouping channels (e.g., "HD Channels", "Favorites").
+    Tags can be used for filtering and organizing channels in the UI.
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    name:
+      type: string
+      description: Tag name
+      example: "HD Channels"
+    comment:
+      type: string
+      description: Optional description
+      example: "All high-definition channels"
+    icon:
+      type: string
+      format: uri
+      description: Tag icon URL
+      example: "imagecache/tag-hd"
+    internal:
+      type: boolean
+      description: Internal/system tag
+      default: false
+    private:
+      type: boolean
+      description: Private/hidden tag
+      default: false
+    index:
+      type: integer
+      description: Display order index
+      example: 1
+  required:
+    - uuid
+    - name
+
+ChannelGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/Channel'
+      example:
+        entries:
+          - uuid: "channel-uuid-123"
+            enabled: true
+            name: "BBC One HD"
+            number: 101
+            icon: "imagecache/1"
+            epgauto: true
+        total: 1
+        start: 0
+        limit: 50
+
+ChannelTagGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/ChannelTag'
+
+ChannelListResponse:
+  type: object
+  description: Simple list response with key-value pairs
+  properties:
+    entries:
+      type: array
+      items:
+        $ref: '#/ChannelListItem'
+  example:
+    entries:
+      - key: "uuid-bbc-one"
+        val: "BBC One HD"
+      - key: "uuid-bbc-two"
+        val: "BBC Two HD"
+
+ChannelClass:
+  type: object
+  description: |
+    Channel configuration class definition (schema).
+    Describes available configuration options and their types.
+  properties:
+    caption:
+      type: string
+      description: Human-readable class name
+      example: "Channel"
+    properties:
+      type: array
+      description: Configuration property definitions
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Property identifier
+          caption:
+            type: string
+            description: Display name
+          type:
+            type: string
+            description: Data type
+            enum: [str, int, bool, list]
+          default:
+            description: Default value
+          enum:
+            type: array
+            description: Allowed values (for enum types)
+          required:
+            type: boolean
+            description: Is property required
+        example:
+          id: "name"
+          caption: "Name"
+          type: "str"
+          required: true

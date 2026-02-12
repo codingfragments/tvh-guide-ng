@@ -1,0 +1,76 @@
+# Error response schemas for TVHeadend API
+
+ErrorResponse:
+  type: object
+  description: Standard error response from TVHeadend API
+  properties:
+    error:
+      type: string
+      description: Error message describing what went wrong
+      example: "Invalid parameters"
+    text:
+      type: string
+      description: Additional human-readable error details
+      example: "The channel uuid parameter is required"
+  required:
+    - error
+
+ValidationError:
+  type: object
+  description: Validation error with field-specific details
+  properties:
+    error:
+      type: string
+      example: "Validation failed"
+    fields:
+      type: object
+      description: Map of field names to error messages
+      additionalProperties:
+        type: string
+      example:
+        channel: "Channel not found"
+        start: "Start time must be in the future"
+  required:
+    - error
+    - fields
+
+AuthenticationError:
+  type: object
+  description: Authentication failure response
+  properties:
+    error:
+      type: string
+      example: "Authentication required"
+    text:
+      type: string
+      example: "Please provide valid credentials"
+  required:
+    - error
+
+AuthorizationError:
+  type: object
+  description: Authorization/permission denied response
+  properties:
+    error:
+      type: string
+      example: "Insufficient privileges"
+    text:
+      type: string
+      example: "Recording privilege required"
+    required_privileges:
+      type: array
+      description: List of required privileges
+      items:
+        type: string
+        enum:
+          - admin
+          - streaming
+          - recording
+          - failed_recorder
+          - htsp_streaming
+          - htsp_recorder
+          - htsp_anonymize
+          - web_only
+      example: ["recording"]
+  required:
+    - error

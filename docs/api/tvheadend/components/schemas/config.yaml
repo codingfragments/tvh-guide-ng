@@ -1,0 +1,158 @@
+# Configuration schemas for TVHeadend API
+
+ConfigNode:
+  type: object
+  description: |
+    Configuration node in TVHeadend's hierarchical configuration system.
+    Nodes represent different configuration areas (channels, recording, network, etc.).
+  properties:
+    uuid:
+      type: string
+      description: Node identifier
+      example: "channel"
+    type:
+      type: string
+      description: Node type
+      example: "configurator"
+    name:
+      type: string
+      description: Display name
+      example: "Channels"
+    children:
+      type: array
+      description: Child nodes
+      items:
+        $ref: '#/ConfigNode'
+    params:
+      type: array
+      description: Configuration parameters
+      items:
+        $ref: '#/ConfigParam'
+
+ConfigParam:
+  type: object
+  description: Configuration parameter definition
+  properties:
+    id:
+      type: string
+      description: Parameter ID
+      example: "enabled"
+    caption:
+      type: string
+      description: Display label
+      example: "Enabled"
+    type:
+      type: string
+      description: Data type
+      enum: [str, int, bool, list, enum]
+      example: "bool"
+    value:
+      description: Current value
+    default:
+      description: Default value
+    readonly:
+      type: boolean
+      description: Is read-only
+      default: false
+    advanced:
+      type: boolean
+      description: Is advanced option
+      default: false
+    required:
+      type: boolean
+      description: Is required
+      default: false
+    enum:
+      type: array
+      description: Allowed values (for enum type)
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          val:
+            type: string
+    description:
+      type: string
+      description: Help text
+
+ServerConfig:
+  type: object
+  description: Server-wide configuration
+  properties:
+    server_name:
+      type: string
+      description: Server name
+      example: "TVHeadend"
+    language:
+      type: string
+      description: UI language
+      example: "en_US"
+    timezone:
+      type: string
+      description: Server timezone
+      example: "Europe/London"
+    http_port:
+      type: integer
+      description: HTTP port
+      example: 9981
+    htsp_port:
+      type: integer
+      description: HTSP port
+      example: 9982
+
+DvrConfig:
+  type: object
+  description: DVR configuration profile
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    name:
+      type: string
+      description: Profile name
+      example: "Default Profile"
+    retention_days:
+      type: integer
+      description: Default retention (days)
+      default: 0
+      example: 30
+    removal_days:
+      type: integer
+      description: Removal after watched (days)
+      default: 0
+    pre_extra_time:
+      type: integer
+      description: Default pre-padding (minutes)
+      default: 0
+      example: 2
+    post_extra_time:
+      type: integer
+      description: Default post-padding (minutes)
+      default: 0
+      example: 5
+    storage:
+      type: string
+      description: Recording storage path
+      example: "/storage/recordings"
+    directory_permissions:
+      type: string
+      description: Directory permissions (octal)
+      example: "0755"
+    file_permissions:
+      type: string
+      description: File permissions (octal)
+      example: "0644"
+    charset:
+      type: string
+      description: Character encoding
+      default: "UTF-8"
+    tag_files:
+      type: boolean
+      description: Write metadata tags to files
+      default: false
+    epg_update_window:
+      type: integer
+      description: EPG update window (hours)
+      default: 24

@@ -1,0 +1,33 @@
+# Security schemes for TVHeadend API authentication
+
+BasicAuth:
+  type: http
+  scheme: basic
+  description: |
+    HTTP Basic Authentication using TVHeadend user credentials.
+
+    **Setup:**
+    1. Create a user in TVHeadend UI: Configuration > Users > Access Entries
+    2. Assign required privileges (e.g., Streaming, Recording, Admin)
+    3. Use username and password for authentication
+
+    **Privileges:**
+    - `admin` - Full administrative access
+    - `streaming` - Stream live TV and recordings
+    - `recording` - Create/manage DVR recordings
+    - `failed_recorder` - View failed recordings
+    - `htsp_streaming` - HTSP streaming protocol access
+    - `htsp_recorder` - HTSP recording access
+    - `htsp_anonymize` - Anonymize HTSP connections
+    - `web_only` - Web interface only (no streaming)
+
+    **Example:**
+    ```bash
+    curl -u username:password http://localhost:9981/api/channel/grid
+    ```
+
+    **Security Notes:**
+    - Always use HTTPS in production to protect credentials
+    - Create dedicated API users with minimal required privileges
+    - Rotate passwords regularly
+    - Consider IP-based access restrictions in TVHeadend config

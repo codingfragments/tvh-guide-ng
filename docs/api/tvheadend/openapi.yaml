@@ -1,0 +1,255 @@
+openapi: 3.1.0
+
+info:
+  title: TVHeadend API
+  version: 4.3.x
+  description: |
+    OpenAPI specification for TVHeadend's JSON API.
+
+    **About TVHeadend:**
+    TVHeadend is a TV streaming server and recorder for Linux. It provides:
+    - Electronic Program Guide (EPG) from multiple sources
+    - Digital Video Recording (DVR) with series/keyword recording
+    - Live TV streaming via HTTP, HTSP, and SAT>IP protocols
+    - Multi-user support with fine-grained access control
+
+    **API Overview:**
+    This API provides comprehensive access to TVHeadend's functionality including:
+    - **EPG** - Query program guide, search shows, get event details
+    - **Channels** - List and manage TV channels
+    - **DVR** - Schedule recordings, manage recording rules
+    - **Config** - Access and modify system configuration
+    - **Status** - Monitor server health, connections, and resources
+
+    **Important Notes:**
+    - This API is unofficial and reverse-engineered
+    - API structure may change between TVHeadend versions
+    - Always test against your specific TVHeadend version
+    - Many endpoints use a "grid" pattern for pagination
+
+    **Getting Started:**
+    1. Read the [Authentication Guide](./guides/authentication.md)
+    2. Try querying EPG: `GET /api/epg/events/grid`
+    3. List channels: `GET /api/channel/grid`
+    4. See [Usage Examples](./examples/) for common scenarios
+
+    **API Stability Warning:**
+    TVHeadend's API is not officially versioned or documented by the project.
+    While the core functionality is stable, breaking changes can occur between releases.
+    Pin your TVHeadend version in production and test thoroughly before upgrading.
+
+  contact:
+    name: TVHeadend Project
+    url: https://tvheadend.org/
+  license:
+    name: GPL-3.0
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+
+servers:
+  - url: http://localhost:9981
+    description: Local TVHeadend server (default)
+  - url: http://{host}:{port}
+    description: Custom TVHeadend server
+    variables:
+      host:
+        default: localhost
+        description: Server hostname or IP
+      port:
+        default: "9981"
+        description: HTTP port
+
+security:
+  - BasicAuth: []
+
+tags:
+  - name: EPG
+    description: |
+      Electronic Program Guide endpoints for querying TV schedules.
+      Get current/upcoming programs, search by title/genre, find series episodes.
+  - name: Channel
+    description: |
+      Channel management endpoints.
+      List channels, manage channel tags, configure channel settings.
+  - name: DVR
+    description: |
+      Digital Video Recording endpoints.
+      Schedule recordings, manage auto-recording rules, view recording history.
+  - name: Config
+    description: |
+      Configuration management endpoints (requires admin privileges).
+      Load/save settings, manage DVR profiles, system configuration.
+  - name: Status
+    description: |
+      Server status and monitoring endpoints.
+      Check health, view connections, monitor resources, access logs.
+
+paths:
+  # EPG Endpoints
+  /api/epg/events/grid:
+    $ref: './paths/epg.yaml#/~1api~1epg~1events~1grid'
+  /api/epg/events/load:
+    $ref: './paths/epg.yaml#/~1api~1epg~1events~1load'
+  /api/epg/content_type/list:
+    $ref: './paths/epg.yaml#/~1api~1epg~1content_type~1list'
+  /api/epg/events/alternative:
+    $ref: './paths/epg.yaml#/~1api~1epg~1events~1alternative'
+  /api/epg/events/related:
+    $ref: './paths/epg.yaml#/~1api~1epg~1events~1related'
+
+  # Channel Endpoints
+  /api/channel/grid:
+    $ref: './paths/channel.yaml#/~1api~1channel~1grid'
+  /api/channel/list:
+    $ref: './paths/channel.yaml#/~1api~1channel~1list'
+  /api/channel/create:
+    $ref: './paths/channel.yaml#/~1api~1channel~1create'
+  /api/channel/class:
+    $ref: './paths/channel.yaml#/~1api~1channel~1class'
+  /api/channeltag/grid:
+    $ref: './paths/channel.yaml#/~1api~1channeltag~1grid'
+  /api/channeltag/list:
+    $ref: './paths/channel.yaml#/~1api~1channeltag~1list'
+
+  # DVR Endpoints
+  /api/dvr/entry/grid:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid'
+  /api/dvr/entry/create:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1create'
+  /api/dvr/entry/create_by_event:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1create_by_event'
+  /api/dvr/entry/cancel:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1cancel'
+  /api/dvr/entry/remove:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1remove'
+  /api/dvr/autorec/grid:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1autorec~1grid'
+  /api/dvr/autorec/create:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1autorec~1create'
+  /api/dvr/timerec/grid:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1timerec~1grid'
+
+  # Config Endpoints
+  /api/config/load:
+    $ref: './paths/config.yaml#/~1api~1config~1load'
+  /api/config/save:
+    $ref: './paths/config.yaml#/~1api~1config~1save'
+  /api/dvr/config/grid:
+    $ref: './paths/config.yaml#/~1api~1dvr~1config~1grid'
+  /api/serverinfo:
+    $ref: './paths/config.yaml#/~1api~1serverinfo'
+
+  # Status Endpoints
+  /api/status:
+    $ref: './paths/status.yaml#/~1api~1status'
+  /api/status/connections:
+    $ref: './paths/status.yaml#/~1api~1status~1connections'
+  /api/status/inputs:
+    $ref: './paths/status.yaml#/~1api~1status~1inputs'
+  /api/service/grid:
+    $ref: './paths/status.yaml#/~1api~1service~1grid'
+  /api/log:
+    $ref: './paths/status.yaml#/~1api~1log'
+
+components:
+  securitySchemes:
+    BasicAuth:
+      $ref: './components/security-schemes.yaml#/BasicAuth'
+
+  schemas:
+    # Common schemas
+    UUID:
+      $ref: './components/schemas/common.yaml#/UUID'
+    Timestamp:
+      $ref: './components/schemas/common.yaml#/Timestamp'
+    GridResponse:
+      $ref: './components/schemas/grid.yaml#/GridResponse'
+
+    # EPG schemas
+    EpgEvent:
+      $ref: './components/schemas/epg.yaml#/EpgEvent'
+    EpgEventDetail:
+      $ref: './components/schemas/epg.yaml#/EpgEventDetail'
+    ContentType:
+      $ref: './components/schemas/epg.yaml#/ContentType'
+
+    # Channel schemas
+    Channel:
+      $ref: './components/schemas/channel.yaml#/Channel'
+    ChannelTag:
+      $ref: './components/schemas/channel.yaml#/ChannelTag'
+
+    # DVR schemas
+    DvrEntry:
+      $ref: './components/schemas/dvr.yaml#/DvrEntry'
+    DvrAutorecEntry:
+      $ref: './components/schemas/dvr.yaml#/DvrAutorecEntry'
+    DvrTimerecEntry:
+      $ref: './components/schemas/dvr.yaml#/DvrTimerecEntry'
+
+    # Config schemas
+    ConfigNode:
+      $ref: './components/schemas/config.yaml#/ConfigNode'
+    DvrConfig:
+      $ref: './components/schemas/config.yaml#/DvrConfig'
+
+    # Status schemas
+    ServerStatus:
+      $ref: './components/schemas/status.yaml#/ServerStatus'
+    ConnectionStatus:
+      $ref: './components/schemas/status.yaml#/ConnectionStatus'
+    InputStatus:
+      $ref: './components/schemas/status.yaml#/InputStatus'
+
+    # Error schemas
+    ErrorResponse:
+      $ref: './components/schemas/error.yaml#/ErrorResponse'
+    AuthenticationError:
+      $ref: './components/schemas/error.yaml#/AuthenticationError'
+    AuthorizationError:
+      $ref: './components/schemas/error.yaml#/AuthorizationError'
+
+  parameters:
+    # Pagination parameters
+    StartParameter:
+      $ref: './components/parameters/pagination.yaml#/StartParameter'
+    LimitParameter:
+      $ref: './components/parameters/pagination.yaml#/LimitParameter'
+    SortParameter:
+      $ref: './components/parameters/pagination.yaml#/SortParameter'
+    DirParameter:
+      $ref: './components/parameters/pagination.yaml#/DirParameter'
+
+    # Filter parameters
+    FilterParameter:
+      $ref: './components/parameters/filter.yaml#/FilterParameter'
+    ChannelFilterParameter:
+      $ref: './components/parameters/filter.yaml#/ChannelFilterParameter'
+
+    # Common parameters
+    UuidParameter:
+      $ref: './components/parameters/common.yaml#/UuidParameter'
+    EventIdParameter:
+      $ref: './components/parameters/common.yaml#/EventIdParameter'
+
+  responses:
+    # Success responses
+    GridSuccess:
+      $ref: './components/responses/grid.yaml#/GridSuccess'
+
+    # Error responses
+    BadRequest:
+      $ref: './components/responses/errors.yaml#/BadRequest'
+    Unauthorized:
+      $ref: './components/responses/errors.yaml#/Unauthorized'
+    Forbidden:
+      $ref: './components/responses/errors.yaml#/Forbidden'
+    NotFound:
+      $ref: './components/responses/errors.yaml#/NotFound'
+    Conflict:
+      $ref: './components/responses/errors.yaml#/Conflict'
+    InternalServerError:
+      $ref: './components/responses/errors.yaml#/InternalServerError'
+
+externalDocs:
+  description: TVHeadend Documentation
+  url: https://docs.tvheadend.org/

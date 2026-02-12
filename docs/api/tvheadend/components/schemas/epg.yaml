@@ -1,0 +1,273 @@
+# EPG (Electronic Program Guide) schemas for TVHeadend API
+
+EpgEvent:
+  type: object
+  description: |
+    EPG event representing a TV program/show.
+    Contains comprehensive metadata about broadcasts including timing, description, categorization, and media info.
+  properties:
+    eventId:
+      type: integer
+      format: int64
+      description: Unique event ID
+      example: 123456
+    channelUuid:
+      $ref: './common.yaml#/UUID'
+      description: UUID of the channel broadcasting this event
+    channelName:
+      type: string
+      description: Human-readable channel name
+      example: "BBC One HD"
+    channelNumber:
+      $ref: './common.yaml#/ChannelNumber'
+    channelIcon:
+      $ref: './common.yaml#/ChannelIcon'
+    start:
+      $ref: './common.yaml#/Timestamp'
+      description: Event start time (Unix timestamp)
+    stop:
+      $ref: './common.yaml#/Timestamp'
+      description: Event end time (Unix timestamp)
+    duration:
+      $ref: './common.yaml#/Duration'
+      description: Event duration in seconds
+    title:
+      type: string
+      description: Event title/name
+      example: "Planet Earth II"
+    subtitle:
+      type: string
+      description: Episode subtitle or secondary title
+      example: "Islands"
+    summary:
+      type: string
+      description: Short description
+      example: "Wildlife documentary exploring island habitats"
+    description:
+      type: string
+      description: Full detailed description
+      example: "David Attenborough narrates this landmark series..."
+    genre:
+      type: array
+      description: Genre/category codes (EIT content descriptors)
+      items:
+        type: integer
+      example: [0x10, 0x11]
+    contentType:
+      type: integer
+      description: Primary content type code (0x10=Movie, 0x20=News, 0x40=Sports, etc.)
+      example: 16
+    seriesLink:
+      type: string
+      description: Series link identifier for grouping episodes
+      example: "series/planet-earth-2"
+    episodeNumber:
+      type: integer
+      description: Episode number within season
+      example: 3
+    seasonNumber:
+      type: integer
+      description: Season number
+      example: 2
+    partNumber:
+      type: integer
+      description: Part number (for multi-part episodes)
+      example: 1
+    partCount:
+      type: integer
+      description: Total number of parts
+      example: 1
+    episodeUri:
+      type: string
+      description: Episode URI for unique identification
+      example: "crid://www.bbc.co.uk/planet-earth-2/episode-3"
+    image:
+      type: string
+      format: uri
+      description: Event poster/thumbnail image URL
+      example: "imagecache/456"
+    nextEventId:
+      type: integer
+      format: int64
+      description: ID of the next event on this channel
+      example: 123457
+    ageRating:
+      type: integer
+      minimum: 0
+      description: Minimum age rating
+      example: 12
+    starRating:
+      type: integer
+      minimum: 0
+      maximum: 5
+      description: Star rating (0-5)
+      example: 4
+    firstAired:
+      $ref: './common.yaml#/Timestamp'
+      description: Original air date
+    credits:
+      type: array
+      description: Cast and crew information
+      items:
+        $ref: '#/Credit'
+    category:
+      type: array
+      description: Human-readable category names
+      items:
+        type: string
+      example: ["Documentary", "Nature"]
+    widescreen:
+      type: boolean
+      description: Broadcast in widescreen format
+      example: true
+    hd:
+      type: boolean
+      description: Broadcast in HD quality
+      example: true
+    subtitled:
+      type: boolean
+      description: Subtitles available
+      example: true
+    audioDesc:
+      type: boolean
+      description: Audio description available
+      example: false
+    dvrUuid:
+      type:
+        - string
+        - "null"
+      description: UUID of DVR entry if recording is scheduled
+    dvrState:
+      type: string
+      description: DVR recording state
+      enum:
+        - scheduled
+        - recording
+        - completed
+        - missed
+        - invalid
+      example: "scheduled"
+  required:
+    - eventId
+    - channelUuid
+    - start
+    - stop
+    - title
+
+Credit:
+  type: object
+  description: Cast or crew member credit
+  properties:
+    name:
+      type: string
+      description: Person's name
+      example: "David Attenborough"
+    role:
+      type: string
+      description: Role type
+      enum:
+        - actor
+        - director
+        - writer
+        - producer
+        - presenter
+        - commentator
+        - guest
+      example: "presenter"
+    character:
+      type: string
+      description: Character name (for actors)
+      example: "Narrator"
+
+ContentType:
+  type: object
+  description: EPG content type/genre definition
+  properties:
+    code:
+      type: integer
+      description: Content type code (DVB EIT descriptor)
+      example: 16
+    name:
+      type: string
+      description: Human-readable content type name
+      example: "Movie"
+    icon:
+      type: string
+      description: Icon identifier
+      example: "movie"
+  required:
+    - code
+    - name
+
+EpgEventDetail:
+  allOf:
+    - $ref: '#/EpgEvent'
+    - type: object
+      description: Extended event details with additional metadata
+      properties:
+        relatedEvents:
+          type: array
+          description: Related events (same series, etc.)
+          items:
+            $ref: '#/EpgEvent'
+        alternativeEvents:
+          type: array
+          description: Alternative broadcasts on other channels
+          items:
+            $ref: '#/EpgEvent'
+        files:
+          type: array
+          description: Associated media files
+          items:
+            type: object
+            properties:
+              filename:
+                $ref: './common.yaml#/FilePath'
+              size:
+                $ref: './common.yaml#/FileSize'
+              start:
+                $ref: './common.yaml#/Timestamp'
+
+EpgGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/EpgEvent'
+      example:
+        entries:
+          - eventId: 123456
+            channelName: "BBC One HD"
+            channelUuid: "1a2b3c4d5e6f7890abcdef1234567890"
+            start: 1704067200
+            stop: 1704070800
+            title: "Planet Earth II"
+            subtitle: "Islands"
+            description: "Wildlife documentary"
+            hd: true
+        total: 1
+        start: 0
+        limit: 50
+
+ContentTypeListResponse:
+  type: object
+  description: List of available content types
+  properties:
+    entries:
+      type: array
+      items:
+        $ref: '#/ContentType'
+  example:
+    entries:
+      - code: 16
+        name: "Movie"
+        icon: "movie"
+      - code: 32
+        name: "News"
+        icon: "news"
+      - code: 64
+        name: "Sports"
+        icon: "sports"

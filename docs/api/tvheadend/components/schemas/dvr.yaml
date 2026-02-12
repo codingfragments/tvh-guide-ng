@@ -1,0 +1,352 @@
+# DVR (Digital Video Recorder) schemas for TVHeadend API
+
+DvrEntry:
+  type: object
+  description: |
+    DVR recording entry representing a scheduled, in-progress, or completed recording.
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+      description: DVR entry UUID
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    channel:
+      type: string
+      description: Channel UUID
+      example: "channel-uuid-123"
+    channelname:
+      type: string
+      description: Channel display name
+      example: "BBC One HD"
+    start:
+      $ref: './common.yaml#/Timestamp'
+      description: Recording start time
+    stop:
+      $ref: './common.yaml#/Timestamp'
+      description: Recording stop time
+    start_real:
+      $ref: './common.yaml#/Timestamp'
+      description: Actual recording start time
+    stop_real:
+      $ref: './common.yaml#/Timestamp'
+      description: Actual recording stop time
+    start_extra:
+      type: integer
+      description: Extra time before (minutes)
+      default: 0
+      example: 2
+    stop_extra:
+      type: integer
+      description: Extra time after (minutes)
+      default: 0
+      example: 5
+    duration:
+      $ref: './common.yaml#/Duration'
+      description: Scheduled duration
+    title:
+      type: string
+      description: Recording title
+      example: "Planet Earth II"
+    disp_title:
+      type: string
+      description: Display title (may include subtitle)
+      example: "Planet Earth II: Islands"
+    subtitle:
+      type: string
+      description: Episode subtitle
+      example: "Islands"
+    summary:
+      type: string
+      description: Short description
+    description:
+      type: string
+      description: Full description
+    pri:
+      $ref: './common.yaml#/Priority'
+      description: Recording priority
+    retention:
+      type: integer
+      description: Retention days (0 = forever)
+      default: 0
+      example: 30
+    removal:
+      type: integer
+      description: Removal days after watched
+      default: 0
+    playposition:
+      type: integer
+      description: Playback position (seconds)
+      default: 0
+    playcount:
+      type: integer
+      description: Number of times played
+      default: 0
+    status:
+      type: string
+      description: Recording status
+      enum:
+        - scheduled
+        - recording
+        - completed
+        - completedOK
+        - completedError
+        - completedWarning
+        - completedRerecord
+        - missed
+        - invalid
+        - running
+        - upcoming
+      example: "completed"
+    sched_status:
+      type: string
+      description: Scheduler status
+      enum:
+        - scheduled
+        - recording
+        - completed
+        - missed
+        - invalid
+      example: "scheduled"
+    errors:
+      type: integer
+      description: Number of recording errors
+      default: 0
+    data_errors:
+      type: integer
+      description: Number of data errors
+      default: 0
+    filename:
+      $ref: './common.yaml#/FilePath'
+      description: Recording file path
+    filesize:
+      $ref: './common.yaml#/FileSize'
+      description: Recording file size
+    url:
+      type: string
+      format: uri
+      description: Playback URL
+      example: "dvrfile/uuid-123"
+    comment:
+      type: string
+      description: User comment/note
+    creator:
+      type: string
+      description: User who created the recording
+      example: "admin"
+    errorcode:
+      type: integer
+      description: Error code if failed
+      default: 0
+    eventId:
+      type: integer
+      format: int64
+      description: Associated EPG event ID
+    autorec:
+      type: string
+      description: Auto-rec rule UUID if scheduled by rule
+    timerec:
+      type: string
+      description: Time-based rec rule UUID if applicable
+    duplicate:
+      type: integer
+      description: Duplicate detection result
+  required:
+    - uuid
+    - channel
+    - start
+    - stop
+    - title
+    - status
+
+DvrAutorecEntry:
+  type: object
+  description: |
+    Auto-recording rule for automatically scheduling recordings based on criteria.
+    Useful for series recording, keyword-based recording, etc.
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    name:
+      type: string
+      description: Rule name
+      example: "Record all documentaries"
+    comment:
+      type: string
+      description: Optional description
+    channel:
+      type: string
+      description: Filter by channel UUID (empty = all channels)
+    channelname:
+      type: string
+      description: Channel name for display
+    title:
+      type: string
+      description: Filter by title (supports regex)
+      example: "Planet Earth.*"
+    subtitle:
+      type: string
+      description: Filter by subtitle (supports regex)
+    description:
+      type: string
+      description: Filter by description (supports regex)
+    fulltext:
+      type: boolean
+      description: Search all text fields
+      default: false
+    genre:
+      type: array
+      description: Filter by genre codes
+      items:
+        type: integer
+      example: [0x90]
+    contentType:
+      type: integer
+      description: Filter by content type
+      example: 144
+    minduration:
+      type: integer
+      description: Minimum duration (seconds)
+      example: 3600
+    maxduration:
+      type: integer
+      description: Maximum duration (seconds)
+    start:
+      $ref: './common.yaml#/Timestamp'
+      description: Start time window
+    stop:
+      $ref: './common.yaml#/Timestamp'
+      description: Stop time window
+    start_window:
+      type: integer
+      description: Start window offset (minutes)
+    start_extra:
+      type: integer
+      description: Extra time before (minutes)
+      default: 0
+    stop_extra:
+      type: integer
+      description: Extra time after (minutes)
+      default: 0
+    pri:
+      $ref: './common.yaml#/Priority'
+    retention:
+      type: integer
+      description: Retention days
+      default: 0
+    removal:
+      type: integer
+      description: Removal days after watched
+      default: 0
+    weekdays:
+      type: array
+      description: Day of week filter (1=Monday, 7=Sunday)
+      items:
+        type: integer
+        minimum: 1
+        maximum: 7
+      example: [6, 7]
+    record:
+      type: integer
+      description: Record count (0 = all)
+      default: 0
+    directory:
+      type: string
+      description: Custom recording directory
+    owner:
+      type: string
+      description: Owner username
+    creator:
+      type: string
+      description: Creator username
+  required:
+    - uuid
+    - name
+
+DvrTimerecEntry:
+  type: object
+  description: |
+    Time-based recording rule for recording at specific times (e.g., daily/weekly schedule).
+  properties:
+    uuid:
+      $ref: './common.yaml#/UUID'
+    enabled:
+      $ref: './common.yaml#/Enabled'
+    name:
+      type: string
+      description: Rule name
+      example: "Morning News Daily"
+    comment:
+      type: string
+    channel:
+      type: string
+      description: Channel UUID
+      example: "channel-uuid-bbc"
+    channelname:
+      type: string
+    title:
+      type: string
+      description: Recording title template
+      example: "News Recording %F"
+    start:
+      type: integer
+      description: Start time (minutes since midnight)
+      example: 420
+    stop:
+      type: integer
+      description: Stop time (minutes since midnight)
+      example: 480
+    weekdays:
+      type: array
+      description: Days to record
+      items:
+        type: integer
+        minimum: 1
+        maximum: 7
+      example: [1, 2, 3, 4, 5]
+    pri:
+      $ref: './common.yaml#/Priority'
+    retention:
+      type: integer
+      default: 0
+    owner:
+      type: string
+    creator:
+      type: string
+  required:
+    - uuid
+    - name
+    - channel
+    - start
+    - stop
+
+DvrGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/DvrEntry'
+
+DvrAutorecGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/DvrAutorecEntry'
+
+DvrTimerecGridResponse:
+  allOf:
+    - $ref: './grid.yaml#/GridResponse'
+    - type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/DvrTimerecEntry'

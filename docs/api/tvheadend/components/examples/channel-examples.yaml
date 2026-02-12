@@ -1,0 +1,71 @@
+# Channel API request and response examples
+
+# Request Examples
+getAllChannels:
+  summary: Get all channels
+  value:
+    limit: 0
+    sort: number
+    dir: ASC
+
+getHDChannels:
+  summary: Filter by HD tag
+  value:
+    tags: "tag-uuid-hd"
+    sort: number
+
+searchChannelsByName:
+  summary: Search for BBC channels
+  value:
+    filter: "BBC"
+    fulltext: 1
+
+createChannelRequest:
+  summary: Create new channel
+  value:
+    conf:
+      name: "Custom Channel"
+      number: 999
+      enabled: true
+      epgauto: true
+
+# Response Examples
+channelFullDetails:
+  summary: Complete channel object
+  value:
+    uuid: "channel-uuid-123"
+    enabled: true
+    name: "BBC One HD"
+    number: 101
+    icon: "imagecache/1"
+    iconPublicUrl: "http://localhost:9981/imagecache/1"
+    epgauto: true
+    epggrab: ["eit"]
+    dvr_pre_time: 2
+    dvr_pst_time: 5
+    services: ["service-uuid-123"]
+    tags: ["tag-uuid-hd", "tag-uuid-favorites"]
+    bouquet: "Freeview HD"
+
+channelListSimple:
+  summary: Simple channel list
+  value:
+    entries:
+      - key: "uuid-bbc-one"
+        val: "BBC One HD"
+      - key: "uuid-bbc-two"
+        val: "BBC Two HD"
+      - key: "uuid-itv"
+        val: "ITV HD"
+
+channelTagExample:
+  summary: Channel tag
+  value:
+    uuid: "tag-uuid-hd"
+    enabled: true
+    name: "HD Channels"
+    comment: "All high-definition channels"
+    icon: "imagecache/tag-hd"
+    internal: false
+    private: false
+    index: 1
