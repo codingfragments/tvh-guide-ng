@@ -139,8 +139,6 @@ paths:
     $ref: './paths/config.yaml#/~1api~1serverinfo'
 
   # Status Endpoints
-  /api/status:
-    $ref: './paths/status.yaml#/~1api~1status'
   /api/status/connections:
     $ref: './paths/status.yaml#/~1api~1status~1connections'
   /api/status/inputs:
