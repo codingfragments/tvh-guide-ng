@@ -25,11 +25,12 @@ Machine-readable API specification in OpenAPI 3.1 format. Use this for:
 
 **View with:**
 ```bash
-# From project root - Generate HTML documentation
-pnpm run docs:build
-
-# Serve interactive documentation with live reload
+# From project root - Serve interactive documentation
 pnpm run docs:serve
+# Open http://localhost:8080
+
+# Watch for changes with auto-reload
+pnpm run docs:watch
 # Open http://localhost:8080
 ```
 
@@ -223,6 +224,7 @@ See [examples/](./examples/) for complete implementations.
 
 ```
 docs/api/tvheadend/
+├── index.html                # Stoplight Elements documentation viewer
 ├── openapi.yaml              # Main OpenAPI spec
 ├── README.md                 # This file
 ├── components/               # Reusable OpenAPI components
@@ -288,7 +290,7 @@ openapi-generator-cli generate \
 
 ### Interactive Documentation
 
-**Redoc (recommended):**
+**Stoplight Elements (recommended):**
 ```bash
 # From project root
 pnpm run docs:serve
@@ -298,15 +300,15 @@ pnpm run docs:serve
 pnpm run docs:watch
 ```
 
-**Build static HTML:**
-```bash
-# From project root
-pnpm run docs:build
-# Generates: docs/api/tvheadend/api-docs.html
-```
+**Features:**
+- ✨ Interactive API Explorer - Try out API endpoints directly from the docs
+- 📱 Responsive Design - Works on desktop, tablet, and mobile
+- 🎨 Clean UI - Modern, professional documentation interface
+- 🔄 Live Reload - Changes automatically refresh the browser
 
-**Swagger UI (optional):**
+**Alternative viewers:**
 ```bash
+# Swagger UI (optional)
 docker run -p 8081:8080 \
   -e SWAGGER_JSON=/openapi.yaml \
   -v $(pwd)/docs/api/tvheadend/openapi.yaml:/openapi.yaml \
@@ -340,12 +342,12 @@ This documentation is part of the tvh-guide-ng project. Contributions welcome!
 - [GitHub Repository](https://github.com/tvheadend/tvheadend)
 - [Forum](https://tvheadend.org/projects/tvheadend/boards)
 
-### OpenAPI
+### OpenAPI & Tools
 
 - [OpenAPI 3.1 Specification](https://spec.openapis.org/oas/v3.1.0)
-- [Spectral OpenAPI Linter](https://stoplight.io/open-source/spectral)
-- [Redoc Documentation Generator](https://github.com/Redocly/redoc)
-- [OpenAPI Generator](https://openapi-generator.tech/)
+- [Stoplight Elements](https://stoplight.io/open-source/elements) - Interactive API documentation
+- [Spectral OpenAPI Linter](https://stoplight.io/open-source/spectral) - Validation & linting
+- [OpenAPI Generator](https://openapi-generator.tech/) - Client code generation
 
 ### This Project
 
