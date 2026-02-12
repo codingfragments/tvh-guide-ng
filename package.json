@@ -9,9 +9,9 @@
     "lint": "pnpm -r lint",
     "clean": "pnpm -r clean",
     "validate:openapi": "spectral lint docs/api/tvheadend/openapi.yaml --format stylish",
-    "docs:build": "redoc-cli build docs/api/tvheadend/openapi.yaml -o docs/api/tvheadend/api-docs.html",
-    "docs:serve": "redoc-cli serve docs/api/tvheadend/openapi.yaml --port 8080",
-    "docs:watch": "redoc-cli serve docs/api/tvheadend/openapi.yaml --watch --port 8080"
+    "docs:build": "echo 'Stoplight Elements uses static HTML - no build needed'",
+    "docs:serve": "browser-sync start --server docs/api/tvheadend --files 'docs/api/tvheadend/**/*' --no-open --port 8080 --startPath index.html",
+    "docs:watch": "browser-sync start --server docs/api/tvheadend --files 'docs/api/tvheadend/**/*.yaml,docs/api/tvheadend/**/*.yml' --no-open --port 8080 --startPath index.html"
   },
   "volta": {
     "node": "24.13.1",
@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.15.0",
-    "redoc-cli": "^0.13.21"
+    "browser-sync": "^3.0.4"
   }
 }
