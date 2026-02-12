@@ -144,6 +144,11 @@ All packages use the `@tvh-guide/` namespace:
 **Current files**:
 - `docs/DESIGN_GUIDE.md` — Architecture principles
 - `docs/CODING_STYLE.md` — Code style conventions
+- `docs/api/tvheadend/` — Complete TVHeadend API documentation
+  - OpenAPI 3.1 specification (`openapi.yaml`)
+  - Authentication, pagination, filtering, error handling guides
+  - Code examples (curl, JavaScript, Python)
+  - Use case walkthroughs
 
 ---
 

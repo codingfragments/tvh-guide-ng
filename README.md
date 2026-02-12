@@ -40,3 +40,5 @@ See [Installation.md](./Installation.md) for detailed setup instructions.
 - [Installation & CLI Reference](./Installation.md)
 - [Architecture & Design Guide](./docs/DESIGN_GUIDE.md)
 - [Coding Style](./docs/CODING_STYLE.md)
+- [Repository Structure](./STRUCTURE.md)
+- **[TVHeadend API Documentation](./docs/api/tvheadend/README.md)** - Complete OpenAPI spec, guides, and examples
