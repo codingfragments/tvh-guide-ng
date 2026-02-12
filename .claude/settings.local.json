@@ -6,7 +6,13 @@
       "WebFetch(domain:docs.tvheadend.org)",
       "WebSearch",
       "Bash(pnpm run validate:openapi:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(pnpm add:*)",
+      "Bash(lsof:*)",
+      "Bash(pkill:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm validate:openapi:*)"
     ]
   }
 }
