@@ -1,0 +1,16 @@
+# Markdownlint ignore file
+# Files and directories to exclude from markdown linting
+
+# Claude Code instructions - may contain non-standard formatting
+CLAUDE.md
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.svelte-kit/
+
+# Auto-generated docs
+**/CHANGELOG.md
