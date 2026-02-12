@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/stefan/projekteHome/marxworld/media/tvh-guide-ng log --oneline -5)",
+      "Bash(python3:*)"
+    ]
+  }
+}

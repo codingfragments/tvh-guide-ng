@@ -1,1 +1,37 @@
 .tmuxinator.yml
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.svelte-kit/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Coverage & testing
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Misc
+.cache/
+.turbo/
