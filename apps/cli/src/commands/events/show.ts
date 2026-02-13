@@ -5,7 +5,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClient } from '../../utils/client.js';
 import { formatJSON, formatDateTime } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 
@@ -20,7 +20,6 @@ export function createShowCommand(): Command {
 
       try {
         const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
 
         // Fetch the event details
         const eventIdNum = parseInt(eventId);
@@ -30,30 +29,23 @@ export function createShowCommand(): Command {
           process.exit(1);
         }
 
-        const response = await client.getEpgEventsGrid({
-          limit: 1,
-          start: 0,
-          filter: JSON.stringify([
-            { field: 'eventId', type: 'numeric', value: eventIdNum },
-          ]),
-        });
+        // Use the dedicated loadEpgEvents method
+        const events = await client.loadEpgEvents(eventIdNum);
 
         spinner.stop();
 
-        if (response.entries.length === 0) {
+        if (events.length === 0) {
           console.log(chalk.red(`Event not found: ${eventId}`));
           process.exit(1);
         }
 
-        const event = response.entries[0];
+        const event = events[0];
 
         const format = globalOpts.format || options.format;
 
         if (format === 'json') {
           console.log(formatJSON(event));
         } else {
-          const useColor = config.defaults?.color !== false;
-
           console.log(chalk.bold('\n📅 Event Information'));
           console.log(`  ID:       ${event.eventId}`);
           console.log(`  Title:    ${event.title}`);
