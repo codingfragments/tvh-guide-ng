@@ -565,11 +565,14 @@ export class TVHeadendClient {
    * @returns Server capabilities
    */
   async getServerCapabilities(): Promise<ServerCapabilities> {
-    return this.request<ServerCapabilities>('/api/serverinfo');
+    const serverInfo = await this.request<ServerInfo>('/api/serverinfo');
+    return {
+      entries: serverInfo.capabilities || [],
+    };
   }
 
   /**
-   * Get server information (alias for getServerCapabilities)
+   * Get server information
    * @returns Server info
    */
   async getServerInfo(): Promise<ServerInfo> {

@@ -92,12 +92,10 @@ describe('Config API', () => {
   });
 
   describe('getServerCapabilities', () => {
-    it('should fetch server capabilities', async () => {
+    it('should fetch server capabilities and extract from ServerInfo', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          entries: ['timeshift', 'imagecache', 'trace'],
-        }),
+        json: async () => mockServerInfo,
       } as any);
 
       const result = await client.getServerCapabilities();
@@ -107,6 +105,24 @@ describe('Config API', () => {
         expect.any(Object),
       );
       expect(result).toBeDefined();
+      expect(result.entries).toEqual(mockServerInfo.capabilities);
+    });
+
+    it('should handle missing capabilities in ServerInfo', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          name: 'Test Server',
+          version: '4.3',
+          sw_version: '4.3.0',
+          api_version: 20,
+          // no capabilities property
+        }),
+      } as any);
+
+      const result = await client.getServerCapabilities();
+
+      expect(result.entries).toEqual([]);
     });
   });
 
