@@ -11,7 +11,8 @@ tvh-guide-ng/
 ├── services/                # Backend services
 │   └── epg-service/         # EPG data backend service
 ├── libs/                    # Shared libraries
-│   └── shared/              # Common types, utilities, constants
+│   ├── shared/              # Common types, utilities, constants
+│   └── tvheadend-client/    # Type-safe TVHeadend API client
 └── docs/                    # Project documentation
 ```
 
@@ -21,6 +22,7 @@ All packages use the `@tvh-guide/` namespace:
 - `@tvh-guide/web` — Frontend application
 - `@tvh-guide/epg-service` — EPG backend service
 - `@tvh-guide/shared` — Shared types and utilities
+- `@tvh-guide/tvheadend-client` — Type-safe TVHeadend API client
 
 ---
 
@@ -124,8 +126,8 @@ All packages use the `@tvh-guide/` namespace:
 
 **Example packages**:
 - `libs/shared` — Common types and utilities
+- `libs/tvheadend-client` — Type-safe TVHeadend API client library
 - `libs/ui-components` — (future) Shared UI component library
-- `libs/api-client` — (future) Typed API client for services
 
 ---
 

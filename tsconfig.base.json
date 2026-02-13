@@ -15,7 +15,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "paths": {
-      "@tvh-guide/shared": ["../../libs/shared/src"]
+      "@tvh-guide/shared": ["../../libs/shared/src"],
+      "@tvh-guide/tvheadend-client": ["../../libs/tvheadend-client/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build"]
