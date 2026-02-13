@@ -51,17 +51,12 @@ export function createListCommand(): Command {
           }
         }
 
-        // Build filter based on options
-        const now = Math.floor(Date.now() / 1000);
-        let filter: any[] = [];
-
+        // Determine query mode
+        let mode: 'now' | 'upcoming' | undefined;
         if (options.now) {
-          filter = [
-            { field: 'start', type: 'numeric', comparison: 'le', value: now },
-            { field: 'stop', type: 'numeric', comparison: 'gt', value: now },
-          ];
+          mode = 'now';
         } else if (options.upcoming) {
-          filter.push({ field: 'start', type: 'numeric', comparison: 'gt', value: now });
+          mode = 'upcoming';
         }
 
         const response = await client.getEpgEventsGrid({
@@ -69,7 +64,7 @@ export function createListCommand(): Command {
           start: 0,
           sort: options.sort,
           channel: channelUuid, // Use dedicated channel parameter
-          filter: filter.length > 0 ? JSON.stringify(filter) : undefined,
+          mode, // Use API's built-in mode parameter
         });
 
         spinner.stop();
