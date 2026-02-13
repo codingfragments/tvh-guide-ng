@@ -76,8 +76,8 @@ export interface EpgEventDetail extends EpgEvent {
   episodeInfo?: string;
   /** Copyright information */
   copyright?: string;
-  /** Category information */
-  category?: string;
+  /** Category/genre names */
+  category?: string[];
 }
 
 /** Content type/genre */
@@ -92,6 +92,14 @@ export interface ContentType {
 
 /** EPG grid response */
 export type EpgGridResponse = GridResponse<EpgEvent>;
+
+/** EPG events load response */
+export interface EpgEventsLoadResponse {
+  /** Total count of events */
+  totalCount: number;
+  /** Array of loaded events */
+  entries: EpgEventDetail[];
+}
 
 /** EPG grid query parameters */
 export interface EpgGridParams {

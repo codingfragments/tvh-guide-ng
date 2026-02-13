@@ -7,6 +7,7 @@ This document defines the organizational structure of the `tvh-guide-ng` monorep
 ```
 tvh-guide-ng/
 ├── apps/                    # User-facing applications
+│   ├── cli/                 # Command-line interface for TVHeadend
 │   └── web/                 # SvelteKit EPG frontend
 ├── services/                # Backend services
 │   └── epg-service/         # EPG data backend service
@@ -19,6 +20,7 @@ tvh-guide-ng/
 ## Package Scoping
 
 All packages use the `@tvh-guide/` namespace:
+- `@tvh-guide/cli` — Command-line interface for TVHeadend
 - `@tvh-guide/web` — Frontend application
 - `@tvh-guide/epg-service` — EPG backend service
 - `@tvh-guide/shared` — Shared types and utilities
@@ -35,12 +37,13 @@ All packages use the `@tvh-guide/` namespace:
 - Desktop applications (Electron, Tauri, etc.)
 - Mobile applications (if added in the future)
 - Admin panels or dashboards
-- Any application with a user interface
+- Command-line interface tools
+- Any application with a user interface or interactive experience
 
 **What does NOT belong here**:
 - Backend services (use `services/` instead)
 - Shared libraries (use `libs/` instead)
-- CLI tools that are part of a service (keep with the service)
+- CLI tools that are tightly coupled to a specific service (keep with the service)
 
 **Dependency rules**:
 - ✅ CAN depend on `libs/` packages
@@ -54,6 +57,7 @@ All packages use the `@tvh-guide/` namespace:
 - When the codebase needs a distinct entry point for end users
 
 **Example packages**:
+- `apps/cli` — Command-line interface for managing TVHeadend EPG and recordings
 - `apps/web` — Main EPG web interface
 - `apps/admin` — (future) Admin configuration panel
 - `apps/mobile` — (future) Mobile EPG app

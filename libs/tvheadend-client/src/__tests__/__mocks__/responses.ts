@@ -55,7 +55,7 @@ export const mockEpgEventDetail: EpgEventDetail = {
     { name: 'Jane Smith', role: 'Actor' },
   ],
   episodeInfo: 'S01E01',
-  category: 'Drama',
+  category: ['Drama'],
 };
 
 export const mockEpgGridResponse: EpgGridResponse = {
