@@ -56,10 +56,6 @@ export function createSearchCommand(): Command {
           { field: 'title', type: 'string', comparison: 'regex', value: query },
         ];
 
-        if (channelUuid) {
-          filter.push({ field: 'channelUuid', type: 'string', value: channelUuid });
-        }
-
         if (options.genre) {
           filter.push({
             field: 'genre',
@@ -76,6 +72,7 @@ export function createSearchCommand(): Command {
           limit: parseInt(options.limit),
           start: 0,
           sort: options.sort,
+          channel: channelUuid, // Use dedicated channel parameter
           filter: JSON.stringify(filter),
         });
 

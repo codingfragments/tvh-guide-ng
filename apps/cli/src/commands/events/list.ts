@@ -55,13 +55,8 @@ export function createListCommand(): Command {
         const now = Math.floor(Date.now() / 1000);
         let filter: any[] = [];
 
-        if (channelUuid) {
-          filter.push({ field: 'channelUuid', type: 'string', value: channelUuid });
-        }
-
         if (options.now) {
           filter = [
-            ...filter,
             { field: 'start', type: 'numeric', comparison: 'le', value: now },
             { field: 'stop', type: 'numeric', comparison: 'gt', value: now },
           ];
@@ -73,6 +68,7 @@ export function createListCommand(): Command {
           limit: parseInt(options.limit),
           start: 0,
           sort: options.sort,
+          channel: channelUuid, // Use dedicated channel parameter
           filter: filter.length > 0 ? JSON.stringify(filter) : undefined,
         });
 
