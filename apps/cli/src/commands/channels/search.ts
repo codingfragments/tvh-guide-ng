@@ -23,19 +23,20 @@ export function createSearchCommand(): Command {
         const client = createClient(globalOpts);
         const config = getConfig(globalOpts);
 
+        // Build filter for substring search using regex
+        const filter: any[] = [
+          { field: 'name', type: 'string', comparison: 'regex', value: query },
+        ];
+
         const response = await client.getChannelGrid({
           limit: parseInt(options.limit),
           start: 0,
+          filter: JSON.stringify(filter),
         });
-
-        // Filter channels by name (case-insensitive)
-        const filteredChannels = response.entries.filter((channel) =>
-          channel.name?.toLowerCase().includes(query.toLowerCase())
-        );
 
         spinner.stop();
 
-        if (filteredChannels.length === 0) {
+        if (response.entries.length === 0) {
           console.log(`No channels found matching "${query}"`);
           return;
         }
@@ -53,14 +54,14 @@ export function createSearchCommand(): Command {
         ];
 
         const output = formatOutput(
-          filteredChannels,
+          response.entries,
           globalOpts.format || options.format,
           columns,
           config.defaults?.color !== false
         );
 
         console.log(output);
-        console.log(`\nFound: ${filteredChannels.length} channels`);
+        console.log(`\nFound: ${response.entries.length} channels`);
       } catch (error) {
         spinner.stop();
         handleError(error, globalOpts.verbose);
