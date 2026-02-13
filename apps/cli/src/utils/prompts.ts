@@ -26,35 +26,34 @@ export function prompt(question: string): Promise<string> {
  */
 export function promptPassword(question: string): Promise<string> {
   return new Promise((resolve) => {
-    // Disable echoing for password input
     const stdin = process.stdin as any;
+
+    // Ensure stdin is in the correct state
+    stdin.setEncoding('utf8');
     if (stdin.isTTY) {
       stdin.setRawMode(true);
     }
+    stdin.resume(); // Critical: resume stdin to receive data events
 
     process.stdout.write(question);
 
     let password = '';
-    const onData = (char: Buffer) => {
-      const c = char.toString('utf8');
+    const onData = (char: Buffer | string) => {
+      const c = char.toString();
 
       switch (c) {
         case '\n':
         case '\r':
         case '\u0004': // Ctrl+D
-          if (stdin.setRawMode) {
-            stdin.setRawMode(false);
-          }
-          process.stdin.removeListener('data', onData);
+          cleanup();
           process.stdout.write('\n');
           resolve(password);
           break;
         case '\u0003': // Ctrl+C
-          if (stdin.setRawMode) {
-            stdin.setRawMode(false);
-          }
-          process.stdin.removeListener('data', onData);
+          cleanup();
+          process.stdout.write('\n');
           process.exit(1);
+          break;
         case '\b': // Backspace
         case '\u007f': // Delete
           if (password.length > 0) {
@@ -66,6 +65,14 @@ export function promptPassword(question: string): Promise<string> {
           password += c;
           process.stdout.write('*');
       }
+    };
+
+    const cleanup = () => {
+      if (stdin.setRawMode) {
+        stdin.setRawMode(false);
+      }
+      stdin.pause();
+      process.stdin.removeListener('data', onData);
     };
 
     process.stdin.on('data', onData);
