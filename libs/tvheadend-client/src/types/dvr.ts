@@ -294,3 +294,80 @@ export interface DvrEntryMetadata {
     readonly?: boolean;
   }>;
 }
+
+/** DVR entry creation parameters (alias for consistency) */
+export type DvrEntryCreateParams = DvrEntryConfig;
+
+/** DVR entry class (alias for API consistency) */
+export type DvrEntryClass = DvrEntryMetadata;
+
+/** DVR config class (alias for API consistency) */
+export type DvrConfigClass = DvrConfigMetadata;
+
+/** Auto-rec creation parameters (alias for consistency) */
+export type DvrAutorecCreateParams = DvrAutorecConfig;
+
+/** Auto-rec grid query parameters */
+export interface DvrAutorecGridParams {
+  start?: number;
+  limit?: number;
+  sort?: string;
+  dir?: 'ASC' | 'DESC';
+  filter?: string;
+}
+
+/** Time-rec grid query parameters */
+export interface DvrTimerecGridParams {
+  start?: number;
+  limit?: number;
+  sort?: string;
+  dir?: 'ASC' | 'DESC';
+  filter?: string;
+}
+
+/** DVR config grid query parameters */
+export interface DvrConfigGridParams {
+  start?: number;
+  limit?: number;
+  sort?: string;
+  dir?: 'ASC' | 'DESC';
+  filter?: string;
+}
+
+/** DVR entry cancel parameters */
+export interface DvrCancelParams {
+  /** Entry UUID to cancel */
+  uuid: UUID;
+}
+
+/** DVR entry stop parameters */
+export interface DvrStopParams {
+  /** Entry UUID to stop */
+  uuid: UUID;
+}
+
+/** DVR entry remove parameters */
+export interface DvrRemoveParams {
+  /** Entry UUID to remove */
+  uuid: UUID;
+}
+
+/** DVR file moved notification parameters */
+export interface DvrFileMovedParams {
+  /** Entry UUID */
+  uuid: UUID;
+  /** New file path */
+  filename: FilePath;
+}
+
+/** DVR move to finished parameters */
+export interface DvrMoveFinishedParams {
+  /** Entry UUID */
+  uuid: UUID;
+}
+
+/** DVR move to failed parameters */
+export interface DvrMoveFailedParams {
+  /** Entry UUID */
+  uuid: UUID;
+}

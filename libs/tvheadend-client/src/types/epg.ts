@@ -138,3 +138,6 @@ export interface BrandListItem {
 export interface BrandListResponse {
   entries: BrandListItem[];
 }
+
+/** EPG brand (alias for consistency) */
+export type EpgBrand = BrandListItem;

@@ -148,3 +148,23 @@ export interface ChannelTagMetadata {
     required?: boolean;
   }>;
 }
+
+/** Channel tag grid query parameters */
+export interface ChannelTagGridParams {
+  start?: number;
+  limit?: number;
+  sort?: string;
+  dir?: 'ASC' | 'DESC';
+  filter?: string;
+}
+
+/** Channel tag list response */
+export interface ChannelTagListResponse {
+  entries: ChannelTag[];
+}
+
+/** Channel class (alias for API consistency) */
+export type ChannelClass = ChannelClassMetadata;
+
+/** Channel tag class (alias for API consistency) */
+export type ChannelTagClass = ChannelTagMetadata;
