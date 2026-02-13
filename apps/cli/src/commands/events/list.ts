@@ -16,7 +16,7 @@ export function createListCommand(): Command {
     .option('--now', 'Show currently airing events')
     .option('--upcoming', 'Show upcoming events')
     .option('--limit <n>', 'Limit results', '20')
-    .option('--sort <field>', 'Sort by: start, title, channel', 'start')
+    .option('--sort <field>', 'Sort by: start, title, channelName, channelNumber', 'start')
     .option('--format <type>', 'Output format: table, json', 'table')
     .action(async (options, command) => {
       const globalOpts = command.optsWithGlobals();
@@ -76,27 +76,32 @@ export function createListCommand(): Command {
 
         const columns: ColumnDefinition<EpgEvent>[] = [
           {
+            key: 'channelNumber',
+            label: 'Ch#',
+            width: 6,
+          },
+          {
             key: 'channelName',
             label: 'Channel',
-            width: 20,
-            format: (val) => truncate(val || '', 18),
+            width: 18,
+            format: (val) => truncate(val || '', 16),
           },
           {
             key: 'title',
             label: 'Title',
-            width: 30,
-            format: (val) => truncate(val || '', 28),
+            width: 28,
+            format: (val) => truncate(val || '', 26),
           },
           {
             key: 'start',
             label: 'Start',
-            width: 20,
+            width: 18,
             format: (val) => formatDateTime(val),
           },
           {
             key: 'stop',
             label: 'End',
-            width: 20,
+            width: 18,
             format: (val) => formatDateTime(val),
           },
         ];
