@@ -78,7 +78,9 @@ export function createShowCommand(): Command {
             console.log(`\n  Summary:\n  ${event.summary}`);
           }
 
-          if (event.genre && event.genre.length > 0) {
+          if (event.category && event.category.length > 0) {
+            console.log(`\n  Genres:   ${event.category.join(', ')}`);
+          } else if (event.genre && event.genre.length > 0) {
             console.log(`\n  Genres:   ${event.genre.join(', ')}`);
           }
         }

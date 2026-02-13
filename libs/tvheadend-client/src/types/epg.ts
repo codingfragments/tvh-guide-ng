@@ -76,8 +76,8 @@ export interface EpgEventDetail extends EpgEvent {
   episodeInfo?: string;
   /** Copyright information */
   copyright?: string;
-  /** Category information */
-  category?: string;
+  /** Category/genre names */
+  category?: string[];
 }
 
 /** Content type/genre */
