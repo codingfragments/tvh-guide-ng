@@ -17,6 +17,7 @@ export function createSearchCommand(): Command {
     .option('--genre <code>', 'Filter by genre/content type code')
     .option('--upcoming', 'Only search upcoming events')
     .option('--limit <n>', 'Limit results', '20')
+    .option('--sort <field>', 'Sort by: start, title, channel', 'start')
     .option('--format <type>', 'Output format: table, json', 'table')
     .action(async (query, options, command) => {
       const globalOpts = command.optsWithGlobals();
@@ -74,6 +75,7 @@ export function createSearchCommand(): Command {
         const response = await client.getEpgEventsGrid({
           limit: parseInt(options.limit),
           start: 0,
+          sort: options.sort,
           filter: JSON.stringify(filter),
         });
 
