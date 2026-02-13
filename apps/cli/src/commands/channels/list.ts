@@ -4,7 +4,7 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, formatBoolean, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 import type { Channel } from '@tvh-guide/tvheadend-client';
@@ -21,16 +21,21 @@ export function createListCommand(): Command {
       const spinner = ora('Fetching channels...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         const response = await client.getChannelGrid({
           sort: options.sort,
           limit: parseInt(options.limit),
           start: 0,
+          tags: options.tag || undefined,
         });
 
         spinner.stop();
+
+        if (response.entries.length === 0) {
+          console.log('No channels found');
+          return;
+        }
 
         const columns: ColumnDefinition<Channel>[] = [
           { key: 'number', label: 'Number', width: 10 },
@@ -39,7 +44,7 @@ export function createListCommand(): Command {
             key: 'enabled',
             label: 'Enabled',
             width: 10,
-            format: (val) => formatBoolean(val, config.defaults?.color !== false),
+            format: (val) => formatBoolean(val as boolean, config.defaults?.color !== false),
           },
           { key: 'uuid', label: 'UUID', width: 38 },
         ];

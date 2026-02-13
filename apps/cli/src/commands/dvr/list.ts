@@ -4,10 +4,10 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, formatDateTime, truncate, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
-import type { DvrEntry } from '@tvh-guide/tvheadend-client';
+import type { DvrEntry, FilterCondition } from '@tvh-guide/tvheadend-client';
 
 export function createListCommand(): Command {
   return new Command('list')
@@ -21,10 +21,9 @@ export function createListCommand(): Command {
       const spinner = ora('Fetching DVR entries...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
-        let filter: any[] = [];
+        const filter: FilterCondition[] = [];
 
         // Filter by status if requested
         if (options.status) {
@@ -60,19 +59,19 @@ export function createListCommand(): Command {
             key: 'channelname',
             label: 'Channel',
             width: 20,
-            format: (val) => truncate(val || '', 18),
+            format: (val) => truncate(String(val ?? ''), 18),
           },
           {
-            key: 'title',
+            key: 'disp_title',
             label: 'Title',
             width: 30,
-            format: (val) => truncate(val?.title || '', 28),
+            format: (val) => truncate(String(val ?? ''), 28),
           },
           {
             key: 'start',
             label: 'Start',
             width: 20,
-            format: (val) => formatDateTime(val),
+            format: (val) => formatDateTime(val as number),
           },
           {
             key: 'sched_status',

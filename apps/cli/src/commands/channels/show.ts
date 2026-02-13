@@ -5,7 +5,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatJSON, formatBoolean } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 
@@ -19,8 +19,7 @@ export function createShowCommand(): Command {
       const spinner = ora('Fetching channel information...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         // Fetch all channels to find the requested one
         const response = await client.getChannelGrid({

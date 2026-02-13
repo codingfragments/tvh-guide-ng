@@ -3,7 +3,7 @@
  */
 
 import type { UUID, ChannelNumber } from './common.js';
-import type { GridResponse } from './grid.js';
+import type { GridResponse, GridParams } from './grid.js';
 
 /** TV channel entity */
 export interface Channel {
@@ -88,12 +88,7 @@ export interface ChannelCategoryListResponse {
 }
 
 /** Channel grid query parameters */
-export interface ChannelGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
+export interface ChannelGridParams extends GridParams {
   /** Filter by channel tag UUID(s) */
   tags?: UUID | UUID[];
 }
@@ -150,13 +145,7 @@ export interface ChannelTagMetadata {
 }
 
 /** Channel tag grid query parameters */
-export interface ChannelTagGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
-}
+export interface ChannelTagGridParams extends GridParams {}
 
 /** Channel tag list response */
 export interface ChannelTagListResponse {

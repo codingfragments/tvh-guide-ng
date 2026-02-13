@@ -3,7 +3,7 @@
  */
 
 import type { UUID, Timestamp, Duration, Priority, FilePath, FileSize, RecordingStatus } from './common.js';
-import type { GridResponse } from './grid.js';
+import type { GridResponse, GridParams } from './grid.js';
 
 /** DVR recording entry */
 export interface DvrEntry {
@@ -212,12 +212,7 @@ export type DvrTimerecGridResponse = GridResponse<DvrTimerecEntry>;
 export type DvrConfigGridResponse = GridResponse<DvrConfig>;
 
 /** DVR grid query parameters */
-export interface DvrGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
+export interface DvrGridParams extends GridParams {
   /** Filter by recording status */
   status?: RecordingStatus;
 }
@@ -250,6 +245,10 @@ export interface DvrEntryByEventParams {
   event_id: number;
   /** Optional DVR config UUID */
   config_uuid?: UUID;
+  /** Recording priority */
+  pri?: Priority;
+  /** Optional DVR config name */
+  config_name?: string;
 }
 
 /** Auto-rec creation configuration */
@@ -308,31 +307,13 @@ export type DvrConfigClass = DvrConfigMetadata;
 export type DvrAutorecCreateParams = DvrAutorecConfig;
 
 /** Auto-rec grid query parameters */
-export interface DvrAutorecGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
-}
+export interface DvrAutorecGridParams extends GridParams {}
 
 /** Time-rec grid query parameters */
-export interface DvrTimerecGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
-}
+export interface DvrTimerecGridParams extends GridParams {}
 
 /** DVR config grid query parameters */
-export interface DvrConfigGridParams {
-  start?: number;
-  limit?: number;
-  sort?: string;
-  dir?: 'ASC' | 'DESC';
-  filter?: string;
-}
+export interface DvrConfigGridParams extends GridParams {}
 
 /** DVR entry cancel parameters */
 export interface DvrCancelParams {

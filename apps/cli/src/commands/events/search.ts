@@ -4,10 +4,10 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, formatDateTime, truncate, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
-import type { EpgEvent } from '@tvh-guide/tvheadend-client';
+import type { EpgEvent, FilterCondition } from '@tvh-guide/tvheadend-client';
 
 export function createSearchCommand(): Command {
   return new Command('search')
@@ -24,8 +24,7 @@ export function createSearchCommand(): Command {
       const spinner = ora(`Searching for "${query}"...`).start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         let channelUuid: string | undefined = options.channel;
 
@@ -52,7 +51,7 @@ export function createSearchCommand(): Command {
 
         // Build filter
         const now = Math.floor(Date.now() / 1000);
-        const filter: any[] = [
+        const filter: FilterCondition[] = [
           { field: 'title', type: 'string', comparison: 'regex', value: query },
         ];
 
@@ -93,25 +92,25 @@ export function createSearchCommand(): Command {
             key: 'channelName',
             label: 'Channel',
             width: 18,
-            format: (val) => truncate(val || '', 16),
+            format: (val) => truncate(String(val ?? ''), 16),
           },
           {
             key: 'title',
             label: 'Title',
             width: 28,
-            format: (val) => truncate(val || '', 26),
+            format: (val) => truncate(String(val ?? ''), 26),
           },
           {
             key: 'start',
             label: 'Start',
             width: 18,
-            format: (val) => formatDateTime(val),
+            format: (val) => formatDateTime(val as number),
           },
           {
             key: 'stop',
             label: 'End',
             width: 18,
-            format: (val) => formatDateTime(val),
+            format: (val) => formatDateTime(val as number),
           },
         ];
 

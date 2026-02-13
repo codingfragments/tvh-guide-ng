@@ -134,6 +134,9 @@ tvh channels list
 # Sort by name
 tvh channels list --sort name
 
+# Filter by channel tag UUID
+tvh channels list --tag abc123-def456
+
 # Limit results
 tvh channels list --limit 10
 

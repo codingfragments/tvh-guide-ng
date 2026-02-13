@@ -5,7 +5,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { createClient } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatJSON, formatDateTime } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 import type { EpgEventsLoadResponse } from '@tvh-guide/tvheadend-client';
@@ -20,13 +20,14 @@ export function createShowCommand(): Command {
       const spinner = ora('Fetching event information...').start();
 
       try {
-        const client = createClient(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
+        const useColor = config.defaults?.color !== false;
 
         // Fetch the event details
         const eventIdNum = parseInt(eventId);
         if (isNaN(eventIdNum)) {
           spinner.stop();
-          console.log(chalk.red(`Invalid event ID: ${eventId}`));
+          console.log(useColor ? chalk.red(`Invalid event ID: ${eventId}`) : `Invalid event ID: ${eventId}`);
           process.exit(1);
         }
 
@@ -40,7 +41,7 @@ export function createShowCommand(): Command {
         }
 
         if (!response.entries || response.entries.length === 0) {
-          console.log(chalk.red(`Event not found: ${eventId}`));
+          console.log(useColor ? chalk.red(`Event not found: ${eventId}`) : `Event not found: ${eventId}`);
           process.exit(1);
         }
 
@@ -51,7 +52,7 @@ export function createShowCommand(): Command {
         if (format === 'json') {
           console.log(formatJSON(event));
         } else {
-          console.log(chalk.bold('\n📅 Event Information'));
+          console.log(useColor ? chalk.bold('\nEvent Information') : '\nEvent Information');
           console.log(`  ID:       ${event.eventId}`);
           console.log(`  Title:    ${event.title}`);
           console.log(`  Channel:  ${event.channelName}`);

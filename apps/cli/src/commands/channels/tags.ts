@@ -4,7 +4,7 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, formatBoolean, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 import type { ChannelTag } from '@tvh-guide/tvheadend-client';
@@ -18,8 +18,7 @@ export function createTagsCommand(): Command {
       const spinner = ora('Fetching channel tags...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         const response = await client.getChannelTagGrid({
           limit: 999,
@@ -39,13 +38,13 @@ export function createTagsCommand(): Command {
             key: 'enabled',
             label: 'Enabled',
             width: 10,
-            format: (val) => formatBoolean(val, config.defaults?.color !== false),
+            format: (val) => formatBoolean(val as boolean, config.defaults?.color !== false),
           },
           {
             key: 'internal',
             label: 'Internal',
             width: 10,
-            format: (val) => formatBoolean(val, config.defaults?.color !== false),
+            format: (val) => formatBoolean(val as boolean, config.defaults?.color !== false),
           },
           { key: 'uuid', label: 'UUID', width: 38 },
         ];

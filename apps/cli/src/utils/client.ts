@@ -5,12 +5,13 @@
 import { TVHeadendClient } from '@tvh-guide/tvheadend-client';
 import { loadConfig, mergeConfig } from './config.js';
 import type { CLIOptions } from '../types/config.js';
+import type { TVHConfig } from '../types/config.js';
 
 /**
- * Create a TVHeadend client instance from CLI options
- * Merges config file settings with CLI flags (CLI flags take precedence)
+ * Create a TVHeadend client and merged config from CLI options.
+ * Loads the config file once and returns both the client and the resolved config.
  */
-export function createClient(cliOptions: CLIOptions): TVHeadendClient {
+export function createClientAndConfig(cliOptions: CLIOptions): { client: TVHeadendClient; config: TVHConfig } {
   const configFile = loadConfig();
   const config = mergeConfig(configFile, cliOptions);
 
@@ -20,11 +21,21 @@ export function createClient(cliOptions: CLIOptions): TVHeadendClient {
     );
   }
 
-  return new TVHeadendClient({
+  const client = new TVHeadendClient({
     baseUrl: config.server.url,
     username: config.server.username || '',
     password: config.server.password || '',
   });
+
+  return { client, config };
+}
+
+/**
+ * Create a TVHeadend client instance from CLI options.
+ * Use this for commands that don't need the resolved config.
+ */
+export function createClient(cliOptions: CLIOptions): TVHeadendClient {
+  return createClientAndConfig(cliOptions).client;
 }
 
 /**

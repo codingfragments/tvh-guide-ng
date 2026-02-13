@@ -3,7 +3,7 @@
  */
 
 import type { UUID, Timestamp, Duration, ChannelNumber } from './common.js';
-import type { GridResponse } from './grid.js';
+import type { GridResponse, GridParams } from './grid.js';
 
 /** EPG event representing a TV program */
 export interface EpgEvent {
@@ -102,17 +102,7 @@ export interface EpgEventsLoadResponse {
 }
 
 /** EPG grid query parameters */
-export interface EpgGridParams {
-  /** Starting offset */
-  start?: number;
-  /** Maximum number of items */
-  limit?: number;
-  /** Sort field */
-  sort?: string;
-  /** Sort direction */
-  dir?: 'ASC' | 'DESC';
-  /** Filter expression */
-  filter?: string;
+export interface EpgGridParams extends GridParams {
   /** Channel filter */
   channel?: UUID | UUID[];
   /** Channel tag filter */
