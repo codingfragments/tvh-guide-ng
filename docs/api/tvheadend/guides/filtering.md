@@ -41,7 +41,7 @@ curl -u user:pass \
   "field": "fieldName",
   "type": "string|numeric|boolean",
   "value": searchValue,
-  "comparison": "eq|gt|gte|lt|lte|contains|starts|ends"
+  "comparison": "eq|ne|gt|gte|lt|le|contains|starts|ends|regex"
 }
 ```
 
@@ -96,6 +96,7 @@ curl -u user:pass -G \
 - `starts` - Starts with
 - `ends` - Ends with
 - `eq` - Exact match
+- `regex` - Regular expression match
 
 **Examples:**
 ```bash
@@ -110,6 +111,9 @@ filter={"field":"channelname","type":"string","value":"HD","comparison":"ends"}
 
 # Exact match
 filter={"field":"title","type":"string","value":"News at Ten","comparison":"eq"}
+
+# Regex match (case-insensitive by default)
+filter={"field":"title","type":"string","value":"news|documentary","comparison":"regex"}
 ```
 
 ### Numeric Type
@@ -118,10 +122,13 @@ filter={"field":"title","type":"string","value":"News at Ten","comparison":"eq"}
 
 **Comparison operators:**
 - `eq` - Equal to
+- `ne` - Not equal to
 - `gt` - Greater than
 - `gte` - Greater than or equal
 - `lt` - Less than
-- `lte` - Less than or equal
+- `le` - Less than or equal
+
+> **Note:** The TVHeadend API uses `le` (not `lte`) for "less than or equal". Some older documentation may reference `lte`, but `le` is the correct operator name.
 
 **Examples:**
 ```bash
@@ -152,6 +159,28 @@ filter={"field":"hd","type":"boolean","value":1}
 # Enabled channels only
 filter={"field":"enabled","type":"boolean","value":1}
 ```
+
+## Using the TypeScript Client
+
+The `@tvh-guide/tvheadend-client` library provides a typed `FilterCondition` interface for building filters without manual JSON serialization:
+
+```typescript
+import type { FilterCondition } from '@tvh-guide/tvheadend-client';
+
+// Single filter
+const events = await client.getEpgEventsGrid({
+  filter: { field: 'title', type: 'string', comparison: 'regex', value: 'news' },
+});
+
+// Multiple filters (AND logic)
+const filters: FilterCondition[] = [
+  { field: 'channelname', type: 'string', value: 'BBC' },
+  { field: 'start', type: 'numeric', comparison: 'gte', value: 1704067200 },
+];
+const results = await client.getEpgEventsGrid({ filter: filters });
+```
+
+The `FilterCondition.comparison` type supports: `eq`, `ne`, `lt`, `le`, `gt`, `gte`, and `regex`. The string-specific comparisons (`contains`, `starts`, `ends`) used by the raw API can be passed via pre-serialized JSON strings instead.
 
 ## Common Filtering Scenarios
 
@@ -184,7 +213,7 @@ curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
   --data-urlencode "filter=[
     {\"field\":\"start\",\"type\":\"numeric\",\"value\":$START_TIME,\"comparison\":\"gte\"},
-    {\"field\":\"stop\",\"type\":\"numeric\",\"value\":$END_TIME,\"comparison\":\"lte\"}
+    {\"field\":\"stop\",\"type\":\"numeric\",\"value\":$END_TIME,\"comparison\":\"le\"}
   ]"
 ```
 
@@ -315,7 +344,7 @@ curl -u user:pass -G \
     {"field":"contentType","type":"numeric","value":16},
     {"field":"hd","type":"boolean","value":1},
     {"field":"start","type":"numeric","value":1704067200,"comparison":"gte"},
-    {"field":"stop","type":"numeric","value":1704153600,"comparison":"lte"}
+    {"field":"stop","type":"numeric","value":1704153600,"comparison":"le"}
   ]' \
   --data-urlencode 'start=0' \
   --data-urlencode 'limit=50'
@@ -588,7 +617,7 @@ filter={"field":"start","type":"numeric","value":1704067200,"comparison":"gte"}
 # FASTER: Bounded time range
 filter=[
   {"field":"start","type":"numeric","value":1704067200,"comparison":"gte"},
-  {"field":"stop","type":"numeric","value":1704153600,"comparison":"lte"}
+  {"field":"stop","type":"numeric","value":1704153600,"comparison":"le"}
 ]
 ```
 

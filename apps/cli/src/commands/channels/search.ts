@@ -4,10 +4,10 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, formatBoolean, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
-import type { Channel } from '@tvh-guide/tvheadend-client';
+import type { Channel, FilterCondition } from '@tvh-guide/tvheadend-client';
 
 export function createSearchCommand(): Command {
   return new Command('search')
@@ -20,11 +20,10 @@ export function createSearchCommand(): Command {
       const spinner = ora(`Searching for "${query}"...`).start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         // Build filter for substring search using regex
-        const filter: any[] = [
+        const filter: FilterCondition[] = [
           { field: 'name', type: 'string', comparison: 'regex', value: query },
         ];
 
@@ -48,7 +47,7 @@ export function createSearchCommand(): Command {
             key: 'enabled',
             label: 'Enabled',
             width: 10,
-            format: (val) => formatBoolean(val, config.defaults?.color !== false),
+            format: (val) => formatBoolean(val as boolean, config.defaults?.color !== false),
           },
           { key: 'uuid', label: 'UUID', width: 38 },
         ];

@@ -4,7 +4,7 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 import type { ContentType } from '@tvh-guide/tvheadend-client';
@@ -18,8 +18,7 @@ export function createGenresCommand(): Command {
       const spinner = ora('Fetching content types...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         const contentTypes = await client.listContentTypes();
 

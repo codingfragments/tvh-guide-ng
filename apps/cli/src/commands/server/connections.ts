@@ -4,7 +4,7 @@
 
 import { Command } from 'commander';
 import ora from 'ora';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatOutput, type ColumnDefinition } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 import type { ConnectionStatus } from '@tvh-guide/tvheadend-client';
@@ -18,8 +18,7 @@ export function createConnectionsCommand(): Command {
       const spinner = ora('Fetching active connections...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         const response = await client.getConnections();
 

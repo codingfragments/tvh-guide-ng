@@ -57,6 +57,20 @@ Authorization: Basic dXNlcjpwYXNz
 }
 ```
 
+**Optional fields:**
+- `config_uuid` - DVR configuration profile UUID
+- `config_name` - DVR configuration profile name (alternative to UUID)
+- `pri` - Recording priority (`0` = important, `6` = unimportant, default: `2`)
+
+**Example with priority:**
+```json
+{
+  "event_id": 123456,
+  "pri": 0,
+  "config_name": "HDTV"
+}
+```
+
 **Response (Success):**
 ```http
 HTTP/1.1 200 OK

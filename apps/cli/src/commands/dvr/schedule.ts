@@ -6,6 +6,7 @@ import { Command } from 'commander';
 import ora from 'ora';
 import { createClient } from '../../utils/client.js';
 import { handleError, success } from '../../utils/errors.js';
+import type { DvrEntryByEventParams } from '@tvh-guide/tvheadend-client';
 
 export function createScheduleCommand(): Command {
   return new Command('schedule')
@@ -28,14 +29,11 @@ export function createScheduleCommand(): Command {
         }
 
         // Create DVR entry from event
-        const params: any = {
+        const params: DvrEntryByEventParams = {
           event_id: eventIdNum,
-          pri: parseInt(options.priority),
+          pri: parseInt(options.priority) as DvrEntryByEventParams['pri'],
+          config_name: options.profile || undefined,
         };
-
-        if (options.profile) {
-          params.config_name = options.profile;
-        }
 
         await client.createDvrEntryByEvent(params);
 

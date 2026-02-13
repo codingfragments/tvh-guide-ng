@@ -5,7 +5,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { createClient, getConfig } from '../../utils/client.js';
+import { createClientAndConfig } from '../../utils/client.js';
 import { formatJSON } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
 
@@ -18,8 +18,7 @@ export function createInfoCommand(): Command {
       const spinner = ora('Fetching server information...').start();
 
       try {
-        const client = createClient(globalOpts);
-        const config = getConfig(globalOpts);
+        const { client, config } = createClientAndConfig(globalOpts);
 
         const serverInfo = await client.getServerInfo();
 

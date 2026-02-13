@@ -9,7 +9,7 @@ export interface ColumnDefinition<T> {
   key: keyof T;
   label: string;
   width?: number;
-  format?: (value: any) => string;
+  format?: (value: unknown) => string;
 }
 
 /**

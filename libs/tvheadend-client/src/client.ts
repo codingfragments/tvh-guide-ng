@@ -116,7 +116,7 @@ export class TVHeadendClient {
    * Makes an authenticated HTTP request
    * @private
    */
-  private async request<T>(path: string, params?: unknown): Promise<T> {
+  private async request<T>(path: string, params?: Record<string, unknown>): Promise<T> {
     const url = buildUrl(this.baseUrl, path, params as Record<string, string | number | boolean | undefined>);
     return request<T>(url, {
       headers: {
@@ -581,7 +581,8 @@ export class TVHeadendClient {
   }
 
   /**
-   * Get DVR configuration grid (duplicate of DVR method, included for completeness)
+   * Get DVR configuration grid
+   * @deprecated Use {@link getDvrConfigGrid} instead
    * @param params - Grid query parameters
    * @returns Paginated DVR configs
    */
@@ -655,7 +656,7 @@ export class TVHeadendClient {
    * @returns System log entries
    */
   async getLog(params?: LogQueryParams): Promise<LogResponse> {
-    return this.request<LogResponse>('/api/log', params);
+    return this.request<LogResponse>('/api/log', params ? { ...params } : undefined);
   }
 
   /**

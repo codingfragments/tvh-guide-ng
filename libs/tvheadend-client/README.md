@@ -141,7 +141,9 @@ const manualRecording = await client.createDvrEntry({
 // Schedule recording from EPG event
 const eventRecording = await client.createDvrEntryByEvent({
   event_id: 123456,
-  config_uuid: 'config-uuid', // Optional
+  config_uuid: 'config-uuid', // Optional DVR config UUID
+  pri: 2,                     // Optional priority (0=important, 6=unimportant)
+  config_name: 'HDTV',        // Optional DVR config profile name
 });
 
 // Recording lifecycle management
@@ -280,14 +282,24 @@ The library exports comprehensive TypeScript types for all API entities:
 
 ```typescript
 import type {
+  // Grid/filter building blocks
+  GridParams,
+  GridResponse,
+  FilterCondition,
+  // EPG types
   EpgEvent,
   EpgEventDetail,
+  EpgGridParams,
   EpgGridResponse,
+  // Channel types
   Channel,
   ChannelTag,
+  // DVR types
   DvrEntry,
+  DvrEntryByEventParams,
   DvrAutorecEntry,
   DvrConfig,
+  // Server/status types
   ServerInfo,
   ConnectionStatus,
   SubscriptionStatus,
@@ -330,6 +342,8 @@ console.log(`Showing ${page1.entries.length} of ${page1.total} total channels`);
 Many grid endpoints support filtering and sorting:
 
 ```typescript
+import type { FilterCondition } from '@tvh-guide/tvheadend-client';
+
 // Sort by field
 const channels = await client.getChannelGrid({
   sort: 'number',
@@ -341,13 +355,21 @@ const activeRecordings = await client.getDvrEntryGrid({
   status: 'recording',
 });
 
-// Complex filtering (serialize as JSON)
+// Typed filter using FilterCondition (recommended)
 const hdChannels = await client.getChannelGrid({
-  filter: JSON.stringify({
-    field: 'name',
-    type: 'string',
-    value: 'HD',
-  }),
+  filter: { field: 'name', type: 'string', value: 'HD' },
+});
+
+// Multiple filter conditions (AND logic)
+const filters: FilterCondition[] = [
+  { field: 'title', type: 'string', comparison: 'regex', value: 'News' },
+  { field: 'start', type: 'numeric', comparison: 'gt', value: Math.floor(Date.now() / 1000) },
+];
+const events = await client.getEpgEventsGrid({ filter: filters });
+
+// String filter also supported (pre-serialized JSON)
+const results = await client.getChannelGrid({
+  filter: JSON.stringify({ field: 'name', type: 'string', value: 'HD' }),
 });
 ```
 

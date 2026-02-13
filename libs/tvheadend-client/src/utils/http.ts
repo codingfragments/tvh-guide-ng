@@ -11,6 +11,7 @@ import {
   BadRequestError,
   NetworkError,
 } from './errors.js';
+import type { FilterCondition } from '../types/grid.js';
 
 /**
  * Makes an HTTP request and handles errors
@@ -93,7 +94,7 @@ export function buildUrl(
  * @returns Serialized filter string
  */
 export function serializeFilter(
-  filter: string | Record<string, unknown> | Array<Record<string, unknown>>,
+  filter: string | FilterCondition | FilterCondition[],
 ): string {
   if (typeof filter === 'string') {
     return filter;

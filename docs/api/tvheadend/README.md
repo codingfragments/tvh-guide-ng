@@ -394,7 +394,7 @@ TVHeadend is licensed under GPL-3.0. This documentation is independently created
 - **Documentation Version:** 2.0.0
 - **API Endpoints:** 53 (expanded from 28)
 - **TVHeadend Compatibility:** 4.2.x, 4.3.x (some endpoints require 4.3.652+ or 4.3-2405+)
-- **Last Updated:** 2025-02-13
+- **Last Updated:** 2026-02-13
 
 ---
 

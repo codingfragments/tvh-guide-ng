@@ -37,5 +37,5 @@ export interface FilterCondition {
   /** Value to filter by */
   value: string | number | boolean;
   /** Comparison operator */
-  comparison?: 'eq' | 'ne' | 'lt' | 'le' | 'gt' | 'gte';
+  comparison?: 'eq' | 'ne' | 'lt' | 'le' | 'gt' | 'gte' | 'regex';
 }
