@@ -93,6 +93,14 @@ export interface ContentType {
 /** EPG grid response */
 export type EpgGridResponse = GridResponse<EpgEvent>;
 
+/** EPG events load response */
+export interface EpgEventsLoadResponse {
+  /** Total count of events */
+  totalCount: number;
+  /** Array of loaded events */
+  entries: EpgEventDetail[];
+}
+
 /** EPG grid query parameters */
 export interface EpgGridParams {
   /** Starting offset */

@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import { createClient } from '../../utils/client.js';
 import { formatJSON, formatDateTime } from '../../utils/output.js';
 import { handleError } from '../../utils/errors.js';
+import type { EpgEventsLoadResponse } from '@tvh-guide/tvheadend-client';
 
 export function createShowCommand(): Command {
   return new Command('show')
@@ -30,16 +31,20 @@ export function createShowCommand(): Command {
         }
 
         // Use the dedicated loadEpgEvents method
-        const events = await client.loadEpgEvents(eventIdNum);
+        const response: EpgEventsLoadResponse = await client.loadEpgEvents(eventIdNum);
 
         spinner.stop();
 
-        if (events.length === 0) {
+        if (globalOpts.verbose) {
+          console.log('API Response:', JSON.stringify(response, null, 2));
+        }
+
+        if (!response.entries || response.entries.length === 0) {
           console.log(chalk.red(`Event not found: ${eventId}`));
           process.exit(1);
         }
 
-        const event = events[0];
+        const event = response.entries[0];
 
         const format = globalOpts.format || options.format;
 

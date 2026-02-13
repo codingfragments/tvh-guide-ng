@@ -10,6 +10,7 @@ import type {
   EpgGridParams,
   EpgGridResponse,
   EpgEventDetail,
+  EpgEventsLoadResponse,
   ContentType,
   EpgBrand,
   // Channel types
@@ -163,11 +164,11 @@ export class TVHeadendClient {
   /**
    * Load detailed information for specific EPG events
    * @param eventIds - Single event ID or array of event IDs
-   * @returns Array of detailed event information
+   * @returns Response with total count and event details
    */
-  async loadEpgEvents(eventIds: number | number[]): Promise<EpgEventDetail[]> {
+  async loadEpgEvents(eventIds: number | number[]): Promise<EpgEventsLoadResponse> {
     const ids = Array.isArray(eventIds) ? eventIds : [eventIds];
-    return this.request<EpgEventDetail[]>('/api/epg/events/load', {
+    return this.request<EpgEventsLoadResponse>('/api/epg/events/load', {
       eventId: ids.join(','),
     });
   }
