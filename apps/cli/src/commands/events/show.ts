@@ -66,6 +66,10 @@ export function createShowCommand(): Command {
             console.log(`  Subtitle: ${event.subtitle}`);
           }
 
+          if (event.image) {
+            console.log(`  Image:    ${event.image}`);
+          }
+
           if (event.description) {
             console.log(`\n  Description:\n  ${event.description}`);
           }
