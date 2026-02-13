@@ -3,19 +3,50 @@
  */
 
 import { cosmiconfigSync } from 'cosmiconfig';
+import { homedir } from 'os';
+import { join } from 'path';
 import type { TVHConfig, CLIOptions } from '../types/config.js';
+
+/**
+ * Create cosmiconfig explorer with custom search locations
+ */
+function createExplorer() {
+  return cosmiconfigSync('tvh', {
+    searchPlaces: [
+      'package.json',
+      '.tvhrc',
+      '.tvhrc.json',
+      '.tvhrc.yaml',
+      '.tvhrc.yml',
+      '.tvhrc.js',
+      '.tvhrc.cjs',
+      'tvh.config.js',
+      'tvh.config.cjs',
+    ],
+  });
+}
 
 /**
  * Load configuration from file using cosmiconfig
  * Searches for .tvhrc, tvh.config.js, or package.json with "tvh" field
+ * Checks current directory, parent directories, and home directory
  */
 export function loadConfig(): TVHConfig | null {
   try {
-    const explorer = cosmiconfigSync('tvh');
-    const result = explorer.search();
+    const explorer = createExplorer();
+
+    // First try to search from current directory upward
+    let result = explorer.search();
+
+    // If not found, explicitly check home directory
+    if (!result) {
+      const homeConfigPath = join(homedir(), '.tvhrc');
+      result = explorer.load(homeConfigPath);
+    }
+
     return result?.config || null;
   } catch (error) {
-    // If config file has syntax errors, return null
+    // If config file has syntax errors or doesn't exist, return null
     return null;
   }
 }
@@ -25,8 +56,17 @@ export function loadConfig(): TVHConfig | null {
  */
 export function getConfigPath(): string | null {
   try {
-    const explorer = cosmiconfigSync('tvh');
-    const result = explorer.search();
+    const explorer = createExplorer();
+
+    // First try to search from current directory upward
+    let result = explorer.search();
+
+    // If not found, explicitly check home directory
+    if (!result) {
+      const homeConfigPath = join(homedir(), '.tvhrc');
+      result = explorer.load(homeConfigPath);
+    }
+
     return result?.filepath || null;
   } catch (error) {
     return null;
