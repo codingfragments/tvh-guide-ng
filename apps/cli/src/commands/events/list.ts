@@ -112,7 +112,7 @@ export function createListCommand(): Command {
 
         const output = formatOutput(
           response.entries,
-          options.format,
+          globalOpts.format || options.format,
           columns,
           config.defaults?.color !== false
         );

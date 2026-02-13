@@ -44,7 +44,9 @@ export function createShowCommand(): Command {
           process.exit(1);
         }
 
-        if (options.format === 'json') {
+        const format = globalOpts.format || options.format;
+
+        if (format === 'json') {
           console.log(formatJSON(channel));
         } else {
           const useColor = config.defaults?.color !== false;

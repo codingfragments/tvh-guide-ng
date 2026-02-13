@@ -37,7 +37,7 @@ export function createGenresCommand(): Command {
 
         const output = formatOutput(
           contentTypes,
-          options.format,
+          globalOpts.format || options.format,
           columns,
           config.defaults?.color !== false
         );

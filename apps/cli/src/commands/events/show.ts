@@ -47,7 +47,9 @@ export function createShowCommand(): Command {
 
         const event = response.entries[0];
 
-        if (options.format === 'json') {
+        const format = globalOpts.format || options.format;
+
+        if (format === 'json') {
           console.log(formatJSON(event));
         } else {
           const useColor = config.defaults?.color !== false;

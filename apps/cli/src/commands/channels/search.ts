@@ -54,7 +54,7 @@ export function createSearchCommand(): Command {
 
         const output = formatOutput(
           filteredChannels,
-          options.format,
+          globalOpts.format || options.format,
           columns,
           config.defaults?.color !== false
         );

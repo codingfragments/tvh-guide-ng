@@ -25,7 +25,9 @@ export function createInfoCommand(): Command {
 
         spinner.stop();
 
-        if (options.format === 'json') {
+        const format = globalOpts.format || options.format;
+
+        if (format === 'json') {
           console.log(formatJSON(serverInfo));
         } else {
           console.log(chalk.bold('\n🖥️  Server Information'));
