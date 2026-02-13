@@ -59,13 +59,13 @@ Ready-to-use code examples:
 
 ### 🔍 API Reference
 
-Detailed endpoint documentation organized by category:
+Detailed endpoint documentation organized by category (**53 endpoints total**):
 
-- **[EPG Endpoints](./paths/epg.yaml)** - Program guide queries, event details
-- **[Channel Endpoints](./paths/channel.yaml)** - Channel management, tags
-- **[DVR Endpoints](./paths/dvr.yaml)** - Recording management, auto-rec rules
-- **[Config Endpoints](./paths/config.yaml)** - System configuration (admin only)
-- **[Status Endpoints](./paths/status.yaml)** - Server health, monitoring
+- **[EPG Endpoints](./paths/epg.yaml)** (6 endpoints) - Program guide queries, event details, brand list
+- **[Channel Endpoints](./paths/channel.yaml)** (10 endpoints) - Channel management, tags, categories, rename
+- **[DVR Endpoints](./paths/dvr.yaml)** (23 endpoints) - Recording management, auto-rec rules, series timers, status filtering
+- **[Config Endpoints](./paths/config.yaml)** (5 endpoints) - System configuration, server capabilities (admin only)
+- **[Status Endpoints](./paths/status.yaml)** (9 endpoints) - Server health, monitoring, subscriptions, activity status
 
 ## Quick Start
 
@@ -191,10 +191,17 @@ curl -u username:password http://localhost:9981/api/...
 ### Monitoring & Automation
 
 - Check server info: `GET /api/serverinfo`
+- Check server capabilities: `GET /api/config/capabilities`
 - Monitor active connections: `GET /api/status/connections`
+- Monitor active subscriptions: `GET /api/status/subscriptions`
+- Check low-power mode suitability: `GET /api/status/activity`
 - Monitor recordings: `GET /api/dvr/entry/grid?status=recording`
+- View upcoming recordings: `GET /api/dvr/entry/grid_upcoming`
+- View failed recordings: `GET /api/dvr/entry/grid_failed`
 - Auto-record by keywords: `POST /api/dvr/autorec/create`
+- Create series timer: `POST /api/dvr/autorec/create_by_series`
 - View system logs: `GET /api/log`
+- Reset input statistics: `POST /api/status/inputclrstats`
 
 ### Data Export
 
@@ -220,6 +227,26 @@ See [examples/](./examples/) for complete implementations.
 - TVHeadend 4.2.x ✓ (Core APIs stable)
 - TVHeadend 4.3.x ✓ (Tested, minor additions)
 - TVHeadend 4.4+ ⚠️ (Test before deployment)
+
+### Version-Specific Features
+
+Some endpoints require specific TVHeadend versions:
+
+**Requires TVHeadend 4.3.652+:**
+- `POST /api/channel/rename` - Channel renaming functionality
+
+**Requires TVHeadend 4.3-2405+:**
+- `GET /api/status/activity` - Low-power mode suitability information
+
+### Deprecated Endpoints
+
+**⚠️ Deprecated in TVHeadend 4.3.1059+:**
+- `GET /api/epg/brand/list` - List commonly-available shows (may be removed in future versions)
+
+### Untested Endpoints
+
+**⚠️ Untested - Use with caution:**
+- `GET /api/channelcategory/list` - EPG event categories (test against your TVHeadend version)
 
 ## Project Structure
 
@@ -364,9 +391,10 @@ TVHeadend is licensed under GPL-3.0. This documentation is independently created
 
 ## Version
 
-- **Documentation Version:** 1.0.0
-- **TVHeadend Compatibility:** 4.2.x, 4.3.x
-- **Last Updated:** 2024-01-01
+- **Documentation Version:** 2.0.0
+- **API Endpoints:** 53 (expanded from 28)
+- **TVHeadend Compatibility:** 4.2.x, 4.3.x (some endpoints require 4.3.652+ or 4.3-2405+)
+- **Last Updated:** 2025-02-13
 
 ---
 

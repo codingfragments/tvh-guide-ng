@@ -4,7 +4,7 @@ UUID:
   type: string
   format: uuid
   description: Universally unique identifier
-  example: "1a2b3c4d5e6f7890abcdef1234567890"
+  example: "550e8400-e29b-41d4-a716-446655440000"
 
 Timestamp:
   type: integer
@@ -40,7 +40,7 @@ ChannelIcon:
   type: string
   format: uri
   description: URL to channel icon/logo
-  example: "imagecache/123"
+  example: "http://localhost:9981/imagecache/123"
 
 Duration:
   type: integer

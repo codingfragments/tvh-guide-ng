@@ -71,7 +71,7 @@
                     $ref: '../components/schemas/status.yaml#/InputStatus'
             example:
               entries:
-                - uuid: "adapter-uuid-123"
+                - uuid: "550e8400-e29b-41d4-a716-446655440040"
                   type: "DVB-T"
                   name: "/dev/dvb/adapter0"
                   active: false
@@ -119,7 +119,7 @@
                         $ref: '../components/schemas/status.yaml#/ServiceStatus'
             example:
               entries:
-                - uuid: "service-uuid-123"
+                - uuid: "550e8400-e29b-41d4-a716-446655440041"
                   enabled: true
                   type: "DVB-T"
                   network: "Freeview"
@@ -190,3 +190,179 @@
         $ref: '../components/responses/errors.yaml#/Unauthorized'
       '403':
         $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/status/subscriptions:
+  get:
+    summary: List active subscriptions
+    description: |
+      Get all active streaming subscriptions (channels being watched).
+
+      **Common Use Cases:**
+      - Monitor what channels are currently being streamed
+      - View subscription details
+      - Check tuner usage
+    operationId: getSubscriptions
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Active subscriptions list
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/status.yaml#/SubscriptionStatus'
+            example:
+              entries:
+                - id: 1
+                  channel: "BBC One HD"
+                  service: "DVB-T Service"
+                  profile: "htsp"
+                  username: "client1"
+                  start: 1704067200
+                  weight: 100
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/status/activity:
+  get:
+    summary: Get activity status for low-power mode
+    description: |
+      Get server activity status to determine if the system can enter low-power mode.
+
+      **Requirements:**
+      - TVHeadend version 4.3-2405 or later
+
+      **Common Use Cases:**
+      - Check if recordings are in progress
+      - Determine if server can be put to sleep
+      - Monitor system activity
+    operationId: getActivityStatus
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Activity status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/status.yaml#/ActivityStatus'
+            example:
+              entries:
+                - activity: "recording"
+                  description: "Recording in progress"
+                  canSleep: false
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/status/inputclrstats:
+  post:
+    summary: Reset input device counters
+    description: |
+      Reset statistics counters for input devices (tuners/adapters).
+
+      **Common Use Cases:**
+      - Clear signal quality statistics
+      - Reset error counters
+      - Start fresh monitoring period
+    operationId: clearInputStats
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: Optional input UUID to reset (empty = reset all)
+          example:
+            uuid: "adapter-uuid-123"
+    responses:
+      '200':
+        description: Statistics cleared successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/connections/cancel:
+  post:
+    summary: Disconnect client connections
+    description: |
+      Forcibly disconnect client connections.
+      Requires admin privileges.
+
+      **Common Use Cases:**
+      - Kick idle clients
+      - Force disconnect misbehaving clients
+      - Free up connection slots
+    operationId: cancelConnections
+    tags:
+      - Status
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Connection ID to disconnect
+            required:
+              - id
+          example:
+            id: 1
+    responses:
+      '200':
+        description: Connection cancelled successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'

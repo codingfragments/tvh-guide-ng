@@ -41,21 +41,21 @@
                 summary: All channels
                 value:
                   entries:
-                    - uuid: "uuid-bbc-one"
+                    - uuid: "550e8400-e29b-41d4-a716-446655440010"
                       enabled: true
                       name: "BBC One HD"
                       number: 101
-                      icon: "imagecache/1"
+                      icon: "http://localhost:9981/imagecache/1"
                   total: 1
               hdChannelsOnly:
                 summary: HD channels filtered by tag
                 value:
                   entries:
-                    - uuid: "uuid-bbc-one-hd"
+                    - uuid: "550e8400-e29b-41d4-a716-446655440011"
                       enabled: true
                       name: "BBC One HD"
                       number: 101
-                      tags: ["tag-uuid-hd"]
+                      tags: ["550e8400-e29b-41d4-a716-446655440012"]
                   total: 1
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'
@@ -195,10 +195,10 @@
               $ref: '../components/schemas/channel.yaml#/ChannelTagGridResponse'
             example:
               entries:
-                - uuid: "tag-uuid-hd"
+                - uuid: "550e8400-e29b-41d4-a716-446655440013"
                   name: "HD Channels"
                   enabled: true
-                - uuid: "tag-uuid-favorites"
+                - uuid: "550e8400-e29b-41d4-a716-446655440014"
                   name: "Favorites"
                   enabled: true
               total: 2
@@ -235,5 +235,189 @@
                 entries:
                   - key: "tag-uuid-hd"
                     val: "HD Channels"
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/channel/rename:
+  post:
+    summary: Rename a channel
+    description: |
+      Rename an existing channel.
+
+      **Requirements:**
+      - TVHeadend version 4.3.652 or later
+      - Requires admin privileges
+
+      **Use Cases:**
+      - Correct channel names
+      - Customize channel display names
+    operationId: renameChannel
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: Channel UUID
+              name:
+                type: string
+                description: New channel name
+            required:
+              - uuid
+              - name
+          example:
+            uuid: "channel-uuid-123"
+            name: "BBC One HD (Renamed)"
+    responses:
+      '200':
+        description: Channel renamed successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/channeltag/class:
+  get:
+    summary: Get channel tag parameters
+    description: |
+      Retrieve the configuration class/schema for channel tags.
+      Describes available properties, types, and validation rules.
+      Useful for building dynamic configuration UIs.
+    operationId: getChannelTagClass
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Channel tag parameter schema
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/channel.yaml#/ChannelTagMetadata'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/channeltag/create:
+  post:
+    summary: Create new channel tag
+    description: |
+      Create a new channel tag for organizing channels.
+      Requires admin privileges.
+
+      **Use Cases:**
+      - Create custom channel groups
+      - Add new category tags
+    operationId: createChannelTag
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              conf:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Tag name
+                  enabled:
+                    type: boolean
+                  comment:
+                    type: string
+                    description: Optional description
+                  icon:
+                    type: string
+                    description: Icon URL
+                  index:
+                    type: integer
+                    description: Display order
+                required:
+                  - name
+          example:
+            conf:
+              name: "Sports Channels"
+              enabled: true
+              comment: "All sports-related channels"
+              index: 10
+    responses:
+      '200':
+        description: Channel tag created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  type: string
+              example:
+                uuid: "tag-uuid-sports"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/channelcategory/list:
+  get:
+    summary: List EPG event categories
+    description: |
+      Get list of EPG event categories (genres).
+
+      **⚠️ WARNING:** This endpoint is untested and may not work as documented.
+      Test against your TVHeadend version before relying on it.
+
+      **Use Cases:**
+      - Get available genre/category codes
+      - Map category IDs to names
+    operationId: listChannelCategories
+    tags:
+      - Channel
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Category list
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/channel.yaml#/ChannelCategory'
+              example:
+                entries:
+                  - key: "0x10"
+                    val: "Movie/Drama"
+                  - key: "0x40"
+                    val: "Sports"
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'

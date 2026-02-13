@@ -112,7 +112,7 @@
                         $ref: '../components/schemas/config.yaml#/DvrConfig'
             example:
               entries:
-                - uuid: "profile-uuid-default"
+                - uuid: "550e8400-e29b-41d4-a716-446655440015"
                   enabled: true
                   name: "Default Profile"
                   retention_days: 30
@@ -158,3 +158,39 @@
                 sw_version: "4.3-2024"
                 api_version: 18
                 capabilities: ["epg", "dvr", "imagecache", "timeshift"]
+
+/api/config/capabilities:
+  get:
+    summary: List server compile-time capabilities
+    description: |
+      Get detailed list of server capabilities determined at compile-time.
+      Indicates which features are available in this TVHeadend build.
+
+      **Common Use Cases:**
+      - Check if specific features are enabled
+      - Verify codec support
+      - Determine available tuner types
+      - Check for optional feature support
+    operationId: getServerCapabilities
+    tags:
+      - Config
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: Server capabilities
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/config.yaml#/ServerCapabilities'
+            example:
+              entries:
+                - epg
+                - imagecache
+                - timeshift
+                - transcoding
+                - dvb_support
+                - iptv
+                - satip_server
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'

@@ -51,14 +51,14 @@ Channel:
       items:
         type: string
         format: uuid
-      example: ["service-uuid-123"]
+      example: ["550e8400-e29b-41d4-a716-446655440001"]
     tags:
       type: array
       description: Channel tag UUIDs
       items:
         type: string
         format: uuid
-      example: ["tag-uuid-hd", "tag-uuid-favorites"]
+      example: ["550e8400-e29b-41d4-a716-446655440002", "550e8400-e29b-41d4-a716-446655440003"]
     bouquet:
       type: string
       description: Bouquet name
@@ -105,7 +105,7 @@ ChannelTag:
       type: string
       format: uri
       description: Tag icon URL
-      example: "imagecache/tag-hd"
+      example: "http://localhost:9981/imagecache/tag-hd"
     internal:
       type: boolean
       description: Internal/system tag
@@ -133,11 +133,11 @@ ChannelGridResponse:
             $ref: '#/Channel'
       example:
         entries:
-          - uuid: "channel-uuid-123"
+          - uuid: "550e8400-e29b-41d4-a716-446655440004"
             enabled: true
             name: "BBC One HD"
             number: 101
-            icon: "imagecache/1"
+            icon: "http://localhost:9981/imagecache/1"
             epgauto: true
         total: 1
         start: 0
@@ -207,3 +207,48 @@ ChannelClass:
           caption: "Name"
           type: "str"
           required: true
+
+ChannelTagMetadata:
+  type: object
+  description: |
+    Channel tag configuration class metadata.
+    Describes available tag configuration parameters.
+  properties:
+    caption:
+      type: string
+      description: Human-readable class name
+      example: "Channel Tag"
+    properties:
+      type: array
+      description: Configuration property definitions
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          caption:
+            type: string
+          type:
+            type: string
+            enum: [str, int, bool]
+          default:
+            description: Default value
+          required:
+            type: boolean
+
+ChannelCategory:
+  type: object
+  description: |
+    EPG event category/genre mapping.
+  properties:
+    key:
+      type: string
+      description: Category code (hexadecimal)
+      example: "0x10"
+    val:
+      type: string
+      description: Category name
+      example: "Movie/Drama"
+  required:
+    - key
+    - val

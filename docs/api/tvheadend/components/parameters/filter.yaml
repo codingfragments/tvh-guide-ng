@@ -148,7 +148,7 @@ ChannelTagFilterParameter:
   schema:
     type: string
     format: uuid
-  example: "tag-uuid-1234"
+  example: "550e8400-e29b-41d4-a716-446655440007"
 
 ContentTypeFilterParameter:
   name: contentType

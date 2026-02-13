@@ -125,7 +125,7 @@ DvrEntry:
       type: string
       format: uri
       description: Playback URL
-      example: "dvrfile/uuid-123"
+      example: "http://localhost:9981/dvrfile/550e8400-e29b-41d4-a716-446655440005"
     comment:
       type: string
       description: User comment/note
@@ -350,3 +350,60 @@ DvrTimerecGridResponse:
           type: array
           items:
             $ref: '#/DvrTimerecEntry'
+
+DvrConfigMetadata:
+  type: object
+  description: |
+    DVR configuration class metadata describing available configuration parameters.
+  properties:
+    caption:
+      type: string
+      description: Human-readable class name
+      example: "DVR Profile"
+    properties:
+      type: array
+      description: Configuration property definitions
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Property identifier
+          caption:
+            type: string
+            description: Display name
+          type:
+            type: string
+            description: Data type
+            enum: [str, int, bool, list]
+          default:
+            description: Default value
+          required:
+            type: boolean
+            description: Is property required
+
+DvrEntryMetadata:
+  type: object
+  description: |
+    DVR entry class metadata describing recording entry parameters.
+  properties:
+    caption:
+      type: string
+      description: Human-readable class name
+      example: "Recording Entry"
+    properties:
+      type: array
+      description: Entry property definitions
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          caption:
+            type: string
+          type:
+            type: string
+            enum: [str, int, bool, list, time]
+          readonly:
+            type: boolean
+            default: false

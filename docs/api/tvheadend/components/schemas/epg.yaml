@@ -85,7 +85,7 @@ EpgEvent:
       type: string
       format: uri
       description: Event poster/thumbnail image URL
-      example: "imagecache/456"
+      example: "http://localhost:9981/imagecache/456"
     nextEventId:
       type: integer
       format: int64
@@ -241,7 +241,7 @@ EpgGridResponse:
         entries:
           - eventId: 123456
             channelName: "BBC One HD"
-            channelUuid: "1a2b3c4d5e6f7890abcdef1234567890"
+            channelUuid: "550e8400-e29b-41d4-a716-446655440006"
             start: 1704067200
             stop: 1704070800
             title: "Planet Earth II"

@@ -42,7 +42,8 @@
                 summary: All recordings
                 value:
                   entries:
-                    - uuid: "dvr-uuid-123"
+                    - uuid: "550e8400-e29b-41d4-a716-446655440020"
+                      channel: "550e8400-e29b-41d4-a716-446655440021"
                       channelname: "BBC One HD"
                       title: "Planet Earth II"
                       start: 1704067200
@@ -54,7 +55,8 @@
                 summary: Upcoming recordings
                 value:
                   entries:
-                    - uuid: "dvr-uuid-456"
+                    - uuid: "550e8400-e29b-41d4-a716-446655440022"
+                      channel: "550e8400-e29b-41d4-a716-446655440023"
                       channelname: "ITV HD"
                       title: "News at Ten"
                       start: 1704153600
@@ -333,7 +335,7 @@
               $ref: '../components/schemas/dvr.yaml#/DvrAutorecGridResponse'
             example:
               entries:
-                - uuid: "autorec-uuid-123"
+                - uuid: "550e8400-e29b-41d4-a716-446655440024"
                   enabled: true
                   name: "Record all documentaries"
                   title: ".*documentary.*"
@@ -450,10 +452,10 @@
               $ref: '../components/schemas/dvr.yaml#/DvrTimerecGridResponse'
             example:
               entries:
-                - uuid: "timerec-uuid-123"
+                - uuid: "550e8400-e29b-41d4-a716-446655440025"
                   enabled: true
                   name: "Morning News Daily"
-                  channel: "channel-uuid-bbc"
+                  channel: "550e8400-e29b-41d4-a716-446655440026"
                   start: 420
                   stop: 480
                   weekdays: [1, 2, 3, 4, 5]
@@ -462,3 +464,642 @@
         $ref: '../components/responses/errors.yaml#/Unauthorized'
       '403':
         $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/config/class:
+  post:
+    summary: Get DVR config parameters
+    description: |
+      Retrieve the configuration class/schema for DVR profiles.
+      Describes available configuration options, types, and validation rules.
+      Useful for building dynamic configuration UIs.
+    operationId: getDvrConfigClass
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: DVR config parameter schema
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrConfigMetadata'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/config/create:
+  post:
+    summary: Create new DVR config profile
+    description: |
+      Create a new DVR configuration profile with custom recording settings.
+      Requires admin privileges.
+
+      **Use Cases:**
+      - Create profile for different recording qualities
+      - Set up profile with custom storage location
+      - Configure profiles for different use cases
+    operationId: createDvrConfig
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              conf:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Profile name
+                  enabled:
+                    type: boolean
+                  retention_days:
+                    type: integer
+                  pre_extra_time:
+                    type: integer
+                  post_extra_time:
+                    type: integer
+                  storage:
+                    type: string
+                required:
+                  - name
+          example:
+            conf:
+              name: "HD Recordings"
+              enabled: true
+              retention_days: 60
+              pre_extra_time: 2
+              post_extra_time: 5
+              storage: "/recordings/hd"
+    responses:
+      '200':
+        description: DVR profile created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  type: string
+              example:
+                uuid: "dvr-config-uuid-123"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/entry/class:
+  get:
+    summary: Get recording entry parameters
+    description: |
+      Retrieve the configuration class/schema for DVR recording entries.
+      Describes available properties, types, and validation rules.
+    operationId: getDvrEntryClass
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: DVR entry parameter schema
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrEntryMetadata'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+
+/api/dvr/entry/grid_upcoming:
+  get:
+    summary: List upcoming recordings
+    description: |
+      Retrieve only scheduled/upcoming DVR recordings.
+      This is a filtered variant of /api/dvr/entry/grid.
+
+      **Use Cases:**
+      - Show only future recordings
+      - Monitor upcoming schedule
+    operationId: getDvrEntryGridUpcoming
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Upcoming recordings list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrGridResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/entry/grid_finished:
+  get:
+    summary: List completed recordings
+    description: |
+      Retrieve only completed/finished DVR recordings.
+      This is a filtered variant of /api/dvr/entry/grid.
+
+      **Use Cases:**
+      - Show recording library
+      - View completed recordings only
+    operationId: getDvrEntryGridFinished
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Completed recordings list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrGridResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/entry/grid_failed:
+  get:
+    summary: List failed recordings
+    description: |
+      Retrieve only failed DVR recordings.
+      This is a filtered variant of /api/dvr/entry/grid.
+
+      **Use Cases:**
+      - Troubleshoot recording issues
+      - Identify recordings that need to be rescheduled
+    operationId: getDvrEntryGridFailed
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Failed recordings list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrGridResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/entry/grid_removed:
+  get:
+    summary: List removed recordings
+    description: |
+      Retrieve removed/deleted DVR recording entries.
+      This is a filtered variant of /api/dvr/entry/grid.
+
+      **Use Cases:**
+      - View deletion history
+      - Audit removed recordings
+    operationId: getDvrEntryGridRemoved
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    parameters:
+      - $ref: '../components/parameters/pagination.yaml#/StartParameter'
+      - $ref: '../components/parameters/pagination.yaml#/LimitParameter'
+      - $ref: '../components/parameters/pagination.yaml#/SortParameter'
+      - $ref: '../components/parameters/pagination.yaml#/DirParameter'
+    responses:
+      '200':
+        description: Removed recordings list
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/dvr.yaml#/DvrGridResponse'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+
+/api/dvr/entry/stop:
+  post:
+    summary: Stop active recording
+    description: |
+      Stop an in-progress recording gracefully.
+      The partial recording is preserved (unlike cancel which may discard it).
+
+      **Use Cases:**
+      - Manually stop recording early
+      - Free up tuner for another recording
+    operationId: stopDvrEntry
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID to stop
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Recording stopped successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/filemoved:
+  post:
+    summary: Update recording file location
+    description: |
+      Notify TVHeadend that a recording file has been moved to a new location.
+      Updates the internal file path reference.
+
+      **Use Cases:**
+      - After manually moving recording files
+      - When reorganizing recording storage
+    operationId: dvrEntryFileMoved
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+              filename:
+                type: string
+                description: New file path
+            required:
+              - uuid
+              - filename
+          example:
+            uuid: "dvr-uuid-123"
+            filename: "/new/path/recording.mkv"
+    responses:
+      '200':
+        description: File location updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/move/finished:
+  post:
+    summary: Reclassify to finished status
+    description: |
+      Move a DVR entry to the "finished" category.
+
+      **Use Cases:**
+      - Manually mark recording as completed
+      - Fix incorrect status
+    operationId: moveDvrEntryToFinished
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Entry moved to finished
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/move/failed:
+  post:
+    summary: Reclassify to failed status
+    description: |
+      Move a DVR entry to the "failed" category.
+
+      **Use Cases:**
+      - Manually mark problematic recording as failed
+      - Correct status for troubleshooting
+    operationId: moveDvrEntryToFailed
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Entry moved to failed
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/rerecord/toggle:
+  post:
+    summary: Toggle re-record flag
+    description: |
+      Toggle the re-record flag on a DVR entry.
+
+      **Use Cases:**
+      - Enable/disable re-recording of a specific episode
+      - Manage duplicate detection behavior
+    operationId: toggleDvrEntryRerecord
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Re-record flag toggled
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/rerecord/deny:
+  post:
+    summary: Deny re-recording
+    description: |
+      Explicitly deny re-recording for a DVR entry.
+
+      **Use Cases:**
+      - Prevent duplicate recordings
+      - Mark episode as "already recorded"
+    operationId: denyDvrEntryRerecord
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Re-recording denied
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/entry/rerecord/allow:
+  post:
+    summary: Allow re-recording
+    description: |
+      Explicitly allow re-recording for a DVR entry.
+
+      **Use Cases:**
+      - Enable recording of repeats
+      - Override duplicate detection
+    operationId: allowDvrEntryRerecord
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: DVR entry UUID
+            required:
+              - uuid
+          example:
+            uuid: "dvr-uuid-123"
+    responses:
+      '200':
+        description: Re-recording allowed
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+              example:
+                success: true
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/dvr/autorec/create_by_series:
+  post:
+    summary: Create series timer by CRID
+    description: |
+      Create an auto-recording rule for a TV series using its Content Reference Identifier (CRID).
+      This automatically sets up series recording.
+
+      **Use Cases:**
+      - One-click series recording from EPG
+      - Set up automatic recording for all episodes
+    operationId: createDvrAutorecBySeries
+    tags:
+      - DVR
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              event_id:
+                type: integer
+                format: int64
+                description: EPG event ID with series CRID
+              config_uuid:
+                type: string
+                description: Optional DVR config UUID
+            required:
+              - event_id
+          example:
+            event_id: 123456
+    responses:
+      '200':
+        description: Series auto-rec rule created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  type: string
+              example:
+                uuid: "autorec-uuid-789"
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'
+      '403':
+        $ref: '../components/responses/errors.yaml#/Forbidden'
+      '404':
+        description: EPG event not found or no series CRID
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/error.yaml#/ErrorResponse'

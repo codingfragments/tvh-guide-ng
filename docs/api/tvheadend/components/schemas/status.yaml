@@ -192,3 +192,72 @@ SystemLog:
       type: string
       description: Log message
       example: "EPG grabbing completed successfully"
+
+SubscriptionStatus:
+  type: object
+  description: Active streaming subscription
+  properties:
+    id:
+      type: integer
+      description: Subscription ID
+      example: 1
+    channel:
+      type: string
+      description: Channel name being watched
+      example: "BBC One HD"
+    service:
+      type: string
+      description: Service name
+      example: "DVB-T Service"
+    profile:
+      type: string
+      description: Stream profile used
+      example: "htsp"
+    username:
+      type: string
+      description: Client username
+      example: "client1"
+    start:
+      $ref: './common.yaml#/Timestamp'
+      description: Subscription start time
+    weight:
+      type: integer
+      description: Subscription weight/priority
+      example: 100
+    input:
+      type: string
+      description: Input source
+    hostname:
+      type: string
+      description: Client hostname
+    title:
+      type: string
+      description: Current program title
+
+ActivityStatus:
+  type: object
+  description: Server activity status for power management
+  properties:
+    activity:
+      type: string
+      description: Type of activity
+      enum: [idle, recording, streaming, epggrab]
+      example: "recording"
+    description:
+      type: string
+      description: Activity description
+      example: "Recording in progress"
+    canSleep:
+      type: boolean
+      description: Can system enter low-power mode
+      example: false
+    details:
+      type: array
+      description: Detailed activity information
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+          description:
+            type: string

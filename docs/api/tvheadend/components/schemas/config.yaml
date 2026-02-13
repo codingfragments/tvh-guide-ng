@@ -156,3 +156,24 @@ DvrConfig:
       type: integer
       description: EPG update window (hours)
       default: 24
+
+ServerCapabilities:
+  type: object
+  description: |
+    Server compile-time capabilities indicating available features.
+  properties:
+    entries:
+      type: array
+      description: List of capability identifiers
+      items:
+        type: string
+      example:
+        - epg
+        - imagecache
+        - timeshift
+        - transcoding
+        - dvb_support
+        - iptv
+        - satip_server
+        - libav
+        - inotify

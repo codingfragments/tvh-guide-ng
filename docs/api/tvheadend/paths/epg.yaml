@@ -59,7 +59,7 @@
                   entries:
                     - eventId: 123456
                       channelName: "BBC One HD"
-                      channelUuid: "uuid-bbc-one"
+                      channelUuid: "550e8400-e29b-41d4-a716-446655440030"
                       start: 1704067200
                       stop: 1704070800
                       title: "News at Six"
@@ -73,7 +73,7 @@
                   entries:
                     - eventId: 789012
                       channelName: "Film4 HD"
-                      channelUuid: "uuid-film4"
+                      channelUuid: "550e8400-e29b-41d4-a716-446655440031"
                       start: 1704070800
                       stop: 1704078000
                       title: "Inception"
@@ -144,6 +144,7 @@
               entries:
                 - eventId: 123456
                   channelName: "BBC One HD"
+                  channelUuid: "550e8400-e29b-41d4-a716-446655440032"
                   start: 1704067200
                   stop: 1704070800
                   title: "Planet Earth II"
@@ -221,6 +222,7 @@
               entries:
                 - eventId: 123457
                   channelName: "BBC One SD"
+                  channelUuid: "550e8400-e29b-41d4-a716-446655440033"
                   start: 1704067200
                   stop: 1704070800
                   title: "Planet Earth II"
@@ -262,3 +264,45 @@
         $ref: '../components/responses/errors.yaml#/Unauthorized'
       '404':
         $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/epg/brand/list:
+  get:
+    summary: List commonly-available shows
+    deprecated: true
+    description: |
+      Get a list of commonly-available TV brands/shows.
+
+      **⚠️ DEPRECATED:** This endpoint is deprecated as of TVHeadend v4.3.1059 and may be removed in future versions.
+      Use alternative methods for discovering popular programs.
+    operationId: listEpgBrands
+    tags:
+      - EPG
+    security:
+      - BasicAuth: []
+    responses:
+      '200':
+        description: List of TV brands/shows
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        description: Brand identifier
+                      val:
+                        type: string
+                        description: Brand name
+              example:
+                entries:
+                  - key: "brand-123"
+                    val: "Doctor Who"
+                  - key: "brand-456"
+                    val: "EastEnders"
+      '401':
+        $ref: '../components/responses/errors.yaml#/Unauthorized'

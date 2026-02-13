@@ -14,12 +14,12 @@ info:
     - Multi-user support with fine-grained access control
 
     **API Overview:**
-    This API provides comprehensive access to TVHeadend's functionality including:
-    - **EPG** - Query program guide, search shows, get event details
-    - **Channels** - List and manage TV channels
-    - **DVR** - Schedule recordings, manage recording rules
-    - **Config** - Access and modify system configuration
-    - **Status** - Monitor server health, connections, and resources
+    This API documents 53 endpoints across TVHeadend's functionality including:
+    - **EPG** (6 endpoints) - Query program guide, search shows, get event details
+    - **Channels** (10 endpoints) - List and manage TV channels, channel tags, categories
+    - **DVR** (23 endpoints) - Schedule recordings, manage recording rules, series timers
+    - **Config** (5 endpoints) - Access and modify system configuration, server capabilities
+    - **Status** (9 endpoints) - Monitor server health, connections, subscriptions, and resources
 
     **Important Notes:**
     - This API is unofficial and reverse-engineered
@@ -95,6 +95,8 @@ paths:
     $ref: './paths/epg.yaml#/~1api~1epg~1events~1alternative'
   /api/epg/events/related:
     $ref: './paths/epg.yaml#/~1api~1epg~1events~1related'
+  /api/epg/brand/list:
+    $ref: './paths/epg.yaml#/~1api~1epg~1brand~1list'
 
   # Channel Endpoints
   /api/channel/grid:
@@ -105,26 +107,60 @@ paths:
     $ref: './paths/channel.yaml#/~1api~1channel~1create'
   /api/channel/class:
     $ref: './paths/channel.yaml#/~1api~1channel~1class'
+  /api/channel/rename:
+    $ref: './paths/channel.yaml#/~1api~1channel~1rename'
   /api/channeltag/grid:
     $ref: './paths/channel.yaml#/~1api~1channeltag~1grid'
   /api/channeltag/list:
     $ref: './paths/channel.yaml#/~1api~1channeltag~1list'
+  /api/channeltag/class:
+    $ref: './paths/channel.yaml#/~1api~1channeltag~1class'
+  /api/channeltag/create:
+    $ref: './paths/channel.yaml#/~1api~1channeltag~1create'
+  /api/channelcategory/list:
+    $ref: './paths/channel.yaml#/~1api~1channelcategory~1list'
 
   # DVR Endpoints
   /api/dvr/entry/grid:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid'
+  /api/dvr/entry/class:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1class'
+  /api/dvr/entry/grid_upcoming:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid_upcoming'
+  /api/dvr/entry/grid_finished:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid_finished'
+  /api/dvr/entry/grid_failed:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid_failed'
+  /api/dvr/entry/grid_removed:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1grid_removed'
   /api/dvr/entry/create:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1create'
   /api/dvr/entry/create_by_event:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1create_by_event'
   /api/dvr/entry/cancel:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1cancel'
+  /api/dvr/entry/stop:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1stop'
   /api/dvr/entry/remove:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1remove'
+  /api/dvr/entry/filemoved:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1filemoved'
+  /api/dvr/entry/move/finished:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1move~1finished'
+  /api/dvr/entry/move/failed:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1move~1failed'
+  /api/dvr/entry/rerecord/toggle:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1rerecord~1toggle'
+  /api/dvr/entry/rerecord/deny:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1rerecord~1deny'
+  /api/dvr/entry/rerecord/allow:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1entry~1rerecord~1allow'
   /api/dvr/autorec/grid:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1autorec~1grid'
   /api/dvr/autorec/create:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1autorec~1create'
+  /api/dvr/autorec/create_by_series:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1autorec~1create_by_series'
   /api/dvr/timerec/grid:
     $ref: './paths/dvr.yaml#/~1api~1dvr~1timerec~1grid'
 
@@ -133,16 +169,30 @@ paths:
     $ref: './paths/config.yaml#/~1api~1config~1load'
   /api/config/save:
     $ref: './paths/config.yaml#/~1api~1config~1save'
+  /api/config/capabilities:
+    $ref: './paths/config.yaml#/~1api~1config~1capabilities'
   /api/dvr/config/grid:
     $ref: './paths/config.yaml#/~1api~1dvr~1config~1grid'
+  /api/dvr/config/class:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1config~1class'
+  /api/dvr/config/create:
+    $ref: './paths/dvr.yaml#/~1api~1dvr~1config~1create'
   /api/serverinfo:
     $ref: './paths/config.yaml#/~1api~1serverinfo'
 
   # Status Endpoints
   /api/status/connections:
     $ref: './paths/status.yaml#/~1api~1status~1connections'
+  /api/status/subscriptions:
+    $ref: './paths/status.yaml#/~1api~1status~1subscriptions'
+  /api/status/activity:
+    $ref: './paths/status.yaml#/~1api~1status~1activity'
   /api/status/inputs:
     $ref: './paths/status.yaml#/~1api~1status~1inputs'
+  /api/status/inputclrstats:
+    $ref: './paths/status.yaml#/~1api~1status~1inputclrstats'
+  /api/connections/cancel:
+    $ref: './paths/status.yaml#/~1api~1connections~1cancel'
   /api/service/grid:
     $ref: './paths/status.yaml#/~1api~1service~1grid'
   /api/log:
@@ -175,6 +225,10 @@ components:
       $ref: './components/schemas/channel.yaml#/Channel'
     ChannelTag:
       $ref: './components/schemas/channel.yaml#/ChannelTag'
+    ChannelTagMetadata:
+      $ref: './components/schemas/channel.yaml#/ChannelTagMetadata'
+    ChannelCategory:
+      $ref: './components/schemas/channel.yaml#/ChannelCategory'
 
     # DVR schemas
     DvrEntry:
@@ -183,18 +237,28 @@ components:
       $ref: './components/schemas/dvr.yaml#/DvrAutorecEntry'
     DvrTimerecEntry:
       $ref: './components/schemas/dvr.yaml#/DvrTimerecEntry'
+    DvrConfigMetadata:
+      $ref: './components/schemas/dvr.yaml#/DvrConfigMetadata'
+    DvrEntryMetadata:
+      $ref: './components/schemas/dvr.yaml#/DvrEntryMetadata'
 
     # Config schemas
     ConfigNode:
       $ref: './components/schemas/config.yaml#/ConfigNode'
     DvrConfig:
       $ref: './components/schemas/config.yaml#/DvrConfig'
+    ServerCapabilities:
+      $ref: './components/schemas/config.yaml#/ServerCapabilities'
 
     # Status schemas
     ServerStatus:
       $ref: './components/schemas/status.yaml#/ServerStatus'
     ConnectionStatus:
       $ref: './components/schemas/status.yaml#/ConnectionStatus'
+    SubscriptionStatus:
+      $ref: './components/schemas/status.yaml#/SubscriptionStatus'
+    ActivityStatus:
+      $ref: './components/schemas/status.yaml#/ActivityStatus'
     InputStatus:
       $ref: './components/schemas/status.yaml#/InputStatus'
 
