@@ -1,0 +1,44 @@
+{
+  "name": "@tvh-guide/cli",
+  "version": "0.1.0",
+  "description": "Command-line interface for TVHeadend EPG management",
+  "type": "module",
+  "bin": {
+    "tvh": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "echo 'Lint script placeholder'",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "tvheadend",
+    "cli",
+    "epg",
+    "dvr"
+  ],
+  "dependencies": {
+    "@tvh-guide/tvheadend-client": "workspace:*",
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.3",
+    "ora": "^8.0.1",
+    "cosmiconfig": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  }
+}
