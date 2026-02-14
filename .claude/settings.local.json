@@ -37,7 +37,23 @@
       "Bash(pushd:*)",
       "Bash(npx:*)",
       "Bash(npx --yes node-gyp rebuild:*)",
-      "Bash(popd:*)"
+      "Bash(popd:*)",
+      "Bash(find:*)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng status)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng diff --stat)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng log --oneline -5)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng diff .claude/settings.local.json)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng diff CLAUDE.md)",
+      "Bash(git -C /Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng add .gitignore CLAUDE.md STRUCTURE.md docs/api/epg-cache/ docs/api/index.html docs/api/tvheadend/README.md package.json services/epg-cache/README.md)",
+      "Bash(git -C:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh api:*)",
+      "Bash(git stash:*)",
+      "Bash(git fetch:*)",
+      "WebFetch(domain:daisyui.com)",
+      "WebFetch(domain:svelte.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:vite-pwa-org.netlify.app)"
     ]
   },
   "model": "opus"
