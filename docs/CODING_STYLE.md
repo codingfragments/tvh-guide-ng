@@ -106,6 +106,27 @@ All components use Svelte 5 runes — no legacy `export let` or `$:` reactive st
 - Reusable components: PascalCase in `$lib/components/` (e.g., `ChannelCard.svelte`)
 - Use `{@render children()}` instead of `<slot />`
 
+### Icons
+
+Use [Lucide](https://lucide.dev/icons/) via `lucide-svelte`. Never use inline SVG paths for icons.
+
+**Import convention**: always alias with an `Icon` suffix so the component name describes its role in the template.
+
+```svelte
+<script lang="ts">
+  import { Search as SearchIcon, Calendar as CalendarIcon } from 'lucide-svelte';
+</script>
+
+<button class="btn btn-primary">
+  <SearchIcon class="size-5" />
+  Search
+</button>
+```
+
+**Sizing and color**: use Tailwind utility classes (`size-5`, `size-6`, `text-primary`, etc.). Icons inherit `currentColor` by default.
+
+**Finding icons**: browse the full catalog at https://lucide.dev/icons/ -- use the search bar to find icons by name or concept.
+
 ### Styling
 
 - Tailwind CSS v4 with CSS-first config (no `tailwind.config.js`)

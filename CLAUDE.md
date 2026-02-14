@@ -59,6 +59,7 @@ Services communicate via network APIs (HTTP/GraphQL), not code imports.
 
 ## Documentation
 
+- Developer guide → `DEVELOPER.md`
 - Architecture decisions → `docs/DESIGN_GUIDE.md`
 - Code style conventions → `docs/CODING_STYLE.md`
 - Structure and organization → `STRUCTURE.md`
@@ -71,6 +72,13 @@ Services communicate via network APIs (HTTP/GraphQL), not code imports.
 - Maintain type safety across package boundaries
 - use gitflow when implementing bigger features
 - Update documentation when changing architecture
+
+## Icons (Web App)
+
+- Use `lucide-svelte` for all icons in `apps/web` -- never use inline SVG paths
+- Always alias imports with an `Icon` suffix: `import { Search as SearchIcon } from 'lucide-svelte'`
+- Style with Tailwind classes: `<SearchIcon class="size-5 text-primary" />`
+- Browse available icons at https://lucide.dev/icons/
 
 ## Code Quality
 

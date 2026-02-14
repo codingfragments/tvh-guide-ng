@@ -80,6 +80,10 @@ importers:
         version: 1.6.1(@types/node@20.19.33)(lightningcss@1.30.2)(terser@5.46.0)
 
   apps/web:
+    dependencies:
+      lucide-svelte:
+        specifier: ^0.564.0
+        version: 0.564.0(svelte@5.51.0)
     devDependencies:
       '@catppuccin/daisyui':
         specifier: ^2.1.0
@@ -3132,6 +3136,11 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide-svelte@0.564.0:
+    resolution: {integrity: sha512-jeubFecyzbeze/Zwu5pFHHrv/u8OtiZ7VesXXus4cAnfRQlmb8TDtiC5gb485z8e4aAqe8FF7I0OVB/TDFAggg==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
@@ -7632,6 +7641,10 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-svelte@0.564.0(svelte@5.51.0):
+    dependencies:
+      svelte: 5.51.0
 
   magic-string@0.25.9:
     dependencies:
