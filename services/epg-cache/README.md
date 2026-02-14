@@ -43,6 +43,10 @@ The service loads a `.env` file from the current working directory if present (u
 
 ## API Reference
 
+Full OpenAPI 3.1 specification: [`docs/api/epg-cache/`](../../docs/api/epg-cache/) — view interactively with `pnpm run docs:serve`.
+
+### Endpoints Summary
+
 ### Health Check
 
 ```bash

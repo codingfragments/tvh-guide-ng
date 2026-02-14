@@ -1,0 +1,47 @@
+BadRequest:
+  description: Invalid request parameters.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/error.yaml#/ErrorResponse'
+      examples:
+        missingQuery:
+          summary: Missing required query parameter
+          value:
+            error: 'Query parameter "q" is required'
+        missingTimerange:
+          summary: Missing required timerange parameters
+          value:
+            error: 'Query parameters "start" and "stop" are required'
+        invalidEventId:
+          summary: Invalid event ID
+          value:
+            error: "Invalid event ID"
+
+NotFound:
+  description: Requested resource not found.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/error.yaml#/ErrorResponse'
+      examples:
+        channelNotFound:
+          summary: Channel not found
+          value:
+            error: 'Channel "999" not found'
+        eventNotFound:
+          summary: Event not found
+          value:
+            error: "Event not found"
+
+Conflict:
+  description: Conflicting operation already in progress.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/error.yaml#/ErrorResponse'
+      examples:
+        refreshInProgress:
+          summary: Refresh already running
+          value:
+            error: "Refresh already in progress"

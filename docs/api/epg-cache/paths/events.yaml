@@ -1,0 +1,146 @@
+/api/events/search:
+  get:
+    operationId: searchEvents
+    summary: Fuzzy text search
+    description: |
+      Search EPG events using fuzzy full-text search across title, subtitle,
+      summary, and description fields. Results are ranked by relevance score.
+
+      The search uses MiniSearch under the hood. It fetches more candidates than
+      the requested limit, then applies post-filters (channel, timerange, genre)
+      before returning the final results.
+    tags:
+      - Events
+    parameters:
+      - name: q
+        in: query
+        required: true
+        description: Search query string for fuzzy text matching.
+        schema:
+          type: string
+        example: "Tagesschau"
+      - $ref: '../components/parameters/query.yaml#/ChannelParam'
+      - $ref: '../components/parameters/query.yaml#/StartParam'
+      - $ref: '../components/parameters/query.yaml#/StopParam'
+      - $ref: '../components/parameters/query.yaml#/GenreParam'
+      - $ref: '../components/parameters/query.yaml#/LimitParam'
+    responses:
+      "200":
+        description: Search results with relevance scores and cache metadata.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/common.yaml#/SearchResult'
+                meta:
+                  $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
+            example:
+              data:
+                - score: 15.2
+                  event:
+                    eventId: 123456
+                    channelUuid: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+                    channelName: "Das Erste HD"
+                    start: 1704067200
+                    stop: 1704068100
+                    title: "Tagesschau"
+              meta:
+                cacheAge: 120
+                lastRefresh: "2026-02-14T10:00:00.000Z"
+                refreshStatus: idle
+                totalEvents: 48521
+      "400":
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      "404":
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/events/timerange:
+  get:
+    operationId: getEventsByTimerange
+    summary: Query events by timerange
+    description: |
+      Retrieve EPG events that overlap with the given time window.
+      Events are returned from SQLite, sorted by start time.
+    tags:
+      - Events
+    parameters:
+      - name: start
+        in: query
+        required: true
+        description: Start of timerange (Unix epoch seconds).
+        schema:
+          type: integer
+        example: 1704067200
+      - name: stop
+        in: query
+        required: true
+        description: End of timerange (Unix epoch seconds).
+        schema:
+          type: integer
+        example: 1704153600
+      - $ref: '../components/parameters/query.yaml#/ChannelParam'
+      - $ref: '../components/parameters/query.yaml#/GenreParam'
+      - $ref: '../components/parameters/query.yaml#/LimitParam'
+    responses:
+      "200":
+        description: Events within the requested timerange.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/event.yaml#/EpgEvent'
+                meta:
+                  $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
+      "400":
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      "404":
+        $ref: '../components/responses/errors.yaml#/NotFound'
+
+/api/events/{eventId}:
+  get:
+    operationId: getEventById
+    summary: Get single event by ID
+    description: Retrieve a single EPG event by its numeric event ID.
+    tags:
+      - Events
+    parameters:
+      - name: eventId
+        in: path
+        required: true
+        description: Numeric event ID.
+        schema:
+          type: integer
+        example: 123456
+    responses:
+      "200":
+        description: The requested event with cache metadata.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  $ref: '../components/schemas/event.yaml#/EpgEvent'
+                meta:
+                  $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
+      "400":
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      "404":
+        $ref: '../components/responses/errors.yaml#/NotFound'

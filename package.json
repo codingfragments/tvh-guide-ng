@@ -8,10 +8,11 @@
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "clean": "pnpm -r clean",
-    "validate:openapi": "spectral lint docs/api/tvheadend/openapi.yaml --format stylish",
+    "validate:openapi": "spectral lint docs/api/tvheadend/openapi.yaml docs/api/epg-cache/openapi.yaml --format stylish",
     "docs:build": "echo 'Stoplight Elements uses static HTML - no build needed'",
-    "docs:serve": "browser-sync start --server docs/api/tvheadend --files 'docs/api/tvheadend/**/*' --no-open --port 8080 --startPath index.html",
-    "docs:watch": "browser-sync start --server docs/api/tvheadend --files 'docs/api/tvheadend/**/*.yaml,docs/api/tvheadend/**/*.yml' --no-open --port 8080 --startPath index.html"
+    "docs:serve": "browser-sync start --server docs/api --files 'docs/api/**/*' --no-open --port 8080",
+    "docs:watch": "browser-sync start --server docs/api --files 'docs/api/**/*.yaml,docs/api/**/*.yml,docs/api/**/*.html' --no-open --port 8080",
+    "docs:generate-md": "npx widdershins --resolve docs/api/tvheadend/openapi.yaml -o docs/api/tvheadend/API_REFERENCE.md && npx widdershins --resolve docs/api/epg-cache/openapi.yaml -o docs/api/epg-cache/API_REFERENCE.md"
   },
   "volta": {
     "node": "24.13.1",

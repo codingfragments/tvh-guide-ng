@@ -1,0 +1,93 @@
+openapi: 3.1.0
+
+info:
+  title: EPG Cache API
+  version: 1.0.0
+  description: |
+    REST API for the EPG Cache service (`@tvh-guide/epg-cache`).
+
+    This service syncs Electronic Program Guide data from TVHeadend into SQLite
+    and provides efficient structured queries and fuzzy full-text search.
+
+    **Features:**
+    - Fuzzy text search across title, subtitle, summary, and description
+    - Timerange queries with channel and genre filters
+    - Single event lookup by ID
+    - Channel listing
+    - Manual cache refresh trigger
+    - Health monitoring with cache metadata in every response
+
+    **No authentication required.** This is an internal service intended to be
+    consumed by the web app, CLI, and other clients within the tvh-guide system.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server (default)
+  - url: http://{host}:{port}
+    description: Custom server
+    variables:
+      host:
+        default: localhost
+        description: Server hostname or IP
+      port:
+        default: "3000"
+        description: HTTP port
+
+tags:
+  - name: Health
+    description: Service health monitoring.
+  - name: Events
+    description: EPG event queries — fuzzy search, timerange, and single event lookup.
+  - name: Channels
+    description: Channel listing.
+  - name: Cache
+    description: Cache management operations.
+
+paths:
+  /api/health:
+    $ref: './paths/health.yaml#/~1api~1health'
+  /api/events/search:
+    $ref: './paths/events.yaml#/~1api~1events~1search'
+  /api/events/timerange:
+    $ref: './paths/events.yaml#/~1api~1events~1timerange'
+  /api/events/{eventId}:
+    $ref: './paths/events.yaml#/~1api~1events~1{eventId}'
+  /api/channels:
+    $ref: './paths/channels.yaml#/~1api~1channels'
+  /api/cache/refresh:
+    $ref: './paths/cache.yaml#/~1api~1cache~1refresh'
+
+components:
+  schemas:
+    EpgEvent:
+      $ref: './components/schemas/event.yaml#/EpgEvent'
+    CachedChannel:
+      $ref: './components/schemas/channel.yaml#/CachedChannel'
+    CacheHealthMeta:
+      $ref: './components/schemas/common.yaml#/CacheHealthMeta'
+    HealthResponse:
+      $ref: './components/schemas/common.yaml#/HealthResponse'
+    SearchResult:
+      $ref: './components/schemas/common.yaml#/SearchResult'
+    ErrorResponse:
+      $ref: './components/schemas/error.yaml#/ErrorResponse'
+
+  parameters:
+    ChannelParam:
+      $ref: './components/parameters/query.yaml#/ChannelParam'
+    StartParam:
+      $ref: './components/parameters/query.yaml#/StartParam'
+    StopParam:
+      $ref: './components/parameters/query.yaml#/StopParam'
+    GenreParam:
+      $ref: './components/parameters/query.yaml#/GenreParam'
+    LimitParam:
+      $ref: './components/parameters/query.yaml#/LimitParam'
+
+  responses:
+    BadRequest:
+      $ref: './components/responses/errors.yaml#/BadRequest'
+    NotFound:
+      $ref: './components/responses/errors.yaml#/NotFound'
+    Conflict:
+      $ref: './components/responses/errors.yaml#/Conflict'

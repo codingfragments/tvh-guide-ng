@@ -6,7 +6,7 @@ This file contains project-specific instructions for Claude Code when working in
 
 **CRITICAL**: Always update `STRUCTURE.md` when making structural changes to the monorepo.
 
-### Update triggers:
+### Update triggers
 - Adding a new package to `apps/`, `services/`, or `libs/`
 - Removing a package
 - Changing a package's purpose or scope
@@ -23,6 +23,7 @@ After adding, removing, or modifying packages, you MUST:
 This is a **pnpm workspace** monorepo with strict separation of concerns:
 
 ### Package Organization
+
 ```
 apps/      → User-facing applications (web, mobile, desktop)
 services/  → Backend services (APIs, workers, processors)
@@ -37,6 +38,7 @@ All packages use the `@tvh-guide/` scope:
 - `@tvh-guide/shared`
 
 ### Dependency Rules
+
 ```
 apps/      CAN depend on libs/, consume services/ via APIs
 services/  CAN depend on libs/, CANNOT import other services/
@@ -63,6 +65,7 @@ Services communicate via network APIs (HTTP/GraphQL), not code imports.
 - Use `pnpm` for all package management
 - Follow the patterns in `docs/CODING_STYLE.md`
 - Maintain type safety across package boundaries
+- use gitflow when implementing bigger features
 - Update documentation when changing architecture
 
 ## Code Quality

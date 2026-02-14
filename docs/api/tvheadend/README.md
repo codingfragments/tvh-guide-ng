@@ -25,13 +25,13 @@ Machine-readable API specification in OpenAPI 3.1 format. Use this for:
 
 **View with:**
 ```bash
-# From project root - Serve interactive documentation
+# From project root — serves unified API landing page
 pnpm run docs:serve
-# Open http://localhost:8080
+# Open http://localhost:8080 and click "TVHeadend API"
+# Or open directly: http://localhost:8080/tvheadend/index.html
 
 # Watch for changes with auto-reload
 pnpm run docs:watch
-# Open http://localhost:8080
 ```
 
 ### 📖 Guides
@@ -320,9 +320,10 @@ openapi-generator-cli generate \
 
 **Stoplight Elements (recommended):**
 ```bash
-# From project root
+# From project root — serves unified API landing page
 pnpm run docs:serve
-# Open http://localhost:8080
+# Open http://localhost:8080 and click "TVHeadend API"
+# Or open directly: http://localhost:8080/tvheadend/index.html
 
 # With live reload during development
 pnpm run docs:watch

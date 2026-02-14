@@ -1,0 +1,21 @@
+ErrorResponse:
+  type: object
+  description: Error response returned by the API.
+  required:
+    - error
+  properties:
+    error:
+      type: string
+      description: Human-readable error message.
+      example: "Query parameter \"q\" is required"
+
+RefreshAccepted:
+  type: object
+  description: Response when a cache refresh is accepted.
+  required:
+    - message
+  properties:
+    message:
+      type: string
+      description: Confirmation message.
+      example: "Refresh started"

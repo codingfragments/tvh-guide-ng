@@ -1,5 +1,4 @@
 {
-  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(git -C /Users/stefan/projekteHome/marxworld/media/tvh-guide-ng log --oneline -5)",
@@ -34,7 +33,12 @@
       "Bash(./dist/cli.js events show:*)",
       "Bash(/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng/apps/cli/dist/cli.js events show:*)",
       "Bash(/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng/apps/cli/dist/cli.js channels list:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(pushd:*)",
+      "Bash(npx:*)",
+      "Bash(npx --yes node-gyp rebuild:*)",
+      "Bash(popd:*)"
     ]
-  }
+  },
+  "model": "opus"
 }

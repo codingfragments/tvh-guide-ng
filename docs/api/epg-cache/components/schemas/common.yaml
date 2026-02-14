@@ -1,0 +1,123 @@
+CacheHealthMeta:
+  type: object
+  description: Cache health metadata included in every API response.
+  required:
+    - cacheAge
+    - lastRefresh
+    - refreshStatus
+    - totalEvents
+  properties:
+    cacheAge:
+      type: integer
+      description: Seconds since last successful refresh. -1 if never refreshed.
+      example: 542
+    lastRefresh:
+      type:
+        - string
+        - "null"
+      format: date-time
+      description: ISO timestamp of last refresh completion. Null if never refreshed.
+      example: "2026-02-14T10:00:00.000Z"
+    refreshStatus:
+      type: string
+      enum:
+        - idle
+        - refreshing
+        - error
+      description: Current refresh status.
+      example: idle
+    totalEvents:
+      type: integer
+      description: Total events in cache.
+      example: 48521
+
+HealthResponse:
+  type: object
+  description: Health endpoint response with full cache status.
+  required:
+    - status
+    - cacheAge
+    - lastRefresh
+    - refreshStatus
+    - totalEvents
+    - totalChannels
+    - lastRefreshDuration
+    - nextRefresh
+  properties:
+    status:
+      type: string
+      enum:
+        - healthy
+        - stale
+        - error
+      description: |
+        Overall health status.
+        - `healthy`: Cache age is less than 2x the refresh interval.
+        - `stale`: Cache age exceeds 2x the refresh interval.
+        - `error`: No events and never successfully refreshed.
+      example: healthy
+    cacheAge:
+      type: integer
+      description: Seconds since last successful refresh. -1 if never refreshed.
+      example: 542
+    lastRefresh:
+      type:
+        - string
+        - "null"
+      format: date-time
+      description: ISO timestamp of last refresh completion.
+      example: "2026-02-14T10:00:00.000Z"
+    refreshStatus:
+      type: string
+      enum:
+        - idle
+        - refreshing
+        - error
+      description: Current refresh status.
+      example: idle
+    totalEvents:
+      type: integer
+      description: Total events in cache.
+      example: 48521
+    totalChannels:
+      type: integer
+      description: Total channels in cache.
+      example: 150
+    lastRefreshDuration:
+      type:
+        - number
+        - "null"
+      description: Duration of the last refresh in seconds. Null if never refreshed.
+      example: 12.5
+    nextRefresh:
+      type:
+        - string
+        - "null"
+      format: date-time
+      description: ISO timestamp of next scheduled refresh.
+      example: "2026-02-14T11:00:00.000Z"
+
+SearchResult:
+  type: object
+  description: A search result with relevance score.
+  required:
+    - score
+    - event
+  properties:
+    score:
+      type: number
+      description: MiniSearch relevance score (higher is more relevant).
+      example: 15.2
+    event:
+      $ref: './event.yaml#/EpgEvent'
+
+ApiResponse:
+  type: object
+  description: Standard API response wrapper with data and cache metadata.
+  required:
+    - data
+    - meta
+  properties:
+    data: {}
+    meta:
+      $ref: '#/CacheHealthMeta'

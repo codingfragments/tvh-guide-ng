@@ -153,11 +153,16 @@ All packages use the `@tvh-guide/` namespace:
 **Current files**:
 - `docs/DESIGN_GUIDE.md` — Architecture principles
 - `docs/CODING_STYLE.md` — Code style conventions
+- `docs/api/index.html` — Unified API docs landing page (links to all API viewers)
 - `docs/api/tvheadend/` — Complete TVHeadend API documentation
   - OpenAPI 3.1 specification (`openapi.yaml`)
   - Authentication, pagination, filtering, error handling guides
   - Code examples (curl, JavaScript, Python)
   - Use case walkthroughs
+- `docs/api/epg-cache/` — EPG Cache service API documentation
+  - OpenAPI 3.1 specification (`openapi.yaml`)
+  - Stoplight Elements viewer (`index.html`)
+  - curl examples in README
 
 ---
 
