@@ -1,6 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fetchAllEvents, fetchAllChannels } from '../loader.js';
-import type { TVHeadendClient, EpgEvent, Channel, EpgGridResponse, ChannelGridResponse } from '@tvh-guide/tvheadend-client';
+import type {
+  TVHeadendClient,
+  EpgEvent,
+  Channel,
+  EpgGridResponse,
+  ChannelGridResponse,
+} from '@tvh-guide/tvheadend-client';
 
 function makeEvent(id: number): EpgEvent {
   return {
@@ -44,7 +50,8 @@ describe('fetchAllEvents', () => {
     const page2 = Array.from({ length: 200 }, (_, i) => makeEvent(500 + i));
 
     const client = {
-      getEpgEventsGrid: vi.fn()
+      getEpgEventsGrid: vi
+        .fn()
         .mockResolvedValueOnce({ entries: page1, total: 700, start: 0, limit: 500 } satisfies EpgGridResponse)
         .mockResolvedValueOnce({ entries: page2, total: 700, start: 500, limit: 500 } satisfies EpgGridResponse),
     } as unknown as TVHeadendClient;
@@ -53,10 +60,16 @@ describe('fetchAllEvents', () => {
     expect(result).toHaveLength(700);
     expect(client.getEpgEventsGrid).toHaveBeenCalledTimes(2);
     expect(client.getEpgEventsGrid).toHaveBeenCalledWith({
-      start: 0, limit: 500, sort: 'start', dir: 'ASC',
+      start: 0,
+      limit: 500,
+      sort: 'start',
+      dir: 'ASC',
     });
     expect(client.getEpgEventsGrid).toHaveBeenCalledWith({
-      start: 500, limit: 500, sort: 'start', dir: 'ASC',
+      start: 500,
+      limit: 500,
+      sort: 'start',
+      dir: 'ASC',
     });
   });
 
@@ -97,7 +110,8 @@ describe('fetchAllChannels', () => {
     const page2 = Array.from({ length: 50 }, (_, i) => makeChannel(500 + i));
 
     const client = {
-      getChannelGrid: vi.fn()
+      getChannelGrid: vi
+        .fn()
         .mockResolvedValueOnce({ entries: page1, total: 550, start: 0, limit: 500 } satisfies ChannelGridResponse)
         .mockResolvedValueOnce({ entries: page2, total: 550, start: 500, limit: 500 } satisfies ChannelGridResponse),
     } as unknown as TVHeadendClient;

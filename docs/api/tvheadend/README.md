@@ -19,11 +19,13 @@ This documentation covers TVHeadend's JSON API for programmatic access to these 
 ### 📘 [OpenAPI Specification](./openapi.yaml)
 
 Machine-readable API specification in OpenAPI 3.1 format. Use this for:
+
 - Generating client code (TypeScript, Python, Go, etc.)
 - API validation and testing
 - Interactive API exploration (Swagger UI, Redoc)
 
 **View with:**
+
 ```bash
 # From project root — serves unified API landing page
 pnpm run docs:serve
@@ -48,11 +50,13 @@ Comprehensive guides for common topics:
 Ready-to-use code examples:
 
 **Shell Scripts:**
+
 - [Channel Operations](./examples/curl/channel-operations.sh) - List, search, and filter channels
 - [DVR Recording](./examples/curl/dvr-recording.sh) - Schedule recordings, manage DVR
 - [EPG Queries](./examples/curl/epg-queries.sh) - Query program guide, search shows
 
 **Use Case Walkthroughs:**
+
 - [01 - List Channels](./examples/use-cases/01-list-channels.md) - Complete channel list implementation
 - [02 - Schedule Recording](./examples/use-cases/02-schedule-recording.md) - One-click recording from EPG
 - [03 - Query Program Guide](./examples/use-cases/03-query-program-guide.md) - Build EPG grid view
@@ -173,6 +177,7 @@ curl -u username:password http://localhost:9981/api/...
 ```
 
 **Privilege levels:**
+
 - `admin` - Full access
 - `streaming` - View EPG, channels
 - `recording` - Schedule recordings
@@ -217,6 +222,7 @@ See [examples/](./examples/) for complete implementations.
 ⚠️ **Important:** TVHeadend's API is **not officially documented or versioned** by the project. This documentation is reverse-engineered and may not cover all endpoints or edge cases.
 
 **Recommendations:**
+
 - Pin your TVHeadend version in production
 - Test thoroughly before upgrading TVHeadend
 - Implement defensive error handling
@@ -224,6 +230,7 @@ See [examples/](./examples/) for complete implementations.
 - Contribute improvements to this documentation
 
 **Known compatibility:**
+
 - TVHeadend 4.2.x ✓ (Core APIs stable)
 - TVHeadend 4.3.x ✓ (Tested, minor additions)
 - TVHeadend 4.4+ ⚠️ (Test before deployment)
@@ -233,19 +240,23 @@ See [examples/](./examples/) for complete implementations.
 Some endpoints require specific TVHeadend versions:
 
 **Requires TVHeadend 4.3.652+:**
+
 - `POST /api/channel/rename` - Channel renaming functionality
 
 **Requires TVHeadend 4.3-2405+:**
+
 - `GET /api/status/activity` - Low-power mode suitability information
 
 ### Deprecated Endpoints
 
 **⚠️ Deprecated in TVHeadend 4.3.1059+:**
+
 - `GET /api/epg/brand/list` - List commonly-available shows (may be removed in future versions)
 
 ### Untested Endpoints
 
 **⚠️ Untested - Use with caution:**
+
 - `GET /api/channelcategory/list` - EPG event categories (test against your TVHeadend version)
 
 ## Project Structure
@@ -289,6 +300,7 @@ pnpm run validate:openapi
 ### Generate Client Code
 
 **TypeScript:**
+
 ```bash
 npm install -g @openapitools/openapi-generator-cli
 
@@ -299,6 +311,7 @@ openapi-generator-cli generate \
 ```
 
 **Python:**
+
 ```bash
 pip install openapi-generator-cli
 
@@ -309,6 +322,7 @@ openapi-generator-cli generate \
 ```
 
 **Go:**
+
 ```bash
 openapi-generator-cli generate \
   -i docs/api/tvheadend/openapi.yaml \
@@ -319,6 +333,7 @@ openapi-generator-cli generate \
 ### Interactive Documentation
 
 **Stoplight Elements (recommended):**
+
 ```bash
 # From project root — serves unified API landing page
 pnpm run docs:serve
@@ -330,12 +345,14 @@ pnpm run docs:watch
 ```
 
 **Features:**
+
 - ✨ Interactive API Explorer - Try out API endpoints directly from the docs
 - 📱 Responsive Design - Works on desktop, tablet, and mobile
 - 🎨 Clean UI - Modern, professional documentation interface
 - 🔄 Live Reload - Changes automatically refresh the browser
 
 **Alternative viewers:**
+
 ```bash
 # Swagger UI (optional)
 docker run -p 8081:8080 \
@@ -350,12 +367,14 @@ docker run -p 8081:8080 \
 This documentation is part of the tvh-guide-ng project. Contributions welcome!
 
 **How to contribute:**
+
 1. Fork the repository
 2. Add/improve documentation
 3. Validate with `pnpm run validate:openapi`
 4. Submit pull request
 
 **What to contribute:**
+
 - New endpoint documentation
 - Code examples in other languages
 - Error scenarios and solutions
@@ -400,6 +419,7 @@ TVHeadend is licensed under GPL-3.0. This documentation is independently created
 ---
 
 **Need Help?**
+
 - Check the [guides](./guides/) for common topics
 - Browse [examples](./examples/) for code samples
 - Search the [OpenAPI spec](./openapi.yaml) for specific endpoints

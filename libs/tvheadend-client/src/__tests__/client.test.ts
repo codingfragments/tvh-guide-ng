@@ -2,7 +2,7 @@
  * Tests for TVHeadendClient initialization and configuration
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TVHeadendClient } from '../client.js';
 import {
   TVHeadendError,

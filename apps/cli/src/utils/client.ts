@@ -16,9 +16,7 @@ export function createClientAndConfig(cliOptions: CLIOptions): { client: TVHeade
   const config = mergeConfig(configFile, cliOptions);
 
   if (!config.server.url) {
-    throw new Error(
-      'Server URL is required. Use --url flag or create a .tvhrc configuration file.'
-    );
+    throw new Error('Server URL is required. Use --url flag or create a .tvhrc configuration file.');
   }
 
   const client = new TVHeadendClient({

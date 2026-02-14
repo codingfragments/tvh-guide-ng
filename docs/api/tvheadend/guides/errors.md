@@ -7,6 +7,7 @@ This guide explains how to handle errors when working with the TVHeadend API.
 TVHeadend API returns standard HTTP status codes and JSON error responses. Understanding these error patterns helps build robust applications.
 
 **Key principles:**
+
 - Check HTTP status codes
 - Parse JSON error responses
 - Implement retry logic for transient errors
@@ -16,27 +17,27 @@ TVHeadend API returns standard HTTP status codes and JSON error responses. Under
 
 ### Success Codes
 
-| Code | Name | Description |
-|------|------|-------------|
-| 200 | OK | Request succeeded |
-| 201 | Created | Resource created successfully |
+| Code | Name    | Description                   |
+| ---- | ------- | ----------------------------- |
+| 200  | OK      | Request succeeded             |
+| 201  | Created | Resource created successfully |
 
 ### Client Error Codes (4xx)
 
-| Code | Name | Description | Typical Cause |
-|------|------|-------------|---------------|
-| 400 | Bad Request | Invalid parameters | Malformed filter, missing required field |
-| 401 | Unauthorized | Authentication required/failed | Wrong credentials, missing auth header |
-| 403 | Forbidden | Insufficient privileges | User lacks required privilege |
-| 404 | Not Found | Resource doesn't exist | Invalid UUID, deleted item |
-| 409 | Conflict | Request conflicts with state | Duplicate recording, constraint violation |
+| Code | Name         | Description                    | Typical Cause                             |
+| ---- | ------------ | ------------------------------ | ----------------------------------------- |
+| 400  | Bad Request  | Invalid parameters             | Malformed filter, missing required field  |
+| 401  | Unauthorized | Authentication required/failed | Wrong credentials, missing auth header    |
+| 403  | Forbidden    | Insufficient privileges        | User lacks required privilege             |
+| 404  | Not Found    | Resource doesn't exist         | Invalid UUID, deleted item                |
+| 409  | Conflict     | Request conflicts with state   | Duplicate recording, constraint violation |
 
 ### Server Error Codes (5xx)
 
-| Code | Name | Description | Typical Cause |
-|------|------|-------------|---------------|
-| 500 | Internal Server Error | Unexpected server error | Bug, database issue, resource exhaustion |
-| 503 | Service Unavailable | Service temporarily unavailable | Server starting up, maintenance |
+| Code | Name                  | Description                     | Typical Cause                            |
+| ---- | --------------------- | ------------------------------- | ---------------------------------------- |
+| 500  | Internal Server Error | Unexpected server error         | Bug, database issue, resource exhaustion |
+| 503  | Service Unavailable   | Service temporarily unavailable | Server starting up, maintenance          |
 
 ## Error Response Format
 
@@ -50,10 +51,12 @@ TVHeadend API returns standard HTTP status codes and JSON error responses. Under
 ```
 
 **Fields:**
+
 - `error` - Short error description
 - `text` - Optional detailed explanation
 
 **Example:**
+
 ```json
 {
   "error": "Invalid parameters",
@@ -81,6 +84,7 @@ TVHeadend API returns standard HTTP status codes and JSON error responses. Under
 ```
 
 **Additional field:**
+
 - `required_privileges` - Array of privileges needed
 
 ### Validation Error
@@ -96,6 +100,7 @@ TVHeadend API returns standard HTTP status codes and JSON error responses. Under
 ```
 
 **Additional field:**
+
 - `fields` - Map of field names to error messages
 
 ## Common Errors
@@ -105,12 +110,14 @@ TVHeadend API returns standard HTTP status codes and JSON error responses. Under
 **Scenario 1: Malformed Filter**
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/epg/events/grid?filter={invalid json}'
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 400 Bad Request
 
@@ -121,6 +128,7 @@ HTTP/1.1 400 Bad Request
 ```
 
 **Solution:**
+
 - Validate JSON before sending
 - Use proper URL encoding
 - Check filter syntax
@@ -128,6 +136,7 @@ HTTP/1.1 400 Bad Request
 **Scenario 2: Missing Required Field**
 
 **Request:**
+
 ```bash
 curl -u user:pass -X POST \
   -H "Content-Type: application/json" \
@@ -136,6 +145,7 @@ curl -u user:pass -X POST \
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 400 Bad Request
 
@@ -149,12 +159,14 @@ HTTP/1.1 400 Bad Request
 ```
 
 **Solution:**
+
 - Check required fields in OpenAPI spec
 - Validate input before sending
 
 **Scenario 3: Invalid UUID Format**
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/epg/events/load' \
@@ -162,6 +174,7 @@ curl -u user:pass \
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 400 Bad Request
 
@@ -176,11 +189,13 @@ HTTP/1.1 400 Bad Request
 **Scenario 1: Missing Credentials**
 
 **Request:**
+
 ```bash
 curl 'http://localhost:9981/api/channel/grid'
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 401 Unauthorized
 WWW-Authenticate: Basic realm="TVHeadend"
@@ -192,6 +207,7 @@ WWW-Authenticate: Basic realm="TVHeadend"
 ```
 
 **Solution:**
+
 ```bash
 curl -u username:password 'http://localhost:9981/api/channel/grid'
 ```
@@ -199,11 +215,13 @@ curl -u username:password 'http://localhost:9981/api/channel/grid'
 **Scenario 2: Wrong Credentials**
 
 **Request:**
+
 ```bash
 curl -u wrong:credentials 'http://localhost:9981/api/channel/grid'
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 401 Unauthorized
 
@@ -214,6 +232,7 @@ HTTP/1.1 401 Unauthorized
 ```
 
 **Solution:**
+
 - Verify credentials in TVHeadend UI
 - Check for typos
 - Ensure user is enabled
@@ -223,6 +242,7 @@ HTTP/1.1 401 Unauthorized
 **Scenario: Insufficient Privileges**
 
 **Request:**
+
 ```bash
 # User only has 'streaming' privilege
 curl -u viewer:pass -X POST \
@@ -231,6 +251,7 @@ curl -u viewer:pass -X POST \
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 403 Forbidden
 
@@ -242,6 +263,7 @@ HTTP/1.1 403 Forbidden
 ```
 
 **Solution:**
+
 - Add required privilege to user in TVHeadend UI
 - Use different user with appropriate privileges
 - Request admin to grant privileges
@@ -251,12 +273,14 @@ HTTP/1.1 403 Forbidden
 **Scenario 1: Invalid Channel UUID**
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/epg/events/grid?channel=invalid-uuid-123'
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 404 Not Found
 
@@ -267,6 +291,7 @@ HTTP/1.1 404 Not Found
 ```
 
 **Solution:**
+
 - Verify UUID by listing channels first
 - Check if channel was deleted
 - Update cached UUIDs
@@ -274,6 +299,7 @@ HTTP/1.1 404 Not Found
 **Scenario 2: EPG Event Not Found**
 
 **Request:**
+
 ```bash
 curl -u user:pass -X POST \
   -d '{"event_id":999999}' \
@@ -281,6 +307,7 @@ curl -u user:pass -X POST \
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 404 Not Found
 
@@ -291,6 +318,7 @@ HTTP/1.1 404 Not Found
 ```
 
 **Possible causes:**
+
 - Event is in the past and has expired
 - EPG data not yet loaded
 - Wrong event ID
@@ -300,6 +328,7 @@ HTTP/1.1 404 Not Found
 **Scenario: Duplicate Recording**
 
 **Request:**
+
 ```bash
 # Try to record same event twice
 curl -u user:pass -X POST \
@@ -308,6 +337,7 @@ curl -u user:pass -X POST \
 ```
 
 **Response:**
+
 ```http
 HTTP/1.1 409 Conflict
 
@@ -318,6 +348,7 @@ HTTP/1.1 409 Conflict
 ```
 
 **Solution:**
+
 - Check existing recordings first
 - Handle duplicate gracefully
 - Update existing recording instead
@@ -325,6 +356,7 @@ HTTP/1.1 409 Conflict
 ### 500 Internal Server Error
 
 **Response:**
+
 ```http
 HTTP/1.1 500 Internal Server Error
 
@@ -335,12 +367,14 @@ HTTP/1.1 500 Internal Server Error
 ```
 
 **Possible causes:**
+
 - TVHeadend bug
 - Database corruption
 - Disk full
 - Out of memory
 
 **Solutions:**
+
 1. Check TVHeadend logs: `/var/log/tvheadend.log`
 2. Restart TVHeadend: `systemctl restart tvheadend`
 3. Check disk space: `df -h`
@@ -356,8 +390,8 @@ async function fetchChannels() {
   try {
     const response = await fetch('http://localhost:9981/api/channel/grid', {
       headers: {
-        'Authorization': 'Basic ' + btoa('user:pass')
-      }
+        Authorization: 'Basic ' + btoa('user:pass'),
+      },
     });
 
     if (!response.ok) {
@@ -508,8 +542,8 @@ class TVHeadendClient {
   async fetch(endpoint) {
     const response = await fetch(`http://localhost:9981${endpoint}`, {
       headers: {
-        'Authorization': 'Basic ' + btoa(`${this.username}:${this.password}`)
-      }
+        Authorization: 'Basic ' + btoa(`${this.username}:${this.password}`),
+      },
     });
 
     if (!response.ok) {
@@ -530,11 +564,11 @@ class TVHeadendClient {
 function getErrorMessage(error) {
   const messages = {
     401: 'Please log in to continue',
-    403: 'You don\'t have permission for this action',
+    403: "You don't have permission for this action",
     404: 'The requested item could not be found',
     409: 'This action conflicts with an existing item',
     500: 'Server error - please try again later',
-    503: 'Service temporarily unavailable'
+    503: 'Service temporarily unavailable',
   };
 
   if (error.status in messages) {
@@ -575,7 +609,7 @@ const data = await response.json();
 ```javascript
 // ❌ BAD: Assume success
 const response = await fetch(url);
-const data = await response.json();  // May throw if error response
+const data = await response.json(); // May throw if error response
 ```
 
 ### 2. Parse Error Responses
@@ -624,7 +658,7 @@ function logError(error, context) {
     status: error.status,
     message: error.message,
     context: context,
-    response: error.data
+    response: error.data,
   };
 
   console.error('API Error:', logEntry);
@@ -642,7 +676,7 @@ try {
   logError(error, {
     action: 'create_recording',
     eventId: eventId,
-    user: currentUser
+    user: currentUser,
   });
   throw error;
 }
@@ -656,25 +690,25 @@ function handleRecordingError(error) {
     return {
       message: 'This program is already scheduled for recording',
       action: 'View scheduled recordings',
-      link: '/recordings?status=scheduled'
+      link: '/recordings?status=scheduled',
     };
   } else if (error.status === 403) {
     return {
       message: 'You need recording permission to schedule recordings',
       action: 'Contact administrator',
-      link: '/help/permissions'
+      link: '/help/permissions',
     };
   } else if (error.status === 404) {
     return {
       message: 'This program is no longer available in the guide',
       action: 'Browse current programs',
-      link: '/epg'
+      link: '/epg',
     };
   } else {
     return {
       message: 'Failed to schedule recording',
       action: 'Try again',
-      link: null
+      link: null,
     };
   }
 }

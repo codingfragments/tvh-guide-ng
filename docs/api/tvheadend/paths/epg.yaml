@@ -58,11 +58,11 @@
                 value:
                   entries:
                     - eventId: 123456
-                      channelName: "BBC One HD"
-                      channelUuid: "550e8400-e29b-41d4-a716-446655440030"
+                      channelName: 'BBC One HD'
+                      channelUuid: '550e8400-e29b-41d4-a716-446655440030'
                       start: 1704067200
                       stop: 1704070800
-                      title: "News at Six"
+                      title: 'News at Six'
                       hd: true
                   total: 1
                   start: 0
@@ -72,11 +72,11 @@
                 value:
                   entries:
                     - eventId: 789012
-                      channelName: "Film4 HD"
-                      channelUuid: "550e8400-e29b-41d4-a716-446655440031"
+                      channelName: 'Film4 HD'
+                      channelUuid: '550e8400-e29b-41d4-a716-446655440031'
                       start: 1704070800
                       stop: 1704078000
-                      title: "Inception"
+                      title: 'Inception'
                       contentType: 16
                       hd: true
                   total: 1
@@ -143,16 +143,16 @@
             example:
               entries:
                 - eventId: 123456
-                  channelName: "BBC One HD"
-                  channelUuid: "550e8400-e29b-41d4-a716-446655440032"
+                  channelName: 'BBC One HD'
+                  channelUuid: '550e8400-e29b-41d4-a716-446655440032'
                   start: 1704067200
                   stop: 1704070800
-                  title: "Planet Earth II"
-                  subtitle: "Islands"
-                  description: "Full description..."
+                  title: 'Planet Earth II'
+                  subtitle: 'Islands'
+                  description: 'Full description...'
                   credits:
-                    - name: "David Attenborough"
-                      role: "presenter"
+                    - name: 'David Attenborough'
+                      role: 'presenter'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -221,11 +221,11 @@
             example:
               entries:
                 - eventId: 123457
-                  channelName: "BBC One SD"
-                  channelUuid: "550e8400-e29b-41d4-a716-446655440033"
+                  channelName: 'BBC One SD'
+                  channelUuid: '550e8400-e29b-41d4-a716-446655440033'
                   start: 1704067200
                   stop: 1704070800
-                  title: "Planet Earth II"
+                  title: 'Planet Earth II'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -300,9 +300,9 @@
                         description: Brand name
               example:
                 entries:
-                  - key: "brand-123"
-                    val: "Doctor Who"
-                  - key: "brand-456"
-                    val: "EastEnders"
+                  - key: 'brand-123'
+                    val: 'Doctor Who'
+                  - key: 'brand-456'
+                    val: 'EastEnders'
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'

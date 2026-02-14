@@ -9,15 +9,15 @@ ServerStatus:
     name:
       type: string
       description: Server name
-      example: "TVHeadend"
+      example: 'TVHeadend'
     version:
       type: string
       description: TVHeadend version
-      example: "4.3.2024"
+      example: '4.3.2024'
     sw_version:
       type: string
       description: Software version
-      example: "4.3-2024"
+      example: '4.3-2024'
     api_version:
       type: integer
       description: API version number
@@ -27,7 +27,7 @@ ServerStatus:
       description: Server capabilities
       items:
         type: string
-      example: ["epg", "dvr", "imagecache"]
+      example: ['epg', 'dvr', 'imagecache']
     time:
       $ref: './common.yaml#/Timestamp'
       description: Current server time
@@ -62,19 +62,19 @@ ServiceStatus:
       type: string
       description: Service type
       enum: [DVB-S, DVB-T, DVB-C, IPTV, Other]
-      example: "DVB-T"
+      example: 'DVB-T'
     network:
       type: string
       description: Network name
-      example: "Freeview"
+      example: 'Freeview'
     mux:
       type: string
       description: Multiplex name
-      example: "626MHz"
+      example: '626MHz'
     svcname:
       type: string
       description: Service name
-      example: "BBC One HD"
+      example: 'BBC One HD'
     channel:
       type: string
       description: Linked channel UUID
@@ -98,11 +98,11 @@ InputStatus:
     type:
       type: string
       description: Adapter type
-      example: "DVB-T"
+      example: 'DVB-T'
     name:
       type: string
       description: Adapter name
-      example: "/dev/dvb/adapter0"
+      example: '/dev/dvb/adapter0'
     active:
       type: boolean
       description: Currently active
@@ -144,22 +144,22 @@ ConnectionStatus:
       type: string
       description: Connection type
       enum: [HTTP, HTSP, SAT>IP]
-      example: "HTSP"
+      example: 'HTSP'
     peer:
       type: string
       description: Client IP address
-      example: "192.168.1.100"
+      example: '192.168.1.100'
     user:
       type: string
       description: Username
-      example: "client1"
+      example: 'client1'
     started:
       $ref: './common.yaml#/Timestamp'
       description: Connection start time
     channel:
       type: string
       description: Current channel (if streaming)
-      example: "BBC One HD"
+      example: 'BBC One HD'
     service:
       type: string
       description: Service name
@@ -183,15 +183,15 @@ SystemLog:
     severity:
       type: string
       enum: [DEBUG, INFO, WARNING, ERROR, ALERT]
-      example: "INFO"
+      example: 'INFO'
     subsystem:
       type: string
       description: Component that logged
-      example: "epggrab"
+      example: 'epggrab'
     message:
       type: string
       description: Log message
-      example: "EPG grabbing completed successfully"
+      example: 'EPG grabbing completed successfully'
 
 SubscriptionStatus:
   type: object
@@ -204,19 +204,19 @@ SubscriptionStatus:
     channel:
       type: string
       description: Channel name being watched
-      example: "BBC One HD"
+      example: 'BBC One HD'
     service:
       type: string
       description: Service name
-      example: "DVB-T Service"
+      example: 'DVB-T Service'
     profile:
       type: string
       description: Stream profile used
-      example: "htsp"
+      example: 'htsp'
     username:
       type: string
       description: Client username
-      example: "client1"
+      example: 'client1'
     start:
       $ref: './common.yaml#/Timestamp'
       description: Subscription start time
@@ -242,11 +242,11 @@ ActivityStatus:
       type: string
       description: Type of activity
       enum: [idle, recording, streaming, epggrab]
-      example: "recording"
+      example: 'recording'
     description:
       type: string
       description: Activity description
-      example: "Recording in progress"
+      example: 'Recording in progress'
     canSleep:
       type: boolean
       description: Can system enter low-power mode

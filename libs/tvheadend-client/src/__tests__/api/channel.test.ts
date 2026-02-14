@@ -44,10 +44,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelGrid({ limit: 10 });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channel/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channel/grid'), expect.any(Object));
       expect(result).toEqual(mockChannelGridResponse);
     });
 
@@ -59,14 +56,8 @@ describe('Channel API', () => {
 
       await client.getChannelGrid({ sort: 'number', dir: 'ASC' });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('sort=number'),
-        expect.any(Object),
-      );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('dir=ASC'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('sort=number'), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('dir=ASC'), expect.any(Object));
     });
   });
 
@@ -79,10 +70,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelList();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channel/list'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channel/list'), expect.any(Object));
       expect(result.entries).toBeDefined();
     });
   });
@@ -120,10 +108,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelClass();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channel/class'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channel/class'), expect.any(Object));
       expect(result.caption).toBeDefined();
     });
   });
@@ -156,10 +141,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelTagGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channeltag/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channeltag/grid'), expect.any(Object));
       expect(result).toEqual(mockChannelTagGridResponse);
     });
   });
@@ -173,10 +155,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelTagList();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channeltag/list'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channeltag/list'), expect.any(Object));
       expect(result.entries).toBeDefined();
     });
   });
@@ -190,10 +169,7 @@ describe('Channel API', () => {
 
       const result = await client.getChannelTagClass();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channeltag/class'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channeltag/class'), expect.any(Object));
       expect(result.caption).toBeDefined();
     });
   });
@@ -230,10 +206,7 @@ describe('Channel API', () => {
 
       const result = await client.listChannelCategories();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/channel/category/list'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/channel/category/list'), expect.any(Object));
       expect(result).toBeInstanceOf(Array);
     });
   });

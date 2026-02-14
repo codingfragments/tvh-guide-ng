@@ -42,26 +42,26 @@
                 summary: All recordings
                 value:
                   entries:
-                    - uuid: "550e8400-e29b-41d4-a716-446655440020"
-                      channel: "550e8400-e29b-41d4-a716-446655440021"
-                      channelname: "BBC One HD"
-                      title: "Planet Earth II"
+                    - uuid: '550e8400-e29b-41d4-a716-446655440020'
+                      channel: '550e8400-e29b-41d4-a716-446655440021'
+                      channelname: 'BBC One HD'
+                      title: 'Planet Earth II'
                       start: 1704067200
                       stop: 1704070800
-                      status: "completed"
+                      status: 'completed'
                       filesize: 4294967296
                   total: 1
               scheduledOnly:
                 summary: Upcoming recordings
                 value:
                   entries:
-                    - uuid: "550e8400-e29b-41d4-a716-446655440022"
-                      channel: "550e8400-e29b-41d4-a716-446655440023"
-                      channelname: "ITV HD"
-                      title: "News at Ten"
+                    - uuid: '550e8400-e29b-41d4-a716-446655440022'
+                      channel: '550e8400-e29b-41d4-a716-446655440023'
+                      channelname: 'ITV HD'
+                      title: 'News at Ten'
                       start: 1704153600
                       stop: 1704155400
-                      status: "scheduled"
+                      status: 'scheduled'
                   total: 1
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'
@@ -120,10 +120,10 @@
                   - title
           example:
             conf:
-              channel: "channel-uuid-123"
+              channel: 'channel-uuid-123'
               start: 1704067200
               stop: 1704070800
-              title: "My Recording"
+              title: 'My Recording'
               pri: 2
               start_extra: 2
               stop_extra: 5
@@ -138,7 +138,7 @@
                 uuid:
                   type: string
               example:
-                uuid: "new-dvr-uuid-123"
+                uuid: 'new-dvr-uuid-123'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -193,7 +193,7 @@
                   type: string
                   description: Created DVR entry UUID
               example:
-                uuid: "dvr-uuid-789"
+                uuid: 'dvr-uuid-789'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -207,7 +207,7 @@
             schema:
               $ref: '../components/schemas/error.yaml#/ErrorResponse'
             example:
-              error: "Event not found"
+              error: 'Event not found'
 
 /api/dvr/entry/cancel:
   post:
@@ -237,7 +237,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Recording cancelled successfully
@@ -287,7 +287,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Recording deleted successfully
@@ -335,10 +335,10 @@
               $ref: '../components/schemas/dvr.yaml#/DvrAutorecGridResponse'
             example:
               entries:
-                - uuid: "550e8400-e29b-41d4-a716-446655440024"
+                - uuid: '550e8400-e29b-41d4-a716-446655440024'
                   enabled: true
-                  name: "Record all documentaries"
-                  title: ".*documentary.*"
+                  name: 'Record all documentaries'
+                  title: '.*documentary.*'
                   fulltext: true
               total: 1
       '401':
@@ -396,16 +396,16 @@
               summary: Series recording
               value:
                 conf:
-                  name: "Record Planet Earth II"
-                  title: "Planet Earth II.*"
-                  channel: "channel-uuid-bbc"
+                  name: 'Record Planet Earth II'
+                  title: 'Planet Earth II.*'
+                  channel: 'channel-uuid-bbc'
             keywordRecording:
               summary: Keyword-based recording
               value:
                 conf:
-                  name: "All documentaries"
+                  name: 'All documentaries'
                   fulltext: true
-                  title: "documentary"
+                  title: 'documentary'
                   contentType: 144
     responses:
       '200':
@@ -418,7 +418,7 @@
                 uuid:
                   type: string
               example:
-                uuid: "autorec-uuid-456"
+                uuid: 'autorec-uuid-456'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -452,10 +452,10 @@
               $ref: '../components/schemas/dvr.yaml#/DvrTimerecGridResponse'
             example:
               entries:
-                - uuid: "550e8400-e29b-41d4-a716-446655440025"
+                - uuid: '550e8400-e29b-41d4-a716-446655440025'
                   enabled: true
-                  name: "Morning News Daily"
-                  channel: "550e8400-e29b-41d4-a716-446655440026"
+                  name: 'Morning News Daily'
+                  channel: '550e8400-e29b-41d4-a716-446655440026'
                   start: 420
                   stop: 480
                   weekdays: [1, 2, 3, 4, 5]
@@ -532,12 +532,12 @@
                   - name
           example:
             conf:
-              name: "HD Recordings"
+              name: 'HD Recordings'
               enabled: true
               retention_days: 60
               pre_extra_time: 2
               post_extra_time: 5
-              storage: "/recordings/hd"
+              storage: '/recordings/hd'
     responses:
       '200':
         description: DVR profile created successfully
@@ -549,7 +549,7 @@
                 uuid:
                   type: string
               example:
-                uuid: "dvr-config-uuid-123"
+                uuid: 'dvr-config-uuid-123'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -734,7 +734,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Recording stopped successfully
@@ -788,8 +788,8 @@
               - uuid
               - filename
           example:
-            uuid: "dvr-uuid-123"
-            filename: "/new/path/recording.mkv"
+            uuid: 'dvr-uuid-123'
+            filename: '/new/path/recording.mkv'
     responses:
       '200':
         description: File location updated
@@ -838,7 +838,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Entry moved to finished
@@ -885,7 +885,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Entry moved to failed
@@ -932,7 +932,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Re-record flag toggled
@@ -979,7 +979,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Re-recording denied
@@ -1026,7 +1026,7 @@
             required:
               - uuid
           example:
-            uuid: "dvr-uuid-123"
+            uuid: 'dvr-uuid-123'
     responses:
       '200':
         description: Re-recording allowed
@@ -1090,7 +1090,7 @@
                 uuid:
                   type: string
               example:
-                uuid: "autorec-uuid-789"
+                uuid: 'autorec-uuid-789'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':

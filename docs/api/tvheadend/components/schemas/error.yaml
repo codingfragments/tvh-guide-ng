@@ -7,11 +7,11 @@ ErrorResponse:
     error:
       type: string
       description: Error message describing what went wrong
-      example: "Invalid parameters"
+      example: 'Invalid parameters'
     text:
       type: string
       description: Additional human-readable error details
-      example: "The channel uuid parameter is required"
+      example: 'The channel uuid parameter is required'
   required:
     - error
 
@@ -21,15 +21,15 @@ ValidationError:
   properties:
     error:
       type: string
-      example: "Validation failed"
+      example: 'Validation failed'
     fields:
       type: object
       description: Map of field names to error messages
       additionalProperties:
         type: string
       example:
-        channel: "Channel not found"
-        start: "Start time must be in the future"
+        channel: 'Channel not found'
+        start: 'Start time must be in the future'
   required:
     - error
     - fields
@@ -40,10 +40,10 @@ AuthenticationError:
   properties:
     error:
       type: string
-      example: "Authentication required"
+      example: 'Authentication required'
     text:
       type: string
-      example: "Please provide valid credentials"
+      example: 'Please provide valid credentials'
   required:
     - error
 
@@ -53,10 +53,10 @@ AuthorizationError:
   properties:
     error:
       type: string
-      example: "Insufficient privileges"
+      example: 'Insufficient privileges'
     text:
       type: string
-      example: "Recording privilege required"
+      example: 'Recording privilege required'
     required_privileges:
       type: array
       description: List of required privileges
@@ -71,6 +71,6 @@ AuthorizationError:
           - htsp_recorder
           - htsp_anonymize
           - web_only
-      example: ["recording"]
+      example: ['recording']
   required:
     - error

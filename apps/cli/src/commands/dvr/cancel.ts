@@ -19,10 +19,7 @@ export function createCancelCommand(): Command {
       try {
         // Confirm deletion unless --yes flag is provided
         if (!options.yes && !globalOpts.quiet) {
-          const confirmed = await confirm(
-            `Are you sure you want to cancel recording ${uuid}?`,
-            false
-          );
+          const confirmed = await confirm(`Are you sure you want to cancel recording ${uuid}?`, false);
           if (!confirmed) {
             console.log('Cancelled');
             return;

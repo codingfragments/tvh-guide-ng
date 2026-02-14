@@ -4,11 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { TVHeadendClient } from '../../client.js';
-import {
-  mockEpgGridResponse,
-  mockEpgEventDetail,
-  mockContentType,
-} from '../__mocks__/responses.js';
+import { mockEpgGridResponse, mockEpgEventDetail, mockContentType } from '../__mocks__/responses.js';
 
 // Mock node-fetch
 vi.mock('node-fetch', () => ({
@@ -65,10 +61,7 @@ describe('EPG API', () => {
         filter: JSON.stringify({ field: 'title', type: 'string', value: 'News' }),
       });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('filter='),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('filter='), expect.any(Object));
     });
 
     it('should support mode parameter', async () => {
@@ -79,10 +72,7 @@ describe('EPG API', () => {
 
       await client.getEpgEventsGrid({ mode: 'now' });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('mode=now'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('mode=now'), expect.any(Object));
     });
   });
 
@@ -95,14 +85,8 @@ describe('EPG API', () => {
 
       const result = await client.loadEpgEvents(123456);
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/epg/events/load'),
-        expect.any(Object),
-      );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('eventId=123456'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/epg/events/load'), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('eventId=123456'), expect.any(Object));
       expect(result).toEqual([mockEpgEventDetail]);
     });
 
@@ -114,10 +98,7 @@ describe('EPG API', () => {
 
       const result = await client.loadEpgEvents([123456, 123457]);
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('eventId=123456%2C123457'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('eventId=123456%2C123457'), expect.any(Object));
       expect(result).toHaveLength(2);
     });
   });
@@ -131,10 +112,7 @@ describe('EPG API', () => {
 
       const result = await client.listContentTypes();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/epg/content_type/list'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/epg/content_type/list'), expect.any(Object));
       expect(result).toEqual([mockContentType]);
     });
   });
@@ -152,10 +130,7 @@ describe('EPG API', () => {
         expect.stringContaining('/api/epg/events/alternative'),
         expect.any(Object),
       );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('eventId=123456'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('eventId=123456'), expect.any(Object));
       expect(result).toEqual([mockEpgEventDetail]);
     });
   });
@@ -169,14 +144,8 @@ describe('EPG API', () => {
 
       const result = await client.getRelatedEvents(123456);
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/epg/events/related'),
-        expect.any(Object),
-      );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('eventId=123456'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/epg/events/related'), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('eventId=123456'), expect.any(Object));
       expect(result).toEqual([mockEpgEventDetail]);
     });
   });
@@ -190,10 +159,7 @@ describe('EPG API', () => {
 
       const result = await client.listEpgBrands();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/epg/brand/list'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/epg/brand/list'), expect.any(Object));
       expect(result).toEqual([]);
     });
   });

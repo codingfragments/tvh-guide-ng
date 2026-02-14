@@ -145,7 +145,7 @@ export interface ChannelTagMetadata {
 }
 
 /** Channel tag grid query parameters */
-export interface ChannelTagGridParams extends GridParams {}
+export type ChannelTagGridParams = GridParams;
 
 /** Channel tag list response */
 export interface ChannelTagListResponse {

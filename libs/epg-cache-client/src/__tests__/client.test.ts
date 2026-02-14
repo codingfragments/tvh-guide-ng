@@ -86,10 +86,7 @@ describe('EpgCacheClient', () => {
       const result = await client.searchEvents({ q: 'Tagesschau' });
 
       expect(result).toEqual(mockSearchResponse);
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/events/search?q=Tagesschau'),
-        expect.anything(),
-      );
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/events/search?q=Tagesschau'), expect.anything());
     });
 
     it('includes all optional params', async () => {
@@ -155,10 +152,7 @@ describe('EpgCacheClient', () => {
       const result = await client.getEvent(12345);
 
       expect(result).toEqual(mockEventResponse);
-      expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:3000/api/events/12345',
-        expect.anything(),
-      );
+      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/events/12345', expect.anything());
     });
   });
 
@@ -169,10 +163,7 @@ describe('EpgCacheClient', () => {
       const result = await client.getChannels();
 
       expect(result).toEqual(mockChannelsResponse);
-      expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:3000/api/channels',
-        expect.anything(),
-      );
+      expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/channels', expect.anything());
     });
   });
 

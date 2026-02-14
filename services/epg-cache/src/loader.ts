@@ -14,8 +14,9 @@ export function createClient(config: EpgCacheConfig): TVHeadendClient {
 export async function fetchAllEvents(client: TVHeadendClient): Promise<EpgEvent[]> {
   const allEvents: EpgEvent[] = [];
   let offset = 0;
+  let hasMore = true;
 
-  while (true) {
+  while (hasMore) {
     const response = await client.getEpgEventsGrid({
       start: offset,
       limit: PAGE_SIZE,
@@ -26,9 +27,10 @@ export async function fetchAllEvents(client: TVHeadendClient): Promise<EpgEvent[
     allEvents.push(...response.entries);
 
     if (allEvents.length >= response.total || response.entries.length < PAGE_SIZE) {
-      break;
+      hasMore = false;
+    } else {
+      offset += PAGE_SIZE;
     }
-    offset += PAGE_SIZE;
   }
 
   return allEvents;
@@ -37,8 +39,9 @@ export async function fetchAllEvents(client: TVHeadendClient): Promise<EpgEvent[
 export async function fetchAllChannels(client: TVHeadendClient): Promise<Channel[]> {
   const allChannels: Channel[] = [];
   let offset = 0;
+  let hasMore = true;
 
-  while (true) {
+  while (hasMore) {
     const response = await client.getChannelGrid({
       start: offset,
       limit: PAGE_SIZE,
@@ -49,9 +52,10 @@ export async function fetchAllChannels(client: TVHeadendClient): Promise<Channel
     allChannels.push(...response.entries);
 
     if (allChannels.length >= response.total || response.entries.length < PAGE_SIZE) {
-      break;
+      hasMore = false;
+    } else {
+      offset += PAGE_SIZE;
     }
-    offset += PAGE_SIZE;
   }
 
   return allChannels;

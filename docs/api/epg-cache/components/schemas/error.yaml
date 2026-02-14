@@ -7,7 +7,7 @@ ErrorResponse:
     error:
       type: string
       description: Human-readable error message.
-      example: "Query parameter \"q\" is required"
+      example: 'Query parameter "q" is required'
 
 RefreshAccepted:
   type: object
@@ -18,4 +18,4 @@ RefreshAccepted:
     message:
       type: string
       description: Confirmation message.
-      example: "Refresh started"
+      example: 'Refresh started'

@@ -13,11 +13,11 @@ DvrEntry:
     channel:
       type: string
       description: Channel UUID
-      example: "channel-uuid-123"
+      example: 'channel-uuid-123'
     channelname:
       type: string
       description: Channel display name
-      example: "BBC One HD"
+      example: 'BBC One HD'
     start:
       $ref: './common.yaml#/Timestamp'
       description: Recording start time
@@ -46,15 +46,15 @@ DvrEntry:
     title:
       type: string
       description: Recording title
-      example: "Planet Earth II"
+      example: 'Planet Earth II'
     disp_title:
       type: string
       description: Display title (may include subtitle)
-      example: "Planet Earth II: Islands"
+      example: 'Planet Earth II: Islands'
     subtitle:
       type: string
       description: Episode subtitle
-      example: "Islands"
+      example: 'Islands'
     summary:
       type: string
       description: Short description
@@ -96,7 +96,7 @@ DvrEntry:
         - invalid
         - running
         - upcoming
-      example: "completed"
+      example: 'completed'
     sched_status:
       type: string
       description: Scheduler status
@@ -106,7 +106,7 @@ DvrEntry:
         - completed
         - missed
         - invalid
-      example: "scheduled"
+      example: 'scheduled'
     errors:
       type: integer
       description: Number of recording errors
@@ -125,14 +125,14 @@ DvrEntry:
       type: string
       format: uri
       description: Playback URL
-      example: "http://localhost:9981/dvrfile/550e8400-e29b-41d4-a716-446655440005"
+      example: 'http://localhost:9981/dvrfile/550e8400-e29b-41d4-a716-446655440005'
     comment:
       type: string
       description: User comment/note
     creator:
       type: string
       description: User who created the recording
-      example: "admin"
+      example: 'admin'
     errorcode:
       type: integer
       description: Error code if failed
@@ -171,7 +171,7 @@ DvrAutorecEntry:
     name:
       type: string
       description: Rule name
-      example: "Record all documentaries"
+      example: 'Record all documentaries'
     comment:
       type: string
       description: Optional description
@@ -184,7 +184,7 @@ DvrAutorecEntry:
     title:
       type: string
       description: Filter by title (supports regex)
-      example: "Planet Earth.*"
+      example: 'Planet Earth.*'
     subtitle:
       type: string
       description: Filter by subtitle (supports regex)
@@ -276,19 +276,19 @@ DvrTimerecEntry:
     name:
       type: string
       description: Rule name
-      example: "Morning News Daily"
+      example: 'Morning News Daily'
     comment:
       type: string
     channel:
       type: string
       description: Channel UUID
-      example: "channel-uuid-bbc"
+      example: 'channel-uuid-bbc'
     channelname:
       type: string
     title:
       type: string
       description: Recording title template
-      example: "News Recording %F"
+      example: 'News Recording %F'
     start:
       type: integer
       description: Start time (minutes since midnight)
@@ -359,7 +359,7 @@ DvrConfigMetadata:
     caption:
       type: string
       description: Human-readable class name
-      example: "DVR Profile"
+      example: 'DVR Profile'
     properties:
       type: array
       description: Configuration property definitions
@@ -390,7 +390,7 @@ DvrEntryMetadata:
     caption:
       type: string
       description: Human-readable class name
-      example: "Recording Entry"
+      example: 'Recording Entry'
     properties:
       type: array
       description: Entry property definitions

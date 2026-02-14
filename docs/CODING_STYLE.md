@@ -10,15 +10,15 @@ TypeScript conventions for the tvh-guide-ng monorepo.
 
 ## Naming Conventions
 
-| Element          | Style        | Example              |
-|------------------|-------------|----------------------|
-| Variables        | camelCase   | `channelCount`       |
-| Functions        | camelCase   | `fetchPrograms()`    |
-| Types/Interfaces | PascalCase  | `EpgEntry`           |
-| Enums            | PascalCase  | `ChannelType`        |
-| Constants        | UPPER_SNAKE | `MAX_RETRY_COUNT`    |
-| Files            | kebab-case  | `epg-entry.ts`       |
-| Directories      | kebab-case  | `epg-service/`       |
+| Element          | Style       | Example           |
+| ---------------- | ----------- | ----------------- |
+| Variables        | camelCase   | `channelCount`    |
+| Functions        | camelCase   | `fetchPrograms()` |
+| Types/Interfaces | PascalCase  | `EpgEntry`        |
+| Enums            | PascalCase  | `ChannelType`     |
+| Constants        | UPPER_SNAKE | `MAX_RETRY_COUNT` |
+| Files            | kebab-case  | `epg-entry.ts`    |
+| Directories      | kebab-case  | `epg-service/`    |
 
 ## Imports
 
@@ -39,7 +39,48 @@ Separate each group with a blank line.
 
 ## Linting & Formatting
 
-ESLint and Prettier will be configured as packages are scaffolded. Planned rules:
+### Prettier
 
-- Prettier defaults (2-space indent, single quotes, trailing commas)
-- ESLint strict TypeScript ruleset (`@typescript-eslint/strict-type-checked`)
+Formatting is handled by Prettier with a single root config (`.prettierrc.json`).
+
+| Setting         | Value |
+| --------------- | ----- |
+| Single quotes   | Yes   |
+| Trailing commas | All   |
+| Tab width       | 2     |
+| Semicolons      | Yes   |
+| Print width     | 120   |
+| End of line     | LF    |
+
+Commands:
+
+```bash
+pnpm format         # format all files
+pnpm format:check   # check without writing (CI)
+```
+
+### ESLint
+
+ESLint v9 flat config lives at `eslint.config.mjs` (root). Per-package lint scripts run `eslint src/`.
+
+| Layer                | Config                                            |
+| -------------------- | ------------------------------------------------- |
+| Base                 | `eslint/recommended` + `strictTypeChecked`        |
+| Type-aware parsing   | `projectService: true` (auto-discovers tsconfigs) |
+| Test files           | Type-checked rules disabled; `any` allowed        |
+| CLI command handlers | `no-unsafe-*` relaxed (Commander returns `any`)   |
+| Config files         | Type-checked rules fully disabled                 |
+| Style conflicts      | `eslint-config-prettier` (must be last)           |
+
+Commands:
+
+```bash
+pnpm lint            # lint all packages
+pnpm -r lint         # same (root script delegates)
+```
+
+### Rule Customizations
+
+- `restrict-template-expressions`: numbers and booleans allowed in template literals
+- `no-unnecessary-condition`: `captureStackTrace?.()` suppressed (V8-specific API)
+- Test files: `disableTypeChecked` + `no-explicit-any` off + `no-non-null-assertion` off

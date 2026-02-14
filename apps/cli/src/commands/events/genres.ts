@@ -38,7 +38,7 @@ export function createGenresCommand(): Command {
           contentTypes,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);

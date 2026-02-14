@@ -7,6 +7,8 @@
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "clean": "pnpm -r clean",
     "validate:openapi": "spectral lint docs/api/tvheadend/openapi.yaml docs/api/epg-cache/openapi.yaml --format stylish",
     "docs:build": "echo 'Stoplight Elements uses static HTML - no build needed'",
@@ -24,7 +26,12 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@stoplight/spectral-cli": "^6.15.0",
-    "browser-sync": "^3.0.4"
+    "browser-sync": "^3.0.4",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "typescript-eslint": "^8.55.0"
   }
 }

@@ -307,13 +307,13 @@ export type DvrConfigClass = DvrConfigMetadata;
 export type DvrAutorecCreateParams = DvrAutorecConfig;
 
 /** Auto-rec grid query parameters */
-export interface DvrAutorecGridParams extends GridParams {}
+export type DvrAutorecGridParams = GridParams;
 
 /** Time-rec grid query parameters */
-export interface DvrTimerecGridParams extends GridParams {}
+export type DvrTimerecGridParams = GridParams;
 
 /** DVR config grid query parameters */
-export interface DvrConfigGridParams extends GridParams {}
+export type DvrConfigGridParams = GridParams;
 
 /** DVR entry cancel parameters */
 export interface DvrCancelParams {

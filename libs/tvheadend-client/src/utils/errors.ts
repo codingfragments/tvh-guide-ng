@@ -12,7 +12,8 @@ export class TVHeadendError extends Error {
   ) {
     super(message);
     this.name = 'TVHeadendError';
-    // Maintains proper stack trace for where our error was thrown
+    // captureStackTrace is V8-specific; optional chain is intentional for portability
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     Error.captureStackTrace?.(this, this.constructor);
   }
 }
@@ -61,7 +62,10 @@ export class BadRequestError extends TVHeadendError {
  * Network or connection error
  */
 export class NetworkError extends TVHeadendError {
-  constructor(message: string, public readonly cause?: Error) {
+  constructor(
+    message: string,
+    public readonly cause?: Error,
+  ) {
     super(message);
     this.name = 'NetworkError';
   }

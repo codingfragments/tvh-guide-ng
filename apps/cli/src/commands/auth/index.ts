@@ -11,9 +11,7 @@ import { createConfigCommand } from './config.js';
  * Create the auth command group
  */
 export function createAuthCommand(): Command {
-  const auth = new Command('auth').description(
-    'Authentication and configuration management'
-  );
+  const auth = new Command('auth').description('Authentication and configuration management');
 
   auth.addCommand(createLoginCommand());
   auth.addCommand(createStatusCommand());

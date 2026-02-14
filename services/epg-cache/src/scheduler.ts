@@ -16,9 +16,9 @@ export class RefreshScheduler {
   ) {}
 
   start(): void {
-    this.refresh();
+    void this.refresh();
     this.intervalHandle = setInterval(() => {
-      this.refresh();
+      void this.refresh();
     }, this.intervalSeconds * 1000);
     this.updateNextRefreshTime();
   }
@@ -37,10 +37,7 @@ export class RefreshScheduler {
     this.store.updateSyncStatus('refreshing');
 
     try {
-      const [events, channels] = await Promise.all([
-        fetchAllEvents(this.client),
-        fetchAllChannels(this.client),
-      ]);
+      const [events, channels] = await Promise.all([fetchAllEvents(this.client), fetchAllChannels(this.client)]);
 
       this.store.replaceAllEvents(events);
       this.store.replaceAllChannels(channels);

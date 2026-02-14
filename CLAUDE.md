@@ -7,6 +7,7 @@ This file contains project-specific instructions for Claude Code when working in
 **CRITICAL**: Always update `STRUCTURE.md` when making structural changes to the monorepo.
 
 ### Update triggers
+
 - Adding a new package to `apps/`, `services/`, or `libs/`
 - Removing a package
 - Changing a package's purpose or scope
@@ -14,6 +15,7 @@ This file contains project-specific instructions for Claude Code when working in
 - Adding new organizational categories
 
 After adding, removing, or modifying packages, you MUST:
+
 1. Update the relevant section in `STRUCTURE.md`
 2. Update the directory layout diagram if the structure changes
 3. Add example entries for new packages
@@ -32,7 +34,9 @@ docs/      → Project documentation
 ```
 
 ### Naming Convention
+
 All packages use the `@tvh-guide/` scope:
+
 - `@tvh-guide/web`
 - `@tvh-guide/epg-service`
 - `@tvh-guide/shared`
@@ -71,6 +75,7 @@ Services communicate via network APIs (HTTP/GraphQL), not code imports.
 ## Code Quality
 
 ### Markdownlint Configuration
+
 - `.markdownlint.json` contains tuned rules to reduce false positives
 - `.markdownlintignore` excludes `CLAUDE.md` and generated files from linting
 - Line length increased to 120 chars for better readability

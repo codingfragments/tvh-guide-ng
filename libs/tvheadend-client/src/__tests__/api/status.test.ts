@@ -44,10 +44,7 @@ describe('Status API', () => {
 
       const result = await client.getConnections();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/status/connections'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/status/connections'), expect.any(Object));
       expect(result).toEqual(mockConnectionsResponse);
       expect(result.entries).toHaveLength(1);
     });
@@ -62,10 +59,7 @@ describe('Status API', () => {
 
       const result = await client.getSubscriptions();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/status/subscriptions'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/status/subscriptions'), expect.any(Object));
       expect(result).toEqual(mockSubscriptionsResponse);
       expect(result.entries).toHaveLength(1);
     });
@@ -88,10 +82,7 @@ describe('Status API', () => {
 
       const result = await client.getActivity();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/status/activity'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/status/activity'), expect.any(Object));
       expect(result.entries).toBeDefined();
       expect(result.entries[0].activity).toBe('idle');
     });
@@ -106,10 +97,7 @@ describe('Status API', () => {
 
       const result = await client.getInputs();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/status/inputs'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/status/inputs'), expect.any(Object));
       expect(result).toEqual(mockInputsResponse);
       expect(result.entries).toHaveLength(1);
     });
@@ -183,10 +171,7 @@ describe('Status API', () => {
 
       const result = await client.getServiceGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/mpegts/service/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/mpegts/service/grid'), expect.any(Object));
       expect(result).toBeDefined();
     });
   });
@@ -210,14 +195,8 @@ describe('Status API', () => {
 
       const result = await client.getLog({ limit: 10 });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/log'),
-        expect.any(Object),
-      );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('limit=10'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/log'), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('limit=10'), expect.any(Object));
       expect(result.entries).toHaveLength(1);
       expect(result.total).toBe(1);
     });
@@ -230,10 +209,7 @@ describe('Status API', () => {
 
       await client.getLog({ level: 'ERROR' });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('level=ERROR'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('level=ERROR'), expect.any(Object));
     });
   });
 
@@ -248,9 +224,7 @@ describe('Status API', () => {
 
       const result = await client.getServerStatus();
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('deprecated'),
-      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
       expect(result).toEqual(mockServerInfo);
 
       consoleWarnSpy.mockRestore();

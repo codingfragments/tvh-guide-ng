@@ -2,8 +2,6 @@
  * Configuration management types
  */
 
-import type { UUID } from './common.js';
-
 /** Configuration node in hierarchical configuration system */
 export interface ConfigNode {
   /** Node identifier */

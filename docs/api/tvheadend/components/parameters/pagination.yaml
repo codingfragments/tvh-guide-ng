@@ -31,13 +31,13 @@ SortParameter:
     type: string
   examples:
     byName:
-      value: "name"
+      value: 'name'
       summary: Sort by name
     byNumber:
-      value: "number"
+      value: 'number'
       summary: Sort by channel number
     byStart:
-      value: "start"
+      value: 'start'
       summary: Sort by start time
 
 DirParameter:
@@ -51,7 +51,7 @@ DirParameter:
       - ASC
       - DESC
     default: ASC
-  example: "DESC"
+  example: 'DESC'
 
 AllParameter:
   name: all

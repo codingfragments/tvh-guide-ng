@@ -55,7 +55,7 @@ export class EpgCacheClient {
 
   /** GET /api/events/:eventId */
   async getEvent(eventId: number): Promise<ApiResponse<EpgEvent>> {
-    const url = buildUrl(this.baseUrl, `/api/events/${eventId}`);
+    const url = buildUrl(this.baseUrl, `/api/events/${String(eventId)}`);
     return request<ApiResponse<EpgEvent>>(url, { timeout: this.timeout });
   }
 

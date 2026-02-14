@@ -47,7 +47,7 @@ export async function request<T>(url: string, options: RequestInit = {}): Promis
         throw new NotFoundError(errorText || 'Resource not found');
       default:
         throw new TVHeadendError(
-          `HTTP ${response.status}: ${errorText || response.statusText}`,
+          `HTTP ${String(response.status)}: ${errorText || response.statusText}`,
           response.status,
         );
     }
@@ -57,9 +57,7 @@ export async function request<T>(url: string, options: RequestInit = {}): Promis
   try {
     return (await response.json()) as T;
   } catch (error) {
-    throw new TVHeadendError(
-      `Failed to parse response: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    );
+    throw new TVHeadendError(`Failed to parse response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
@@ -93,9 +91,7 @@ export function buildUrl(
  * @param filter - Filter value (string, object, or array)
  * @returns Serialized filter string
  */
-export function serializeFilter(
-  filter: string | FilterCondition | FilterCondition[],
-): string {
+export function serializeFilter(filter: string | FilterCondition | FilterCondition[]): string {
   if (typeof filter === 'string') {
     return filter;
   }

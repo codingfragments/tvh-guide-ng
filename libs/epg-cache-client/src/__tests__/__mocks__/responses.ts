@@ -1,10 +1,4 @@
-import type {
-  HealthResponse,
-  ApiResponse,
-  SearchResult,
-  CachedChannel,
-  RefreshAcceptedResponse,
-} from '../../types.js';
+import type { HealthResponse, ApiResponse, SearchResult, CachedChannel, RefreshAcceptedResponse } from '../../types.js';
 import type { EpgEvent } from '@tvh-guide/tvheadend-client';
 
 export const mockEpgEvent: EpgEvent = {
@@ -31,9 +25,7 @@ export const mockHealthResponse: HealthResponse = {
 };
 
 export const mockSearchResponse: ApiResponse<SearchResult[]> = {
-  data: [
-    { score: 15.2, event: mockEpgEvent },
-  ],
+  data: [{ score: 15.2, event: mockEpgEvent }],
   meta: {
     cacheAge: 120,
     lastRefresh: '2026-02-14T10:00:00.000Z',

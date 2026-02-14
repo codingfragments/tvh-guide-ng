@@ -53,7 +53,7 @@ export function createTagsCommand(): Command {
           response.entries,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);

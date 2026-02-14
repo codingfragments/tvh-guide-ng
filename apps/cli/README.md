@@ -427,6 +427,7 @@ tvh channels list --json
 **Error:** `Could not connect to TVHeadend server`
 
 **Solutions:**
+
 1. Verify the server URL is correct: `tvh auth status`
 2. Check that TVHeadend is running
 3. Ensure the port (default: 9981) is accessible
@@ -437,6 +438,7 @@ tvh channels list --json
 **Error:** `Authentication failed`
 
 **Solutions:**
+
 1. Check your username and password in the config file
 2. Try re-running the login: `tvh auth login`
 3. Verify credentials work in the TVHeadend web interface
@@ -447,6 +449,7 @@ tvh channels list --json
 **Error:** `Server URL is required`
 
 **Solutions:**
+
 1. Run interactive setup: `tvh auth login`
 2. Create a configuration file at `~/.tvhrc`
 3. Use `--url` flag: `tvh --url http://localhost:9981 <command>`
@@ -456,6 +459,7 @@ tvh channels list --json
 **Error:** `No configuration file found`
 
 **Solutions:**
+
 1. Run `tvh auth login` to create configuration interactively
 2. Manually create `~/.tvhrc` (see Configuration section)
 3. Use command-line flags for connection details

@@ -178,7 +178,7 @@ export function createApp(
       return c.json({ error: 'Refresh already in progress' }, 409);
     }
 
-    scheduler.refresh();
+    void scheduler.refresh();
     return c.json({ message: 'Refresh started' }, 202);
   });
 

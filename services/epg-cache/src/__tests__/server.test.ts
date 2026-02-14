@@ -47,9 +47,34 @@ describe('HTTP Server', () => {
 
     // Seed data
     store.replaceAllEvents([
-      makeEvent({ eventId: 1, title: 'Tagesschau', channelUuid: 'ch-1', channelName: 'Das Erste HD', start: 1700000000, stop: 1700003600, contentType: 16 }),
-      makeEvent({ eventId: 2, title: 'Tatort', subtitle: 'Krimi aus Berlin', channelUuid: 'ch-1', channelName: 'Das Erste HD', start: 1700003600, stop: 1700009000, contentType: 32 }),
-      makeEvent({ eventId: 3, title: 'Heute Journal', channelUuid: 'ch-2', channelName: 'ZDF HD', start: 1700000000, stop: 1700003600, contentType: 16 }),
+      makeEvent({
+        eventId: 1,
+        title: 'Tagesschau',
+        channelUuid: 'ch-1',
+        channelName: 'Das Erste HD',
+        start: 1700000000,
+        stop: 1700003600,
+        contentType: 16,
+      }),
+      makeEvent({
+        eventId: 2,
+        title: 'Tatort',
+        subtitle: 'Krimi aus Berlin',
+        channelUuid: 'ch-1',
+        channelName: 'Das Erste HD',
+        start: 1700003600,
+        stop: 1700009000,
+        contentType: 32,
+      }),
+      makeEvent({
+        eventId: 3,
+        title: 'Heute Journal',
+        channelUuid: 'ch-2',
+        channelName: 'ZDF HD',
+        start: 1700000000,
+        stop: 1700003600,
+        contentType: 16,
+      }),
     ]);
     store.replaceAllChannels([
       { uuid: 'ch-1', name: 'Das Erste HD', number: 1, enabled: true },

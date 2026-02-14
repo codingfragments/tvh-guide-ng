@@ -26,6 +26,7 @@ All grid endpoints return responses in this format:
 ```
 
 **Key fields:**
+
 - `entries` - Current page of results
 - `total` - Total count across all pages (for pagination UI)
 - `start` - Echo of the start parameter
@@ -35,22 +36,24 @@ All grid endpoints return responses in this format:
 
 ### Query Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `start` | integer | 0 | Starting offset (0-based) |
-| `limit` | integer | 50 | Maximum items per page |
-| `sort` | string | - | Field name to sort by |
-| `dir` | string | ASC | Sort direction (ASC or DESC) |
+| Parameter | Type    | Default | Description                  |
+| --------- | ------- | ------- | ---------------------------- |
+| `start`   | integer | 0       | Starting offset (0-based)    |
+| `limit`   | integer | 50      | Maximum items per page       |
+| `sort`    | string  | -       | Field name to sort by        |
+| `dir`     | string  | ASC     | Sort direction (ASC or DESC) |
 
 ### Example: First Page
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?start=0&limit=50'
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [
@@ -63,6 +66,7 @@ curl -u user:pass \
 ```
 
 **Interpretation:**
+
 - Got first 50 channels (entries 0-49)
 - Total of 142 channels exist
 - Need 3 pages to see all (142 ÷ 50 = 2.84 → 3 pages)
@@ -70,12 +74,14 @@ curl -u user:pass \
 ### Example: Second Page
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?start=50&limit=50'
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [
@@ -87,18 +93,21 @@ curl -u user:pass \
 ```
 
 **Interpretation:**
+
 - Got entries 50-99 (second page)
 - Still 142 total
 
 ### Example: Last Page
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?start=100&limit=50'
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [
@@ -110,6 +119,7 @@ curl -u user:pass \
 ```
 
 **Interpretation:**
+
 - Got entries 100-141 (last 42 items)
 - `entries.length` will be 42, not 50
 
@@ -118,12 +128,14 @@ curl -u user:pass \
 ### Option 1: Set limit=0
 
 **Request:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?limit=0'
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [...],  // All 142 channels
@@ -132,6 +144,7 @@ curl -u user:pass \
 ```
 
 **Use when:**
+
 - Dataset is small (<1000 items)
 - You need all data at once
 - Building local caches
@@ -156,28 +169,33 @@ Equivalent to `limit=0`.
 **Available sort fields vary by endpoint.** Common fields:
 
 **Channels:**
+
 - `number` - Channel number
 - `name` - Channel name
 
 **EPG:**
+
 - `start` - Start time
 - `stop` - End time
 - `title` - Program title
 - `channelname` - Channel name
 
 **DVR:**
+
 - `start` - Recording start
 - `title` - Recording title
 - `status` - Recording status
 - `filesize` - File size
 
 **Example: Sort channels by number:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?sort=number&dir=ASC&limit=50'
 ```
 
 **Example: Sort EPG by start time (newest first):**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/epg/events/grid?sort=start&dir=DESC&limit=50'
@@ -243,14 +261,14 @@ class TVHeadendClient {
 
     const response = await fetch(`${url}?${params}`, {
       headers: {
-        'Authorization': `Basic ${btoa(`${this.auth.user}:${this.auth.pass}`)}`
-      }
+        Authorization: `Basic ${btoa(`${this.auth.user}:${this.auth.pass}`)}`,
+      },
     });
 
     return response.json();
   }
 
-  async* paginateGrid(endpoint, pageSize = 50) {
+  async *paginateGrid(endpoint, pageSize = 50) {
     let start = 0;
     let total = Infinity;
 
@@ -262,7 +280,7 @@ class TVHeadendClient {
         entries: page.entries,
         start,
         total,
-        hasMore: start + pageSize < total
+        hasMore: start + pageSize < total,
       };
 
       start += pageSize;
@@ -273,7 +291,7 @@ class TVHeadendClient {
 // Usage
 const client = new TVHeadendClient('http://localhost:9981', {
   user: 'api-user',
-  pass: 'password'
+  pass: 'password',
 });
 
 for await (const page of client.paginateGrid('/api/channel/grid', 20)) {
@@ -309,21 +327,18 @@ class PaginationHelper {
       pageNumber,
       totalPages: this.totalPages,
       isFirst: pageNumber === 1,
-      isLast: pageNumber === this.totalPages
+      isLast: pageNumber === this.totalPages,
     };
   }
 
   async fetchPage(endpoint, pageNumber) {
     const { start, limit } = this.getPageInfo(pageNumber);
 
-    const response = await fetch(
-      `http://localhost:9981${endpoint}?start=${start}&limit=${limit}`,
-      {
-        headers: {
-          'Authorization': 'Basic ' + btoa('user:pass')
-        }
-      }
-    );
+    const response = await fetch(`http://localhost:9981${endpoint}?start=${start}&limit=${limit}`, {
+      headers: {
+        Authorization: 'Basic ' + btoa('user:pass'),
+      },
+    });
 
     return response.json();
   }
@@ -381,23 +396,27 @@ while True:
 ### 1. Choose Appropriate Page Size
 
 **Small pages (10-20):**
+
 - ✅ Fast response time
 - ✅ Good for UI responsiveness
 - ❌ More requests needed
 - ❌ Higher overhead
 
 **Medium pages (50-100):**
+
 - ✅ Balanced approach
 - ✅ Good for most use cases
 - ✅ Default for many endpoints
 
 **Large pages (500-1000):**
+
 - ✅ Fewer requests
 - ✅ Good for batch processing
 - ❌ Slower response time
 - ❌ May hit timeouts
 
 **All at once (limit=0):**
+
 - ✅ Single request
 - ✅ Best for small datasets (<500 items)
 - ❌ Can timeout on large datasets
@@ -467,10 +486,7 @@ async function fetchAllChannelsParallel(pageSize = 100) {
   const pages = await Promise.all(pagePromises);
 
   // Combine all results
-  const allEntries = [
-    ...firstPage.entries,
-    ...pages.flatMap(p => p.entries)
-  ];
+  const allEntries = [...firstPage.entries, ...pages.flatMap((p) => p.entries)];
 
   return allEntries;
 }
@@ -485,7 +501,7 @@ async function fetchAllChannelsParallel(pageSize = 100) {
 ```javascript
 // BAD: May miss items if total > limit
 const data = await fetch('/api/channel/grid?limit=50');
-const channels = data.entries;  // Only first 50!
+const channels = data.entries; // Only first 50!
 ```
 
 ```javascript
@@ -500,12 +516,12 @@ if (data.total > data.entries.length) {
 
 ```javascript
 // BAD: 1-based indexing
-const page2 = await fetch('/api/channel/grid?start=1&limit=50');  // Wrong!
+const page2 = await fetch('/api/channel/grid?start=1&limit=50'); // Wrong!
 ```
 
 ```javascript
 // GOOD: 0-based indexing
-const page2 = await fetch('/api/channel/grid?start=50&limit=50');  // Correct
+const page2 = await fetch('/api/channel/grid?start=50&limit=50'); // Correct
 ```
 
 ### ❌ Infinite Loops
@@ -536,7 +552,7 @@ while (start < total) {
 ```javascript
 // BAD: Assumes entries always exist
 const data = await fetch('/api/epg/events/grid');
-const firstEvent = data.entries[0];  // May be undefined!
+const firstEvent = data.entries[0]; // May be undefined!
 ```
 
 ```javascript

@@ -22,6 +22,7 @@ tvh-guide-ng/
 ## Package Scoping
 
 All packages use the `@tvh-guide/` namespace:
+
 - `@tvh-guide/cli` — Command-line interface for TVHeadend
 - `@tvh-guide/web` — Frontend application
 - `@tvh-guide/epg-cache` — EPG caching service with SQLite storage and fuzzy search
@@ -37,6 +38,7 @@ All packages use the `@tvh-guide/` namespace:
 **Purpose**: End-user applications that provide interactive interfaces.
 
 **What belongs here**:
+
 - Frontend web applications (SvelteKit, React, etc.)
 - Desktop applications (Electron, Tauri, etc.)
 - Mobile applications (if added in the future)
@@ -45,22 +47,26 @@ All packages use the `@tvh-guide/` namespace:
 - Any application with a user interface or interactive experience
 
 **What does NOT belong here**:
+
 - Backend services (use `services/` instead)
 - Shared libraries (use `libs/` instead)
 - CLI tools that are tightly coupled to a specific service (keep with the service)
 
 **Dependency rules**:
+
 - ✅ CAN depend on `libs/` packages
 - ✅ CAN consume APIs from `services/` (via HTTP/network)
 - ❌ CANNOT depend directly on `services/` packages
 - ❌ CANNOT depend on other `apps/` packages
 
 **When to add a new app**:
+
 - When creating a new user-facing interface
 - When building a separate application with its own deployment lifecycle
 - When the codebase needs a distinct entry point for end users
 
 **Example packages**:
+
 - `apps/cli` — Command-line interface for managing TVHeadend EPG and recordings
 - `apps/web` — Main EPG web interface
 - `apps/admin` — (future) Admin configuration panel
@@ -73,6 +79,7 @@ All packages use the `@tvh-guide/` namespace:
 **Purpose**: Backend services that handle business logic, data processing, and API endpoints.
 
 **What belongs here**:
+
 - REST APIs and GraphQL servers
 - Data processing services
 - Background workers and schedulers
@@ -80,11 +87,13 @@ All packages use the `@tvh-guide/` namespace:
 - Services that interact with databases or external APIs
 
 **What does NOT belong here**:
+
 - Frontend code (use `apps/` instead)
 - Shared utilities used by multiple services (use `libs/` instead)
 - Pure data transformation logic (consider `libs/` if reusable)
 
 **Dependency rules**:
+
 - ✅ CAN depend on `libs/` packages
 - ❌ CANNOT depend on `apps/` packages
 - ❌ CANNOT depend on other `services/` packages directly
@@ -92,11 +101,13 @@ All packages use the `@tvh-guide/` namespace:
   - This ensures loose coupling and independent deployability
 
 **When to add a new service**:
+
 - When introducing a new API or backend capability
 - When splitting functionality for independent scaling/deployment
 - When isolating a specific domain or responsibility
 
 **Example packages**:
+
 - `services/epg-cache` — EPG caching with SQLite + MiniSearch (syncs from TVHeadend, serves HTTP API)
 - `services/epg-service` — EPG data backend
 - `services/auth-service` — (future) Authentication service
@@ -109,6 +120,7 @@ All packages use the `@tvh-guide/` namespace:
 **Purpose**: Reusable code shared across multiple packages in the monorepo.
 
 **What belongs here**:
+
 - TypeScript types and interfaces
 - Utility functions and helpers
 - Constants and configuration schemas
@@ -118,22 +130,26 @@ All packages use the `@tvh-guide/` namespace:
 - UI component libraries (if shared across apps)
 
 **What does NOT belong here**:
+
 - Application-specific code (use `apps/` instead)
 - Service-specific business logic (use `services/` instead)
 - Code used by only one package (keep it local)
 
 **Dependency rules**:
+
 - ❌ CANNOT depend on `apps/` packages
 - ❌ CANNOT depend on `services/` packages
 - ✅ CAN depend on other `libs/` packages (but minimize coupling)
 - ✅ CAN depend on external npm packages
 
 **When to add a new lib**:
+
 - When code is used by 2+ packages
 - When defining shared contracts (types, interfaces)
 - When extracting domain logic that should be tested independently
 
 **Example packages**:
+
 - `libs/epg-cache-client` — Type-safe client for the EPG Cache service HTTP API
 - `libs/shared` — Common types and utilities
 - `libs/tvheadend-client` — Type-safe TVHeadend API client library
@@ -146,6 +162,7 @@ All packages use the `@tvh-guide/` namespace:
 **Purpose**: Project-wide documentation that doesn't belong in individual packages.
 
 **What belongs here**:
+
 - Architecture guides
 - Coding standards and style guides
 - Decision records (ADRs)
@@ -154,6 +171,7 @@ All packages use the `@tvh-guide/` namespace:
 - Contributing guidelines
 
 **Current files**:
+
 - `docs/DESIGN_GUIDE.md` — Architecture principles
 - `docs/CODING_STYLE.md` — Code style conventions
 - `docs/api/index.html` — Unified API docs landing page (links to all API viewers)
@@ -206,6 +224,7 @@ Does it have a user interface?
 ```
 
 **Key principles**:
+
 1. Dependencies flow downward only
 2. Services communicate via APIs, not imports
 3. Shared code lives in `libs/`
@@ -232,6 +251,7 @@ When adding a new package to the monorepo:
 **⚠️ IMPORTANT**: This file must be kept in sync with the actual repository structure.
 
 **When to update this file**:
+
 - ✅ When adding a new package (app, service, or lib)
 - ✅ When removing a package
 - ✅ When changing a package's purpose or responsibilities
@@ -239,6 +259,7 @@ When adding a new package to the monorepo:
 - ✅ When adding new categories or guidelines
 
 **Who should update this file**:
+
 - Anyone adding new packages or restructuring the repository
 - Maintainers during code reviews
 - Developers when they notice inconsistencies
@@ -248,6 +269,7 @@ When adding a new package to the monorepo:
 ## Questions?
 
 If you're unsure where to place code:
+
 1. Review the decision flowchart above
 2. Check if similar code already exists
 3. Follow the principle of least privilege (start local, extract to libs/ only when needed)

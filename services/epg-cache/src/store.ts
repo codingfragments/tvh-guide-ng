@@ -90,22 +90,50 @@ export class EpgStore {
       `);
       for (const e of events) {
         stmt.run(
-          e.eventId, e.channelUuid, e.channelName, e.channelNumber ?? null, e.channelIcon ?? null,
-          e.start, e.stop, e.duration ?? null, e.title, e.subtitle ?? null,
-          e.summary ?? null, e.description ?? null,
-          e.genre ? JSON.stringify(e.genre) : null, e.contentType ?? null,
-          e.seriesLink ?? null, e.episodeNumber ?? null, e.seasonNumber ?? null,
-          e.partNumber ?? null, e.partCount ?? null, e.episodeUri ?? null,
-          e.image ?? null, e.nextEventId ?? null,
-          e.ageRating ?? null, e.starRating ?? null,
-          e.hd ? 1 : 0, e.widescreen ? 1 : 0, e.audioDesc ? 1 : 0, e.subtitled ? 1 : 0,
+          e.eventId,
+          e.channelUuid,
+          e.channelName,
+          e.channelNumber ?? null,
+          e.channelIcon ?? null,
+          e.start,
+          e.stop,
+          e.duration ?? null,
+          e.title,
+          e.subtitle ?? null,
+          e.summary ?? null,
+          e.description ?? null,
+          e.genre ? JSON.stringify(e.genre) : null,
+          e.contentType ?? null,
+          e.seriesLink ?? null,
+          e.episodeNumber ?? null,
+          e.seasonNumber ?? null,
+          e.partNumber ?? null,
+          e.partCount ?? null,
+          e.episodeUri ?? null,
+          e.image ?? null,
+          e.nextEventId ?? null,
+          e.ageRating ?? null,
+          e.starRating ?? null,
+          e.hd ? 1 : 0,
+          e.widescreen ? 1 : 0,
+          e.audioDesc ? 1 : 0,
+          e.subtitled ? 1 : 0,
         );
       }
     });
     tx();
   }
 
-  replaceAllChannels(channels: Array<{ uuid: string; enabled?: boolean; name: string; number?: number; icon?: string; iconPublicUrl?: string }>): void {
+  replaceAllChannels(
+    channels: Array<{
+      uuid: string;
+      enabled?: boolean;
+      name: string;
+      number?: number;
+      icon?: string;
+      iconPublicUrl?: string;
+    }>,
+  ): void {
     const tx = this.db.transaction(() => {
       this.db.exec('DELETE FROM channels');
       const stmt = this.db.prepare(`
@@ -114,15 +142,23 @@ export class EpgStore {
       `);
       for (const c of channels) {
         stmt.run(
-          c.uuid, c.enabled !== false ? 1 : 0, c.name,
-          c.number ?? null, c.icon ?? null, c.iconPublicUrl ?? null,
+          c.uuid,
+          c.enabled !== false ? 1 : 0,
+          c.name,
+          c.number ?? null,
+          c.icon ?? null,
+          c.iconPublicUrl ?? null,
         );
       }
     });
     tx();
   }
 
-  getEventsByTimerange(start: number, stop: number, opts?: { channelUuid?: string; contentType?: number; limit?: number }): EpgEvent[] {
+  getEventsByTimerange(
+    start: number,
+    stop: number,
+    opts?: { channelUuid?: string; contentType?: number; limit?: number },
+  ): EpgEvent[] {
     let sql = 'SELECT * FROM events WHERE start < ? AND stop > ?';
     const params: unknown[] = [stop, start];
 
@@ -145,19 +181,27 @@ export class EpgStore {
   }
 
   getEventById(id: number): EpgEvent | undefined {
-    const row = this.db.prepare('SELECT * FROM events WHERE event_id = ?').get(id) as Record<string, unknown> | undefined;
+    const row = this.db.prepare('SELECT * FROM events WHERE event_id = ?').get(id) as
+      | Record<string, unknown>
+      | undefined;
     return row ? rowToEpgEvent(row) : undefined;
   }
 
   getEventsByIds(ids: number[]): EpgEvent[] {
     if (ids.length === 0) return [];
     const placeholders = ids.map(() => '?').join(',');
-    const rows = this.db.prepare(`SELECT * FROM events WHERE event_id IN (${placeholders})`).all(...ids) as Record<string, unknown>[];
+    const rows = this.db.prepare(`SELECT * FROM events WHERE event_id IN (${placeholders})`).all(...ids) as Record<
+      string,
+      unknown
+    >[];
     return rows.map(rowToEpgEvent);
   }
 
   getAllChannels(): CachedChannel[] {
-    const rows = this.db.prepare('SELECT * FROM channels ORDER BY number ASC, name ASC').all() as Record<string, unknown>[];
+    const rows = this.db.prepare('SELECT * FROM channels ORDER BY number ASC, name ASC').all() as Record<
+      string,
+      unknown
+    >[];
     return rows.map(rowToCachedChannel);
   }
 
@@ -167,21 +211,24 @@ export class EpgStore {
     if (!isNaN(num) && String(num) === identifier) {
       row = this.db.prepare('SELECT * FROM channels WHERE number = ?').get(num) as Record<string, unknown> | undefined;
     } else {
-      row = this.db.prepare('SELECT * FROM channels WHERE uuid = ?').get(identifier) as Record<string, unknown> | undefined;
+      row = this.db.prepare('SELECT * FROM channels WHERE uuid = ?').get(identifier) as
+        | Record<string, unknown>
+        | undefined;
     }
     return row ? rowToCachedChannel(row) : undefined;
   }
 
   getAllEventsForIndexing(): IndexableEvent[] {
-    const rows = this.db.prepare(
-      'SELECT event_id, title, subtitle, summary, description FROM events',
-    ).all() as Record<string, unknown>[];
+    const rows = this.db.prepare('SELECT event_id, title, subtitle, summary, description FROM events').all() as Record<
+      string,
+      unknown
+    >[];
     return rows.map((r) => ({
       eventId: r.event_id as number,
-      title: (r.title as string) ?? '',
-      subtitle: (r.subtitle as string) ?? '',
-      summary: (r.summary as string) ?? '',
-      description: (r.description as string) ?? '',
+      title: (r.title as string | null) ?? '',
+      subtitle: (r.subtitle as string | null) ?? '',
+      summary: (r.summary as string | null) ?? '',
+      description: (r.description as string | null) ?? '',
     }));
   }
 
@@ -199,9 +246,9 @@ export class EpgStore {
 
   updateSyncStatus(status: SyncMeta['status']): void {
     if (status === 'refreshing') {
-      this.db.prepare(
-        'UPDATE sync_meta SET status = ?, last_refresh_start = ? WHERE id = 1',
-      ).run(status, Math.floor(Date.now() / 1000));
+      this.db
+        .prepare('UPDATE sync_meta SET status = ?, last_refresh_start = ? WHERE id = 1')
+        .run(status, Math.floor(Date.now() / 1000));
     } else {
       this.db.prepare('UPDATE sync_meta SET status = ? WHERE id = 1').run(status);
     }
@@ -211,9 +258,11 @@ export class EpgStore {
     const now = Math.floor(Date.now() / 1000);
     const meta = this.getSyncMeta();
     const duration = now - meta.lastRefreshStart;
-    this.db.prepare(
-      'UPDATE sync_meta SET status = ?, last_refresh_end = ?, last_refresh_duration = ?, event_count = ?, channel_count = ? WHERE id = 1',
-    ).run('idle', now, duration, eventCount, channelCount);
+    this.db
+      .prepare(
+        'UPDATE sync_meta SET status = ?, last_refresh_end = ?, last_refresh_duration = ?, event_count = ?, channel_count = ? WHERE id = 1',
+      )
+      .run('idle', now, duration, eventCount, channelCount);
   }
 
   getEventCount(): number {
@@ -245,7 +294,7 @@ function rowToEpgEvent(row: Record<string, unknown>): EpgEvent {
     subtitle: row.subtitle as string | undefined,
     summary: row.summary as string | undefined,
     description: row.description as string | undefined,
-    genre: row.genre ? JSON.parse(row.genre as string) : undefined,
+    genre: row.genre ? (JSON.parse(row.genre as string) as number[]) : undefined,
     contentType: row.content_type as number | undefined,
     seriesLink: row.series_link as string | undefined,
     episodeNumber: row.episode_number as number | undefined,

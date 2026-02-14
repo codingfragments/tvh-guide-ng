@@ -17,7 +17,7 @@ EpgEvent:
     channelName:
       type: string
       description: Human-readable channel name
-      example: "BBC One HD"
+      example: 'BBC One HD'
     channelNumber:
       $ref: './common.yaml#/ChannelNumber'
     channelIcon:
@@ -34,19 +34,19 @@ EpgEvent:
     title:
       type: string
       description: Event title/name
-      example: "Planet Earth II"
+      example: 'Planet Earth II'
     subtitle:
       type: string
       description: Episode subtitle or secondary title
-      example: "Islands"
+      example: 'Islands'
     summary:
       type: string
       description: Short description
-      example: "Wildlife documentary exploring island habitats"
+      example: 'Wildlife documentary exploring island habitats'
     description:
       type: string
       description: Full detailed description
-      example: "David Attenborough narrates this landmark series..."
+      example: 'David Attenborough narrates this landmark series...'
     genre:
       type: array
       description: Genre/category codes (EIT content descriptors)
@@ -60,7 +60,7 @@ EpgEvent:
     seriesLink:
       type: string
       description: Series link identifier for grouping episodes
-      example: "series/planet-earth-2"
+      example: 'series/planet-earth-2'
     episodeNumber:
       type: integer
       description: Episode number within season
@@ -80,12 +80,12 @@ EpgEvent:
     episodeUri:
       type: string
       description: Episode URI for unique identification
-      example: "crid://www.bbc.co.uk/planet-earth-2/episode-3"
+      example: 'crid://www.bbc.co.uk/planet-earth-2/episode-3'
     image:
       type: string
       format: uri
       description: Event poster/thumbnail image URL
-      example: "http://localhost:9981/imagecache/456"
+      example: 'http://localhost:9981/imagecache/456'
     nextEventId:
       type: integer
       format: int64
@@ -115,7 +115,7 @@ EpgEvent:
       description: Human-readable category names
       items:
         type: string
-      example: ["Documentary", "Nature"]
+      example: ['Documentary', 'Nature']
     widescreen:
       type: boolean
       description: Broadcast in widescreen format
@@ -135,7 +135,7 @@ EpgEvent:
     dvrUuid:
       type:
         - string
-        - "null"
+        - 'null'
       description: UUID of DVR entry if recording is scheduled
     dvrState:
       type: string
@@ -146,7 +146,7 @@ EpgEvent:
         - completed
         - missed
         - invalid
-      example: "scheduled"
+      example: 'scheduled'
   required:
     - eventId
     - channelUuid
@@ -161,7 +161,7 @@ Credit:
     name:
       type: string
       description: Person's name
-      example: "David Attenborough"
+      example: 'David Attenborough'
     role:
       type: string
       description: Role type
@@ -173,11 +173,11 @@ Credit:
         - presenter
         - commentator
         - guest
-      example: "presenter"
+      example: 'presenter'
     character:
       type: string
       description: Character name (for actors)
-      example: "Narrator"
+      example: 'Narrator'
 
 ContentType:
   type: object
@@ -190,11 +190,11 @@ ContentType:
     name:
       type: string
       description: Human-readable content type name
-      example: "Movie"
+      example: 'Movie'
     icon:
       type: string
       description: Icon identifier
-      example: "movie"
+      example: 'movie'
   required:
     - code
     - name
@@ -240,13 +240,13 @@ EpgGridResponse:
       example:
         entries:
           - eventId: 123456
-            channelName: "BBC One HD"
-            channelUuid: "550e8400-e29b-41d4-a716-446655440006"
+            channelName: 'BBC One HD'
+            channelUuid: '550e8400-e29b-41d4-a716-446655440006'
             start: 1704067200
             stop: 1704070800
-            title: "Planet Earth II"
-            subtitle: "Islands"
-            description: "Wildlife documentary"
+            title: 'Planet Earth II'
+            subtitle: 'Islands'
+            description: 'Wildlife documentary'
             hd: true
         total: 1
         start: 0
@@ -263,11 +263,11 @@ ContentTypeListResponse:
   example:
     entries:
       - code: 16
-        name: "Movie"
-        icon: "movie"
+        name: 'Movie'
+        icon: 'movie'
       - code: 32
-        name: "News"
-        icon: "news"
+        name: 'News'
+        icon: 'news'
       - code: 64
-        name: "Sports"
-        icon: "sports"
+        name: 'Sports'
+        icon: 'sports'

@@ -16,7 +16,7 @@ BadRequest:
         invalidEventId:
           summary: Invalid event ID
           value:
-            error: "Invalid event ID"
+            error: 'Invalid event ID'
 
 NotFound:
   description: Requested resource not found.
@@ -32,7 +32,7 @@ NotFound:
         eventNotFound:
           summary: Event not found
           value:
-            error: "Event not found"
+            error: 'Event not found'
 
 Conflict:
   description: Conflicting operation already in progress.
@@ -44,4 +44,4 @@ Conflict:
         refreshInProgress:
           summary: Refresh already running
           value:
-            error: "Refresh already in progress"
+            error: 'Refresh already in progress'

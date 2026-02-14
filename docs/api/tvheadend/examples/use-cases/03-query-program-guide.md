@@ -20,12 +20,14 @@ Build a web-based EPG grid showing what's currently airing and upcoming programs
 ### Step 1: Get Current Programs
 
 **Request - All channels, currently airing:**
+
 ```http
 GET /api/epg/events/grid?mode=now&limit=100
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [
@@ -62,17 +64,19 @@ Authorization: Basic dXNlcjpwYXNz
 ### Step 2: Get Programs for Time Window
 
 **Request - 6-hour window:**
+
 ```http
 GET /api/epg/events/grid?channel=ch-bbc-one&sort=start&dir=ASC&limit=20
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 With filter for time range:
+
 ```json
 {
   "filter": [
-    {"field": "start", "type": "numeric", "value": 1704067200, "comparison": "gte"},
-    {"field": "stop", "type": "numeric", "value": 1704088800, "comparison": "lte"}
+    { "field": "start", "type": "numeric", "value": 1704067200, "comparison": "gte" },
+    { "field": "stop", "type": "numeric", "value": 1704088800, "comparison": "lte" }
   ]
 }
 ```
@@ -80,12 +84,14 @@ With filter for time range:
 ### Step 3: Search Programs
 
 **Search by title:**
+
 ```http
 GET /api/epg/events/grid?filter=documentary&fulltext=1&limit=50
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 **Filter by genre/content type:**
+
 ```http
 GET /api/epg/events/grid?contentType=16&limit=50
 Authorization: Basic dXNlcjpwYXNz
@@ -102,7 +108,7 @@ class EPGGrid {
     this.auth = btoa(`${username}:${password}`);
     this.channels = [];
     this.currentTime = Math.floor(Date.now() / 1000);
-    this.timeWindow = 6 * 3600;  // 6 hours
+    this.timeWindow = 6 * 3600; // 6 hours
   }
 
   async initialize() {
@@ -114,15 +120,12 @@ class EPGGrid {
   }
 
   async fetchChannels() {
-    const response = await fetch(
-      `${this.apiUrl}/api/channel/grid?sort=number&dir=ASC&limit=0`,
-      {
-        headers: { 'Authorization': `Basic ${this.auth}` }
-      }
-    );
+    const response = await fetch(`${this.apiUrl}/api/channel/grid?sort=number&dir=ASC&limit=0`, {
+      headers: { Authorization: `Basic ${this.auth}` },
+    });
 
     const data = await response.json();
-    return data.entries.filter(ch => ch.enabled);
+    return data.entries.filter((ch) => ch.enabled);
   }
 
   async loadEPG() {
@@ -131,15 +134,12 @@ class EPGGrid {
 
     const filter = JSON.stringify([
       { field: 'start', type: 'numeric', value: startTime, comparison: 'gte' },
-      { field: 'stop', type: 'numeric', value: endTime, comparison: 'lte' }
+      { field: 'stop', type: 'numeric', value: endTime, comparison: 'lte' },
     ]);
 
-    const response = await fetch(
-      `${this.apiUrl}/api/epg/events/grid?filter=${encodeURIComponent(filter)}&limit=0`,
-      {
-        headers: { 'Authorization': `Basic ${this.auth}` }
-      }
-    );
+    const response = await fetch(`${this.apiUrl}/api/epg/events/grid?filter=${encodeURIComponent(filter)}&limit=0`, {
+      headers: { Authorization: `Basic ${this.auth}` },
+    });
 
     const data = await response.json();
 
@@ -191,12 +191,12 @@ class EPGGrid {
     const hours = 6;
 
     for (let i = 0; i < hours; i++) {
-      const hourTime = startTime + (i * 3600);
+      const hourTime = startTime + i * 3600;
       const hourEl = document.createElement('div');
       hourEl.className = 'time-marker';
       hourEl.textContent = new Date(hourTime * 1000).toLocaleTimeString([], {
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       });
       header.appendChild(hourEl);
     }
@@ -248,7 +248,7 @@ class EPGGrid {
 
     // Calculate width based on duration
     const duration = event.stop - event.start;
-    const width = (duration / 3600) * 100;  // 100px per hour
+    const width = (duration / 3600) * 100; // 100px per hour
     block.style.width = `${width}px`;
 
     // Calculate position based on start time
@@ -282,7 +282,7 @@ class EPGGrid {
   formatTime(timestamp) {
     return new Date(timestamp * 1000).toLocaleTimeString([], {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
 
@@ -305,14 +305,14 @@ class EPGGrid {
     }
 
     const now = Math.floor(Date.now() / 1000);
-    const offset = (now - this.currentTime) / 3600 * 100;
+    const offset = ((now - this.currentTime) / 3600) * 100;
     indicator.style.left = `${offset}px`;
   }
 
   scrollToNow(container) {
     const now = Math.floor(Date.now() / 1000);
-    const offset = (now - this.currentTime) / 3600 * 100;
-    container.scrollLeft = Math.max(0, offset - 200);  // Center-ish
+    const offset = ((now - this.currentTime) / 3600) * 100;
+    container.scrollLeft = Math.max(0, offset - 200); // Center-ish
   }
 
   onProgramClick(event) {
@@ -324,17 +324,14 @@ class EPGGrid {
 
   async showProgramDetails(eventId) {
     // Load full event details
-    const response = await fetch(
-      `${this.apiUrl}/api/epg/events/load`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${this.auth}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ eventId })
-      }
-    );
+    const response = await fetch(`${this.apiUrl}/api/epg/events/load`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${this.auth}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ eventId }),
+    });
 
     const data = await response.json();
     const event = data.entries[0];
@@ -395,11 +392,7 @@ class EPGGrid {
 }
 
 // Usage
-const epg = new EPGGrid(
-  'http://localhost:9981',
-  'api-user',
-  'password'
-);
+const epg = new EPGGrid('http://localhost:9981', 'api-user', 'password');
 
 await epg.initialize();
 epg.render('epg-grid');
@@ -526,12 +519,9 @@ print(f"Found {len(movies)} movies in prime time this week")
 
 ```javascript
 async function filterByGenre(genreCode) {
-  const response = await fetch(
-    `${apiUrl}/api/epg/events/grid?contentType=${genreCode}&limit=100`,
-    {
-      headers: { 'Authorization': `Basic ${auth}` }
-    }
-  );
+  const response = await fetch(`${apiUrl}/api/epg/events/grid?contentType=${genreCode}&limit=100`, {
+    headers: { Authorization: `Basic ${auth}` },
+  });
 
   return await response.json();
 }
@@ -543,7 +533,7 @@ const GENRES = {
   SHOW: 48,
   SPORTS: 64,
   CHILDREN: 80,
-  MUSIC: 96
+  MUSIC: 96,
 };
 
 // Get all sports programs
@@ -557,17 +547,17 @@ async function searchPrograms(query) {
   const response = await fetch(
     `${apiUrl}/api/epg/events/grid?filter=${encodeURIComponent(query)}&fulltext=1&limit=50`,
     {
-      headers: { 'Authorization': `Basic ${auth}` }
-    }
+      headers: { Authorization: `Basic ${auth}` },
+    },
   );
 
   const data = await response.json();
 
   // Add highlights
-  return data.entries.map(event => ({
+  return data.entries.map((event) => ({
     ...event,
     titleHighlighted: highlightText(event.title, query),
-    descriptionHighlighted: highlightText(event.description, query)
+    descriptionHighlighted: highlightText(event.description, query),
   }));
 }
 
@@ -630,7 +620,7 @@ function highlightText(text, query) {
 }
 
 .program-block.live {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
 }
 

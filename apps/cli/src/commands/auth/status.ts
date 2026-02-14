@@ -30,9 +30,7 @@ export function createStatusCommand(): Command {
         console.log(`  Name:         ${serverInfo.name || 'Unknown'}`);
 
         if (serverInfo.capabilities && serverInfo.capabilities.length > 0) {
-          console.log(
-            `  Capabilities: ${serverInfo.capabilities.join(', ')}`
-          );
+          console.log(`  Capabilities: ${serverInfo.capabilities.join(', ')}`);
         }
       } catch (error) {
         spinner.stop();

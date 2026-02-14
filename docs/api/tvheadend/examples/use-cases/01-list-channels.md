@@ -18,18 +18,21 @@ You're building an EPG web application and need to display a list of available T
 ### Step 1: Fetch Channels
 
 **Request:**
+
 ```http
 GET /api/channel/grid?sort=number&dir=ASC&limit=50&start=0
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 **Parameters:**
+
 - `sort=number` - Sort by channel number
 - `dir=ASC` - Ascending order (1, 2, 3...)
 - `limit=50` - 50 channels per page
 - `start=0` - First page
 
 **Response:**
+
 ```json
 {
   "entries": [
@@ -59,23 +62,26 @@ Authorization: Basic dXNlcjpwYXNz
 ### Step 2: Filter Enabled Channels Only
 
 **Request with filter:**
+
 ```http
 GET /api/channel/grid?sort=number&dir=ASC&limit=50&start=0&filter={"field":"enabled","type":"boolean","value":1}
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 **Alternative - Do client-side filtering:**
+
 ```javascript
-const enabledChannels = response.entries.filter(ch => ch.enabled);
+const enabledChannels = response.entries.filter((ch) => ch.enabled);
 ```
 
 ### Step 3: Display in UI
 
 **HTML Structure:**
+
 ```html
 <div class="channel-list">
   <div class="channel-item" data-uuid="1a2b3c4d...">
-    <img src="http://localhost:9981/imagecache/1" alt="BBC One HD" class="channel-icon">
+    <img src="http://localhost:9981/imagecache/1" alt="BBC One HD" class="channel-icon" />
     <div class="channel-info">
       <span class="channel-number">101</span>
       <span class="channel-name">BBC One HD</span>
@@ -117,14 +123,14 @@ class ChannelList {
     const filter = JSON.stringify({
       field: 'enabled',
       type: 'boolean',
-      value: 1
+      value: 1,
     });
     url.searchParams.append('filter', filter);
 
     const response = await fetch(url, {
       headers: {
-        'Authorization': `Basic ${this.auth}`
-      }
+        Authorization: `Basic ${this.auth}`,
+      },
     });
 
     if (!response.ok) {
@@ -143,14 +149,13 @@ class ChannelList {
       container.innerHTML = '';
 
       // Render channels
-      data.entries.forEach(channel => {
+      data.entries.forEach((channel) => {
         const channelEl = this.createChannelElement(channel);
         container.appendChild(channelEl);
       });
 
       // Update pagination
       this.updatePagination(data.total);
-
     } catch (error) {
       console.error('Failed to load channels:', error);
       this.showError('Failed to load channels. Please try again.');
@@ -186,11 +191,10 @@ class ChannelList {
     const totalPages = Math.ceil(total / this.pageSize);
     const currentPageNum = this.currentPage + 1;
 
-    document.querySelector('.pagination span').textContent =
-      `Page ${currentPageNum} of ${totalPages}`;
+    document.querySelector('.pagination span').textContent = `Page ${currentPageNum} of ${totalPages}`;
 
-    document.getElementById('prev-page').disabled = (this.currentPage === 0);
-    document.getElementById('next-page').disabled = (currentPageNum >= totalPages);
+    document.getElementById('prev-page').disabled = this.currentPage === 0;
+    document.getElementById('next-page').disabled = currentPageNum >= totalPages;
   }
 
   setupPaginationHandlers() {
@@ -225,11 +229,7 @@ class ChannelList {
 }
 
 // Usage
-const channelList = new ChannelList(
-  'http://localhost:9981',
-  'api-user',
-  'password'
-);
+const channelList = new ChannelList('http://localhost:9981', 'api-user', 'password');
 
 channelList.setupPaginationHandlers();
 channelList.render('channel-list');
@@ -340,20 +340,18 @@ fetcher.export_to_csv()
 ```javascript
 async function getChannelsByTag() {
   // Fetch all tags
-  const tagsResponse = await fetch(
-    'http://localhost:9981/api/channeltag/list',
-    { headers: { 'Authorization': `Basic ${auth}` } }
-  );
+  const tagsResponse = await fetch('http://localhost:9981/api/channeltag/list', {
+    headers: { Authorization: `Basic ${auth}` },
+  });
   const tags = await tagsResponse.json();
 
   // For each tag, fetch channels
   const channelsByTag = {};
 
   for (const tag of tags.entries) {
-    const channelsResponse = await fetch(
-      `http://localhost:9981/api/channel/grid?tags=${tag.key}&limit=0`,
-      { headers: { 'Authorization': `Basic ${auth}` } }
-    );
+    const channelsResponse = await fetch(`http://localhost:9981/api/channel/grid?tags=${tag.key}&limit=0`, {
+      headers: { Authorization: `Basic ${auth}` },
+    });
     const channels = await channelsResponse.json();
 
     channelsByTag[tag.val] = channels.entries;
@@ -372,7 +370,7 @@ class ChannelSearch {
       field: 'name',
       type: 'string',
       value: query,
-      comparison: 'contains'
+      comparison: 'contains',
     });
 
     const url = new URL(`${this.apiUrl}/api/channel/grid`);
@@ -381,7 +379,7 @@ class ChannelSearch {
     url.searchParams.append('limit', 50);
 
     const response = await fetch(url, {
-      headers: { 'Authorization': `Basic ${this.auth}` }
+      headers: { Authorization: `Basic ${this.auth}` },
     });
 
     return response.json();
@@ -390,7 +388,7 @@ class ChannelSearch {
 
 // Usage
 const search = new ChannelSearch(apiUrl, username, password);
-const results = await search.search('BBC');  // Find all BBC channels
+const results = await search.search('BBC'); // Find all BBC channels
 ```
 
 ### Caching
@@ -421,7 +419,7 @@ class CachedChannelList extends ChannelList {
     if (!item) return null;
 
     const { data, timestamp } = JSON.parse(item);
-    const age = (Date.now() - timestamp) / 1000 / 60;  // Minutes
+    const age = (Date.now() - timestamp) / 1000 / 60; // Minutes
 
     if (age > this.cacheMinutes) {
       localStorage.removeItem(key);
@@ -434,7 +432,7 @@ class CachedChannelList extends ChannelList {
   saveToCache(key, data) {
     const item = {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     localStorage.setItem(key, JSON.stringify(item));
   }
@@ -447,7 +445,7 @@ class CachedChannelList extends ChannelList {
 async function fetchChannelsWithErrorHandling() {
   try {
     const response = await fetch(url, {
-      headers: { 'Authorization': `Basic ${auth}` }
+      headers: { Authorization: `Basic ${auth}` },
     });
 
     if (response.status === 401) {
@@ -465,7 +463,7 @@ async function fetchChannelsWithErrorHandling() {
     if (response.status >= 500) {
       // Server error - retry after delay
       await sleep(2000);
-      return fetchChannelsWithErrorHandling();  // Retry
+      return fetchChannelsWithErrorHandling(); // Retry
     }
 
     if (!response.ok) {
@@ -474,7 +472,6 @@ async function fetchChannelsWithErrorHandling() {
     }
 
     return response.json();
-
   } catch (error) {
     console.error('Failed to fetch channels:', error);
     showError('Failed to load channels. Check your connection.');

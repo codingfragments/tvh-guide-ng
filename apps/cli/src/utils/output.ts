@@ -15,15 +15,13 @@ export interface ColumnDefinition<T> {
 /**
  * Format data as a table
  */
-export function formatTable<T extends Record<string, any>>(
+export function formatTable<T extends Record<string, unknown>>(
   data: T[],
   columns: ColumnDefinition<T>[],
-  useColor = true
+  useColor = true,
 ): string {
   const table = new Table({
-    head: columns.map((col) =>
-      useColor ? chalk.cyan(col.label) : col.label
-    ),
+    head: columns.map((col) => (useColor ? chalk.cyan(col.label) : col.label)),
     colWidths: columns.map((col) => col.width || null),
     style: {
       head: [],
@@ -51,18 +49,18 @@ export function formatTable<T extends Record<string, any>>(
 /**
  * Format data as JSON
  */
-export function formatJSON<T>(data: T): string {
+export function formatJSON(data: unknown): string {
   return JSON.stringify(data, null, 2);
 }
 
 /**
  * Format output based on format type
  */
-export function formatOutput<T extends Record<string, any>>(
+export function formatOutput<T extends Record<string, unknown>>(
   data: T | T[],
   format: 'table' | 'json',
   columns?: ColumnDefinition<T>[],
-  useColor = true
+  useColor = true,
 ): string {
   if (format === 'json') {
     return formatJSON(data);
@@ -90,9 +88,7 @@ export function formatBoolean(value: boolean, useColor = true): string {
  * Format a date/time value for display
  */
 export function formatDateTime(timestamp: number | string): string {
-  const date = new Date(
-    typeof timestamp === 'number' ? timestamp * 1000 : timestamp
-  );
+  const date = new Date(typeof timestamp === 'number' ? timestamp * 1000 : timestamp);
   return date.toLocaleString();
 }
 

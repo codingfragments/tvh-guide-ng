@@ -9,15 +9,15 @@ ConfigNode:
     uuid:
       type: string
       description: Node identifier
-      example: "channel"
+      example: 'channel'
     type:
       type: string
       description: Node type
-      example: "configurator"
+      example: 'configurator'
     name:
       type: string
       description: Display name
-      example: "Channels"
+      example: 'Channels'
     children:
       type: array
       description: Child nodes
@@ -36,16 +36,16 @@ ConfigParam:
     id:
       type: string
       description: Parameter ID
-      example: "enabled"
+      example: 'enabled'
     caption:
       type: string
       description: Display label
-      example: "Enabled"
+      example: 'Enabled'
     type:
       type: string
       description: Data type
       enum: [str, int, bool, list, enum]
-      example: "bool"
+      example: 'bool'
     value:
       description: Current value
     default:
@@ -83,15 +83,15 @@ ServerConfig:
     server_name:
       type: string
       description: Server name
-      example: "TVHeadend"
+      example: 'TVHeadend'
     language:
       type: string
       description: UI language
-      example: "en_US"
+      example: 'en_US'
     timezone:
       type: string
       description: Server timezone
-      example: "Europe/London"
+      example: 'Europe/London'
     http_port:
       type: integer
       description: HTTP port
@@ -112,7 +112,7 @@ DvrConfig:
     name:
       type: string
       description: Profile name
-      example: "Default Profile"
+      example: 'Default Profile'
     retention_days:
       type: integer
       description: Default retention (days)
@@ -135,19 +135,19 @@ DvrConfig:
     storage:
       type: string
       description: Recording storage path
-      example: "/storage/recordings"
+      example: '/storage/recordings'
     directory_permissions:
       type: string
       description: Directory permissions (octal)
-      example: "0755"
+      example: '0755'
     file_permissions:
       type: string
       description: File permissions (octal)
-      example: "0644"
+      example: '0644'
     charset:
       type: string
       description: Character encoding
-      default: "UTF-8"
+      default: 'UTF-8'
     tag_files:
       type: boolean
       description: Write metadata tags to files

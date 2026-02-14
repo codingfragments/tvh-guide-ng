@@ -36,9 +36,7 @@ export function createListCommand(): Command {
               limit: 999,
               start: 0,
             });
-            const channel = channelsResponse.entries.find(
-              (ch) => ch.number === channelNumber
-            );
+            const channel = channelsResponse.entries.find((ch) => ch.number === channelNumber);
             if (channel) {
               channelUuid = channel.uuid;
               channelName = channel.name;
@@ -109,7 +107,7 @@ export function createListCommand(): Command {
           response.entries,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);

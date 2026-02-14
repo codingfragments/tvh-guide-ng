@@ -6,7 +6,7 @@
     tags:
       - Channels
     responses:
-      "200":
+      '200':
         description: List of all cached channels.
         content:
           application/json:
@@ -24,14 +24,14 @@
                   $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
             example:
               data:
-                - uuid: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+                - uuid: 'd3f1a2b4-5678-9abc-def0-1234567890ab'
                   enabled: true
-                  name: "Das Erste HD"
+                  name: 'Das Erste HD'
                   number: 1
-                  icon: "imagecache/42"
+                  icon: 'imagecache/42'
                   iconPublicUrl: null
               meta:
                 cacheAge: 120
-                lastRefresh: "2026-02-14T10:00:00.000Z"
+                lastRefresh: '2026-02-14T10:00:00.000Z'
                 refreshStatus: idle
                 totalEvents: 48521

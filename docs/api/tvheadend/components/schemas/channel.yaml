@@ -14,7 +14,7 @@ Channel:
     name:
       type: string
       description: Channel display name
-      example: "BBC One HD"
+      example: 'BBC One HD'
     number:
       $ref: './common.yaml#/ChannelNumber'
     icon:
@@ -23,7 +23,7 @@ Channel:
       type: string
       format: uri
       description: Public URL for channel icon
-      example: "http://localhost:9981/imagecache/123"
+      example: 'http://localhost:9981/imagecache/123'
     epgauto:
       type: boolean
       description: Automatically update EPG
@@ -34,7 +34,7 @@ Channel:
       description: EPG source IDs
       items:
         type: string
-      example: ["eit"]
+      example: ['eit']
     dvr_pre_time:
       type: integer
       description: Recording padding before (minutes)
@@ -51,18 +51,18 @@ Channel:
       items:
         type: string
         format: uuid
-      example: ["550e8400-e29b-41d4-a716-446655440001"]
+      example: ['550e8400-e29b-41d4-a716-446655440001']
     tags:
       type: array
       description: Channel tag UUIDs
       items:
         type: string
         format: uuid
-      example: ["550e8400-e29b-41d4-a716-446655440002", "550e8400-e29b-41d4-a716-446655440003"]
+      example: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
     bouquet:
       type: string
       description: Bouquet name
-      example: "Freeview HD"
+      example: 'Freeview HD'
   required:
     - uuid
     - name
@@ -74,11 +74,11 @@ ChannelListItem:
     key:
       type: string
       description: Channel UUID (legacy field name)
-      example: "uuid-123"
+      example: 'uuid-123'
     val:
       type: string
       description: Channel display name
-      example: "BBC One HD"
+      example: 'BBC One HD'
   required:
     - key
     - val
@@ -96,16 +96,16 @@ ChannelTag:
     name:
       type: string
       description: Tag name
-      example: "HD Channels"
+      example: 'HD Channels'
     comment:
       type: string
       description: Optional description
-      example: "All high-definition channels"
+      example: 'All high-definition channels'
     icon:
       type: string
       format: uri
       description: Tag icon URL
-      example: "http://localhost:9981/imagecache/tag-hd"
+      example: 'http://localhost:9981/imagecache/tag-hd'
     internal:
       type: boolean
       description: Internal/system tag
@@ -133,11 +133,11 @@ ChannelGridResponse:
             $ref: '#/Channel'
       example:
         entries:
-          - uuid: "550e8400-e29b-41d4-a716-446655440004"
+          - uuid: '550e8400-e29b-41d4-a716-446655440004'
             enabled: true
-            name: "BBC One HD"
+            name: 'BBC One HD'
             number: 101
-            icon: "http://localhost:9981/imagecache/1"
+            icon: 'http://localhost:9981/imagecache/1'
             epgauto: true
         total: 1
         start: 0
@@ -163,10 +163,10 @@ ChannelListResponse:
         $ref: '#/ChannelListItem'
   example:
     entries:
-      - key: "uuid-bbc-one"
-        val: "BBC One HD"
-      - key: "uuid-bbc-two"
-        val: "BBC Two HD"
+      - key: 'uuid-bbc-one'
+        val: 'BBC One HD'
+      - key: 'uuid-bbc-two'
+        val: 'BBC Two HD'
 
 ChannelClass:
   type: object
@@ -177,7 +177,7 @@ ChannelClass:
     caption:
       type: string
       description: Human-readable class name
-      example: "Channel"
+      example: 'Channel'
     properties:
       type: array
       description: Configuration property definitions
@@ -203,9 +203,9 @@ ChannelClass:
             type: boolean
             description: Is property required
         example:
-          id: "name"
-          caption: "Name"
-          type: "str"
+          id: 'name'
+          caption: 'Name'
+          type: 'str'
           required: true
 
 ChannelTagMetadata:
@@ -217,7 +217,7 @@ ChannelTagMetadata:
     caption:
       type: string
       description: Human-readable class name
-      example: "Channel Tag"
+      example: 'Channel Tag'
     properties:
       type: array
       description: Configuration property definitions
@@ -244,11 +244,11 @@ ChannelCategory:
     key:
       type: string
       description: Category code (hexadecimal)
-      example: "0x10"
+      example: '0x10'
     val:
       type: string
       description: Category name
-      example: "Movie/Drama"
+      example: 'Movie/Drama'
   required:
     - key
     - val

@@ -22,7 +22,7 @@ searchByTitle:
   summary: Search programs by title
   description: Full-text search for programs containing "news"
   value:
-    filter: "news"
+    filter: 'news'
     fulltext: 1
     limit: 50
 
@@ -39,47 +39,47 @@ singleEventResponse:
   summary: Single EPG event
   value:
     eventId: 123456
-    channelUuid: "1a2b3c4d5e6f7890abcdef1234567890"
-    channelName: "BBC One HD"
+    channelUuid: '1a2b3c4d5e6f7890abcdef1234567890'
+    channelName: 'BBC One HD'
     channelNumber: 101
-    channelIcon: "imagecache/1"
+    channelIcon: 'imagecache/1'
     start: 1704067200
     stop: 1704070800
     duration: 3600
-    title: "Planet Earth II"
-    subtitle: "Islands"
-    summary: "Wildlife documentary exploring island habitats"
+    title: 'Planet Earth II'
+    subtitle: 'Islands'
+    summary: 'Wildlife documentary exploring island habitats'
     description: "David Attenborough narrates this landmark series exploring the unique wildlife of the world's islands."
     genre: [0x90, 0x93]
     contentType: 144
     seasonNumber: 2
     episodeNumber: 3
-    image: "imagecache/456"
+    image: 'imagecache/456'
     hd: true
     widescreen: true
     subtitled: true
     starRating: 5
     credits:
-      - name: "David Attenborough"
-        role: "presenter"
+      - name: 'David Attenborough'
+        role: 'presenter'
 
 gridResponseExample:
   summary: Grid response with multiple events
   value:
     entries:
       - eventId: 123456
-        channelName: "BBC One HD"
-        channelUuid: "uuid-bbc-one"
+        channelName: 'BBC One HD'
+        channelUuid: 'uuid-bbc-one'
         start: 1704067200
         stop: 1704070800
-        title: "News at Six"
+        title: 'News at Six'
         hd: true
       - eventId: 123457
-        channelName: "ITV HD"
-        channelUuid: "uuid-itv"
+        channelName: 'ITV HD'
+        channelUuid: 'uuid-itv'
         start: 1704067200
         stop: 1704070800
-        title: "Coronation Street"
+        title: 'Coronation Street'
         hd: true
     total: 2
     start: 0
@@ -90,20 +90,20 @@ contentTypeListExample:
   value:
     entries:
       - code: 16
-        name: "Movie/Drama"
-        icon: "movie"
+        name: 'Movie/Drama'
+        icon: 'movie'
       - code: 32
-        name: "News/Current affairs"
-        icon: "news"
+        name: 'News/Current affairs'
+        icon: 'news'
       - code: 48
-        name: "Show/Game show"
-        icon: "show"
+        name: 'Show/Game show'
+        icon: 'show'
       - code: 64
-        name: "Sports"
-        icon: "sports"
+        name: 'Sports'
+        icon: 'sports'
       - code: 80
         name: "Children's/Youth"
-        icon: "children"
+        icon: 'children'
       - code: 96
-        name: "Music/Ballet/Dance"
-        icon: "music"
+        name: 'Music/Ballet/Dance'
+        icon: 'music'

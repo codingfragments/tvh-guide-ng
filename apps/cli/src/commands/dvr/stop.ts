@@ -19,10 +19,7 @@ export function createStopCommand(): Command {
       try {
         // Confirm action unless --yes flag is provided
         if (!options.yes && !globalOpts.quiet) {
-          const confirmed = await confirm(
-            `Are you sure you want to stop recording ${uuid}?`,
-            false
-          );
+          const confirmed = await confirm(`Are you sure you want to stop recording ${uuid}?`, false);
           if (!confirmed) {
             console.log('Cancelled');
             return;

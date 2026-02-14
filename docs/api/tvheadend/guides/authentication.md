@@ -48,40 +48,45 @@ TVHeadend uses a fine-grained privilege system. Each user can be assigned one or
 
 ### Privilege Types
 
-| Privilege | Description | Required For |
-|-----------|-------------|--------------|
-| **admin** | Full administrative access | Config changes, user management, all operations |
-| **streaming** | Stream live TV and recordings | Watching live TV, playing recordings |
-| **recording** | Create and manage DVR recordings | Scheduling recordings, managing DVR |
-| **failed_recorder** | View failed recordings | Accessing error logs for failed recordings |
-| **htsp_streaming** | HTSP protocol streaming access | Using Kodi, other HTSP clients |
-| **htsp_recorder** | HTSP recording access | Recording via HTSP clients |
-| **htsp_anonymize** | Anonymize HTSP connections | Privacy features for HTSP |
-| **web_only** | Web interface only | Web UI access without streaming |
+| Privilege           | Description                      | Required For                                    |
+| ------------------- | -------------------------------- | ----------------------------------------------- |
+| **admin**           | Full administrative access       | Config changes, user management, all operations |
+| **streaming**       | Stream live TV and recordings    | Watching live TV, playing recordings            |
+| **recording**       | Create and manage DVR recordings | Scheduling recordings, managing DVR             |
+| **failed_recorder** | View failed recordings           | Accessing error logs for failed recordings      |
+| **htsp_streaming**  | HTSP protocol streaming access   | Using Kodi, other HTSP clients                  |
+| **htsp_recorder**   | HTSP recording access            | Recording via HTSP clients                      |
+| **htsp_anonymize**  | Anonymize HTSP connections       | Privacy features for HTSP                       |
+| **web_only**        | Web interface only               | Web UI access without streaming                 |
 
 ### Privilege Requirements by API Endpoint
 
 **EPG Endpoints** (Read-only):
+
 - **streaming** privilege recommended
 - Can work without explicit privileges for basic EPG queries
 - Example: `/api/epg/events/grid`
 
 **Channel Endpoints:**
+
 - **streaming** - Read channel list
 - **admin** - Create/modify channels
 - Example: `/api/channel/grid` (streaming), `/api/channel/create` (admin)
 
 **DVR Endpoints:**
+
 - **recording** - Schedule recordings, create auto-rec rules
 - **streaming** - View recording list
 - **admin** - Advanced DVR configuration
 - Example: `/api/dvr/entry/create` (recording required)
 
 **Config Endpoints:**
+
 - **admin** - All configuration operations
 - Example: `/api/config/save` (admin required)
 
 **Status Endpoints:**
+
 - **admin** - Full status access (connections, inputs)
 - **streaming** - Server info access
 - Example: `/api/serverinfo` (streaming), `/api/status/connections` (admin)
@@ -89,18 +94,21 @@ TVHeadend uses a fine-grained privilege system. Each user can be assigned one or
 ### Typical User Profiles
 
 **Read-Only EPG Client:**
+
 ```yaml
 Privileges: streaming
 Use Case: Display program guide, browse channels
 ```
 
 **Recording Client:**
+
 ```yaml
 Privileges: streaming, recording
 Use Case: Full DVR functionality, watch live TV
 ```
 
 **Admin Client:**
+
 ```yaml
 Privileges: admin, streaming, recording
 Use Case: Full system management, monitoring
@@ -127,6 +135,7 @@ Privileges: admin
 ```
 
 **Benefits:**
+
 - Easy to revoke access for specific client
 - Audit trail in logs
 - Principle of least privilege
@@ -136,12 +145,14 @@ Privileges: admin
 TVHeadend sends credentials in Base64 encoding (not encrypted). Always use HTTPS in production:
 
 **Configure HTTPS in TVHeadend:**
+
 1. Configuration → General → Base
 2. Enable **Use SSL/TLS**
 3. Provide certificate and key paths
 4. Restart TVHeadend
 
 **Update API URL:**
+
 ```bash
 curl -u username:password \
   https://tvheadend.example.com:9981/api/channel/grid
@@ -162,12 +173,14 @@ Network Prefix Examples:
 ### 4. Use Strong Passwords
 
 For API users:
+
 - Minimum 16 characters
 - Mix of letters, numbers, symbols
 - Unique per user
 - Rotate regularly (every 90 days)
 
 **Generate secure password:**
+
 ```bash
 openssl rand -base64 24
 ```
@@ -175,11 +188,13 @@ openssl rand -base64 24
 ### 5. Implement Rate Limiting
 
 Protect against brute force attacks:
+
 - Use reverse proxy (nginx, Caddy) with rate limiting
 - Monitor failed authentication attempts
 - Implement IP blocking after repeated failures
 
 **Example nginx rate limiting:**
+
 ```nginx
 limit_req_zone $binary_remote_addr zone=tvh_api:10m rate=10r/s;
 
@@ -194,6 +209,7 @@ server {
 ### 6. Rotate Credentials
 
 Establish a credential rotation policy:
+
 - Change passwords every 90 days
 - Update client configurations
 - Log rotation events
@@ -205,6 +221,7 @@ Establish a credential rotation policy:
 **Cause:** Invalid credentials or missing authentication header
 
 **Response:**
+
 ```json
 {
   "error": "Authentication required",
@@ -213,12 +230,14 @@ Establish a credential rotation policy:
 ```
 
 **Solutions:**
+
 1. Verify username and password are correct
 2. Check user is enabled in TVHeadend
 3. Ensure credentials are properly encoded
 4. Test with web UI login first
 
 **Debug:**
+
 ```bash
 # Test credentials with basic auth
 curl -v -u username:password \
@@ -233,6 +252,7 @@ echo -n 'username:password' | base64
 **Cause:** Authenticated but insufficient privileges
 
 **Response:**
+
 ```json
 {
   "error": "Insufficient privileges",
@@ -242,11 +262,13 @@ echo -n 'username:password' | base64
 ```
 
 **Solutions:**
+
 1. Add required privilege to user account
 2. Use different user with appropriate privileges
 3. Contact admin for privilege upgrade
 
 **Check user privileges:**
+
 - Log into TVHeadend web UI as admin
 - Configuration → Users → Access Entries
 - Find user and verify privilege checkboxes
@@ -262,16 +284,16 @@ const tvhClient = axios.create({
   baseURL: 'http://localhost:9981',
   auth: {
     username: 'api-user',
-    password: 'secure-password'
-  }
+    password: 'secure-password',
+  },
 });
 
 // Query EPG
 const epg = await tvhClient.get('/api/epg/events/grid', {
   params: {
     mode: 'now',
-    limit: 50
-  }
+    limit: 50,
+  },
 });
 
 console.log(epg.data);
@@ -343,6 +365,7 @@ func main() {
 ### cURL Advanced Examples
 
 **Store credentials in file:**
+
 ```bash
 # Create .netrc file (chmod 600)
 cat > ~/.netrc << EOF
@@ -358,6 +381,7 @@ curl -n http://localhost:9981/api/channel/grid
 ```
 
 **Use environment variables:**
+
 ```bash
 export TVH_USER="api-user"
 export TVH_PASS="secure-password"
@@ -374,6 +398,7 @@ curl -u "$TVH_USER:$TVH_PASS" \
 **Cause:** Browser may have saved session/cookies
 
 **Solution:** Test with fresh incognito window or use curl:
+
 ```bash
 curl -v -u username:password http://localhost:9981/api/serverinfo
 ```
@@ -381,11 +406,13 @@ curl -v -u username:password http://localhost:9981/api/serverinfo
 ### Problem: Intermittent 401 errors
 
 **Possible causes:**
+
 1. Password contains special characters causing encoding issues
 2. Credential rotation in progress
 3. Network proxy interfering
 
 **Debug:**
+
 ```bash
 # Check if special chars are causing issues
 curl -v -u 'username':'password' http://localhost:9981/api/serverinfo
@@ -398,11 +425,13 @@ curl -u "username:$PASS_ENCODED" http://localhost:9981/api/serverinfo
 ### Problem: 403 Forbidden despite having privileges
 
 **Possible causes:**
+
 1. User privileges not saved properly
 2. TVHeadend needs restart after privilege changes
 3. Network prefix restricting access
 
 **Solutions:**
+
 1. Re-save user configuration in web UI
 2. Restart TVHeadend: `systemctl restart tvheadend`
 3. Check access logs: `/var/log/tvheadend.log`

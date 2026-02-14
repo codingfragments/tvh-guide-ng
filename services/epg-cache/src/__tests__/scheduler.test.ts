@@ -23,10 +23,16 @@ function createMockClient(eventCount = 2, channelCount = 1): TVHeadendClient {
 
   return {
     getEpgEventsGrid: vi.fn().mockResolvedValue({
-      entries: events, total: eventCount, start: 0, limit: 500,
+      entries: events,
+      total: eventCount,
+      start: 0,
+      limit: 500,
     } satisfies EpgGridResponse),
     getChannelGrid: vi.fn().mockResolvedValue({
-      entries: channels, total: channelCount, start: 0, limit: 500,
+      entries: channels,
+      total: channelCount,
+      start: 0,
+      limit: 500,
     } satisfies ChannelGridResponse),
   } as unknown as TVHeadendClient;
 }
@@ -73,12 +79,17 @@ describe('RefreshScheduler', () => {
 
   it('should report refreshing state', async () => {
     let resolveEvents!: (value: unknown) => void;
-    const delayedPromise = new Promise((res) => { resolveEvents = res; });
+    const delayedPromise = new Promise((res) => {
+      resolveEvents = res;
+    });
 
     const client = {
       getEpgEventsGrid: vi.fn().mockReturnValue(delayedPromise),
       getChannelGrid: vi.fn().mockResolvedValue({
-        entries: [], total: 0, start: 0, limit: 500,
+        entries: [],
+        total: 0,
+        start: 0,
+        limit: 500,
       }),
     } as unknown as TVHeadendClient;
 

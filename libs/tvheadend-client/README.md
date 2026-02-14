@@ -142,13 +142,13 @@ const manualRecording = await client.createDvrEntry({
 const eventRecording = await client.createDvrEntryByEvent({
   event_id: 123456,
   config_uuid: 'config-uuid', // Optional DVR config UUID
-  pri: 2,                     // Optional priority (0=important, 6=unimportant)
-  config_name: 'HDTV',        // Optional DVR config profile name
+  pri: 2, // Optional priority (0=important, 6=unimportant)
+  config_name: 'HDTV', // Optional DVR config profile name
 });
 
 // Recording lifecycle management
 await client.cancelDvrEntry({ uuid: 'dvr-uuid' }); // Cancel scheduled
-await client.stopDvrEntry({ uuid: 'dvr-uuid' });   // Stop active
+await client.stopDvrEntry({ uuid: 'dvr-uuid' }); // Stop active
 await client.removeDvrEntry({ uuid: 'dvr-uuid' }); // Remove/delete
 
 // Auto-recording rules
@@ -324,10 +324,10 @@ Most list endpoints return paginated "grid" responses with a consistent structur
 
 ```typescript
 interface GridResponse<T> {
-  entries: T[];    // Array of items
-  total: number;   // Total number of items (before pagination)
-  start: number;   // Starting offset
-  limit: number;   // Maximum items per page
+  entries: T[]; // Array of items
+  total: number; // Total number of items (before pagination)
+  start: number; // Starting offset
+  limit: number; // Maximum items per page
 }
 
 // Use pagination

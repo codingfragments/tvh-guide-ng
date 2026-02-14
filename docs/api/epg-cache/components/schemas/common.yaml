@@ -14,10 +14,10 @@ CacheHealthMeta:
     lastRefresh:
       type:
         - string
-        - "null"
+        - 'null'
       format: date-time
       description: ISO timestamp of last refresh completion. Null if never refreshed.
-      example: "2026-02-14T10:00:00.000Z"
+      example: '2026-02-14T10:00:00.000Z'
     refreshStatus:
       type: string
       enum:
@@ -63,10 +63,10 @@ HealthResponse:
     lastRefresh:
       type:
         - string
-        - "null"
+        - 'null'
       format: date-time
       description: ISO timestamp of last refresh completion.
-      example: "2026-02-14T10:00:00.000Z"
+      example: '2026-02-14T10:00:00.000Z'
     refreshStatus:
       type: string
       enum:
@@ -86,16 +86,16 @@ HealthResponse:
     lastRefreshDuration:
       type:
         - number
-        - "null"
+        - 'null'
       description: Duration of the last refresh in seconds. Null if never refreshed.
       example: 12.5
     nextRefresh:
       type:
         - string
-        - "null"
+        - 'null'
       format: date-time
       description: ISO timestamp of next scheduled refresh.
-      example: "2026-02-14T11:00:00.000Z"
+      example: '2026-02-14T11:00:00.000Z'
 
 SearchResult:
   type: object

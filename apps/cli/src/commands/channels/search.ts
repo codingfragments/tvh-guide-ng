@@ -23,9 +23,7 @@ export function createSearchCommand(): Command {
         const { client, config } = createClientAndConfig(globalOpts);
 
         // Build filter for substring search using regex
-        const filter: FilterCondition[] = [
-          { field: 'name', type: 'string', comparison: 'regex', value: query },
-        ];
+        const filter: FilterCondition[] = [{ field: 'name', type: 'string', comparison: 'regex', value: query }];
 
         const response = await client.getChannelGrid({
           limit: parseInt(options.limit),
@@ -56,7 +54,7 @@ export function createSearchCommand(): Command {
           response.entries,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);
