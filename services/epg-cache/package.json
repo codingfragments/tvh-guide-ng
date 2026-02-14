@@ -23,7 +23,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "echo 'Lint script placeholder'",
+    "lint": "eslint src/",
     "clean": "rm -rf dist"
   },
   "keywords": [

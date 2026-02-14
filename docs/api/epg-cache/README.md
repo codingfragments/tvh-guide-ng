@@ -10,14 +10,14 @@ The EPG Cache service syncs program guide data from TVHeadend into SQLite and ex
 
 ### Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/health` | Health check with cache status |
-| GET | `/api/events/search` | Fuzzy text search |
-| GET | `/api/events/timerange` | Query events by time window |
-| GET | `/api/events/:eventId` | Get single event by ID |
-| GET | `/api/channels` | List all cached channels |
-| POST | `/api/cache/refresh` | Trigger manual cache refresh |
+| Method | Path                    | Description                    |
+| ------ | ----------------------- | ------------------------------ |
+| GET    | `/api/health`           | Health check with cache status |
+| GET    | `/api/events/search`    | Fuzzy text search              |
+| GET    | `/api/events/timerange` | Query events by time window    |
+| GET    | `/api/events/:eventId`  | Get single event by ID         |
+| GET    | `/api/channels`         | List all cached channels       |
+| POST   | `/api/cache/refresh`    | Trigger manual cache refresh   |
 
 ## Viewing the Docs
 

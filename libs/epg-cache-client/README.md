@@ -49,28 +49,34 @@ const refresh = await client.triggerRefresh();
 
 ### `new EpgCacheClient(config)`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `baseUrl` | `string` | — | EPG Cache service URL |
+| Option    | Type     | Default | Description           |
+| --------- | -------- | ------- | --------------------- |
+| `baseUrl` | `string` | —       | EPG Cache service URL |
 | `timeout` | `number` | `10000` | Request timeout in ms |
 
 ### Methods
 
-| Method | Endpoint | Returns |
-|--------|----------|---------|
-| `getHealth()` | `GET /api/health` | `HealthResponse` |
-| `searchEvents(params)` | `GET /api/events/search` | `ApiResponse<SearchResult[]>` |
-| `getEventsByTimerange(params)` | `GET /api/events/timerange` | `ApiResponse<EpgEvent[]>` |
-| `getEvent(eventId)` | `GET /api/events/:eventId` | `ApiResponse<EpgEvent>` |
-| `getChannels()` | `GET /api/channels` | `ApiResponse<CachedChannel[]>` |
-| `triggerRefresh()` | `POST /api/cache/refresh` | `RefreshAcceptedResponse` |
+| Method                         | Endpoint                    | Returns                        |
+| ------------------------------ | --------------------------- | ------------------------------ |
+| `getHealth()`                  | `GET /api/health`           | `HealthResponse`               |
+| `searchEvents(params)`         | `GET /api/events/search`    | `ApiResponse<SearchResult[]>`  |
+| `getEventsByTimerange(params)` | `GET /api/events/timerange` | `ApiResponse<EpgEvent[]>`      |
+| `getEvent(eventId)`            | `GET /api/events/:eventId`  | `ApiResponse<EpgEvent>`        |
+| `getChannels()`                | `GET /api/channels`         | `ApiResponse<CachedChannel[]>` |
+| `triggerRefresh()`             | `POST /api/cache/refresh`   | `RefreshAcceptedResponse`      |
 
 ### Error Handling
 
 All methods throw typed errors from the `EpgCacheError` hierarchy:
 
 ```typescript
-import { EpgCacheClient, BadRequestError, NotFoundError, ConflictError, NetworkError } from '@tvh-guide/epg-cache-client';
+import {
+  EpgCacheClient,
+  BadRequestError,
+  NotFoundError,
+  ConflictError,
+  NetworkError,
+} from '@tvh-guide/epg-cache-client';
 
 try {
   await client.triggerRefresh();
@@ -83,13 +89,13 @@ try {
 }
 ```
 
-| Error Class | HTTP Status | When |
-|-------------|-------------|------|
-| `BadRequestError` | 400 | Missing or invalid parameters |
-| `NotFoundError` | 404 | Event or channel not found |
-| `ConflictError` | 409 | Refresh already in progress |
-| `NetworkError` | — | Connection failed or timeout |
-| `EpgCacheError` | other | Any other HTTP error |
+| Error Class       | HTTP Status | When                          |
+| ----------------- | ----------- | ----------------------------- |
+| `BadRequestError` | 400         | Missing or invalid parameters |
+| `NotFoundError`   | 404         | Event or channel not found    |
+| `ConflictError`   | 409         | Refresh already in progress   |
+| `NetworkError`    | —           | Connection failed or timeout  |
+| `EpgCacheError`   | other       | Any other HTTP error          |
 
 ## Development
 

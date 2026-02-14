@@ -7,7 +7,7 @@ ChannelParam:
     Returns 404 if the channel is not found.
   schema:
     type: string
-  example: "1"
+  example: '1'
 
 StartParam:
   name: start

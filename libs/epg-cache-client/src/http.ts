@@ -1,10 +1,4 @@
-import {
-  EpgCacheError,
-  BadRequestError,
-  NotFoundError,
-  ConflictError,
-  NetworkError,
-} from './errors.js';
+import { EpgCacheError, BadRequestError, NotFoundError, ConflictError, NetworkError } from './errors.js';
 
 export interface RequestOptions {
   method?: string;
@@ -51,7 +45,7 @@ export async function request<T>(url: string, options: RequestOptions = {}): Pro
         throw new ConflictError(errorBody || 'Conflict');
       default:
         throw new EpgCacheError(
-          `HTTP ${response.status}: ${errorBody || response.statusText}`,
+          `HTTP ${String(response.status)}: ${errorBody || response.statusText}`,
           response.status,
         );
     }
@@ -61,20 +55,14 @@ export async function request<T>(url: string, options: RequestOptions = {}): Pro
   try {
     return (await response.json()) as T;
   } catch (error) {
-    throw new EpgCacheError(
-      `Failed to parse response: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    );
+    throw new EpgCacheError(`Failed to parse response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
  * Builds a URL with query parameters. Undefined values are omitted.
  */
-export function buildUrl(
-  baseUrl: string,
-  path: string,
-  params?: Record<string, string | number | undefined>,
-): string {
+export function buildUrl(baseUrl: string, path: string, params?: Record<string, string | number | undefined>): string {
   const url = new URL(path, baseUrl);
 
   if (params) {

@@ -1,13 +1,19 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>tvh-guide API Documentation</title>
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         background: #f5f7fa;
         color: #1a1a2e;
         min-height: 100vh;
@@ -40,10 +46,12 @@
         padding: 2rem;
         text-decoration: none;
         color: inherit;
-        transition: box-shadow 0.15s, transform 0.15s;
+        transition:
+          box-shadow 0.15s,
+          transform 0.15s;
       }
       .card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         transform: translateY(-2px);
       }
       .card h2 {
@@ -63,8 +71,14 @@
         border-radius: 4px;
         margin-top: 1rem;
       }
-      .badge-tvh { background: #e8f4fd; color: #0c6ebd; }
-      .badge-epg { background: #e8fde8; color: #1a8a1a; }
+      .badge-tvh {
+        background: #e8f4fd;
+        color: #0c6ebd;
+      }
+      .badge-epg {
+        background: #e8fde8;
+        color: #1a8a1a;
+      }
       footer {
         margin-top: 3rem;
         color: #888;
@@ -80,8 +94,8 @@
       <a class="card" href="tvheadend/index.html">
         <h2>TVHeadend API</h2>
         <p>
-          OpenAPI 3.1 spec for the TVHeadend JSON API. Covers EPG, channels, DVR,
-          configuration, and status monitoring — 53 endpoints.
+          OpenAPI 3.1 spec for the TVHeadend JSON API. Covers EPG, channels, DVR, configuration, and status monitoring —
+          53 endpoints.
         </p>
         <span class="badge badge-tvh">53 endpoints</span>
       </a>
@@ -89,15 +103,13 @@
       <a class="card" href="epg-cache/index.html">
         <h2>EPG Cache API</h2>
         <p>
-          REST API for the epg-cache service. Fuzzy text search, timerange queries,
-          channel listing, and cache management — 6 endpoints.
+          REST API for the epg-cache service. Fuzzy text search, timerange queries, channel listing, and cache
+          management — 6 endpoints.
         </p>
         <span class="badge badge-epg">6 endpoints</span>
       </a>
     </div>
 
-    <footer>
-      Served with Stoplight Elements &middot; Specs in OpenAPI 3.1
-    </footer>
+    <footer>Served with Stoplight Elements &middot; Specs in OpenAPI 3.1</footer>
   </body>
 </html>

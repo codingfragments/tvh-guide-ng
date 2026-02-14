@@ -57,9 +57,7 @@ describe('SearchIndex', () => {
   });
 
   it('should find events with fuzzy matching', () => {
-    store.replaceAllEvents([
-      makeEvent({ eventId: 1, title: 'Tagesschau' }),
-    ]);
+    store.replaceAllEvents([makeEvent({ eventId: 1, title: 'Tagesschau' })]);
     searchIndex.rebuild(store);
 
     const results = searchIndex.search('Tagesschaw');
@@ -68,9 +66,7 @@ describe('SearchIndex', () => {
   });
 
   it('should find events with prefix matching', () => {
-    store.replaceAllEvents([
-      makeEvent({ eventId: 1, title: 'Tagesschau' }),
-    ]);
+    store.replaceAllEvents([makeEvent({ eventId: 1, title: 'Tagesschau' })]);
     searchIndex.rebuild(store);
 
     const results = searchIndex.search('Tages');
@@ -103,9 +99,7 @@ describe('SearchIndex', () => {
   });
 
   it('should return empty array for no matches', () => {
-    store.replaceAllEvents([
-      makeEvent({ eventId: 1, title: 'Tagesschau' }),
-    ]);
+    store.replaceAllEvents([makeEvent({ eventId: 1, title: 'Tagesschau' })]);
     searchIndex.rebuild(store);
 
     const results = searchIndex.search('zzzzxyz');
@@ -114,7 +108,13 @@ describe('SearchIndex', () => {
 
   it('should search across subtitle, summary, description', () => {
     store.replaceAllEvents([
-      makeEvent({ eventId: 1, title: 'Film', subtitle: 'Spannung', summary: 'Ein Thriller', description: 'Detaillierte Beschreibung' }),
+      makeEvent({
+        eventId: 1,
+        title: 'Film',
+        subtitle: 'Spannung',
+        summary: 'Ein Thriller',
+        description: 'Detaillierte Beschreibung',
+      }),
     ]);
     searchIndex.rebuild(store);
 

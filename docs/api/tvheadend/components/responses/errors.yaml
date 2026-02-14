@@ -9,12 +9,12 @@ BadRequest:
       examples:
         invalidParameter:
           value:
-            error: "Invalid parameters"
-            text: "The uuid parameter is required"
+            error: 'Invalid parameters'
+            text: 'The uuid parameter is required'
         validationFailed:
           value:
-            error: "Validation failed"
-            text: "Channel number must be positive"
+            error: 'Validation failed'
+            text: 'Channel number must be positive'
 
 Unauthorized:
   description: Unauthorized - Authentication required or failed
@@ -23,8 +23,8 @@ Unauthorized:
       schema:
         $ref: '../schemas/error.yaml#/AuthenticationError'
       example:
-        error: "Authentication required"
-        text: "Please provide valid credentials via HTTP Basic Auth"
+        error: 'Authentication required'
+        text: 'Please provide valid credentials via HTTP Basic Auth'
 
 Forbidden:
   description: Forbidden - Insufficient privileges for this operation
@@ -35,14 +35,14 @@ Forbidden:
       examples:
         insufficientPrivileges:
           value:
-            error: "Insufficient privileges"
-            text: "Recording privilege required"
-            required_privileges: ["recording"]
+            error: 'Insufficient privileges'
+            text: 'Recording privilege required'
+            required_privileges: ['recording']
         adminOnly:
           value:
-            error: "Administrative access required"
-            text: "This operation requires admin privileges"
-            required_privileges: ["admin"]
+            error: 'Administrative access required'
+            text: 'This operation requires admin privileges'
+            required_privileges: ['admin']
 
 NotFound:
   description: Not Found - The requested resource does not exist
@@ -53,12 +53,12 @@ NotFound:
       examples:
         channelNotFound:
           value:
-            error: "Channel not found"
-            text: "No channel exists with the provided UUID"
+            error: 'Channel not found'
+            text: 'No channel exists with the provided UUID'
         eventNotFound:
           value:
-            error: "EPG event not found"
-            text: "The requested event is not in the program guide"
+            error: 'EPG event not found'
+            text: 'The requested event is not in the program guide'
 
 Conflict:
   description: Conflict - The request conflicts with current state
@@ -69,12 +69,12 @@ Conflict:
       examples:
         recordingConflict:
           value:
-            error: "Recording conflict"
-            text: "A recording already exists for this time slot"
+            error: 'Recording conflict'
+            text: 'A recording already exists for this time slot'
         duplicateEntry:
           value:
-            error: "Duplicate entry"
-            text: "An entry with this name already exists"
+            error: 'Duplicate entry'
+            text: 'An entry with this name already exists'
 
 InternalServerError:
   description: Internal Server Error - Unexpected server error
@@ -83,5 +83,5 @@ InternalServerError:
       schema:
         $ref: '../schemas/error.yaml#/ErrorResponse'
       example:
-        error: "Internal server error"
-        text: "An unexpected error occurred. Please check TVHeadend logs."
+        error: 'Internal server error'
+        text: 'An unexpected error occurred. Please check TVHeadend logs.'

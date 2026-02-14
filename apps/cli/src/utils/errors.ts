@@ -18,18 +18,12 @@ export function handleError(error: unknown, verbose = false): never {
 
     // Provide helpful hints for common errors
     if (error.message.includes('ECONNREFUSED')) {
-      console.error(
-        chalk.yellow('\nHint:'),
-        'Could not connect to TVHeadend server. Check that:'
-      );
+      console.error(chalk.yellow('\nHint:'), 'Could not connect to TVHeadend server. Check that:');
       console.error('  1. The server URL is correct (use --url flag)');
       console.error('  2. TVHeadend is running');
       console.error('  3. The port is accessible');
     } else if (error.message.includes('401') || error.message.includes('authentication')) {
-      console.error(
-        chalk.yellow('\nHint:'),
-        'Authentication failed. Check your username and password.'
-      );
+      console.error(chalk.yellow('\nHint:'), 'Authentication failed. Check your username and password.');
       console.error('  Use --username and --password flags or configure ~/.tvhrc');
     } else if (error.message.includes('Server URL is required')) {
       console.error(chalk.yellow('\nHint:'), 'You can configure the server in two ways:');

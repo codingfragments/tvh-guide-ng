@@ -18,7 +18,7 @@ export function createInfoCommand(): Command {
       const spinner = ora('Fetching server information...').start();
 
       try {
-        const { client, config } = createClientAndConfig(globalOpts);
+        const { client } = createClientAndConfig(globalOpts);
 
         const serverInfo = await client.getServerInfo();
 

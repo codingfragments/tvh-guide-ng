@@ -17,11 +17,11 @@ EpgEvent:
       type: string
       format: uuid
       description: UUID of the channel broadcasting this event.
-      example: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+      example: 'd3f1a2b4-5678-9abc-def0-1234567890ab'
     channelName:
       type: string
       description: Human-readable channel name.
-      example: "Das Erste HD"
+      example: 'Das Erste HD'
     channelNumber:
       type: integer
       description: Channel number.
@@ -29,7 +29,7 @@ EpgEvent:
     channelIcon:
       type: string
       description: Channel icon URL.
-      example: "imagecache/42"
+      example: 'imagecache/42'
     start:
       type: integer
       description: Event start time (Unix epoch seconds).
@@ -45,7 +45,7 @@ EpgEvent:
     title:
       type: string
       description: Event title/name.
-      example: "Tagesschau"
+      example: 'Tagesschau'
     subtitle:
       type: string
       description: Episode subtitle or secondary title.

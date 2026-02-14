@@ -11,13 +11,13 @@
     tags:
       - Cache
     responses:
-      "202":
+      '202':
         description: Refresh started successfully.
         content:
           application/json:
             schema:
               $ref: '../components/schemas/error.yaml#/RefreshAccepted'
             example:
-              message: "Refresh started"
-      "409":
+              message: 'Refresh started'
+      '409':
         $ref: '../components/responses/errors.yaml#/Conflict'

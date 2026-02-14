@@ -28,9 +28,4 @@ export { handleError, warn, success, info } from './utils/errors.js';
 export { prompt, promptPassword, confirm } from './utils/prompts.js';
 
 // Export configuration types
-export type {
-  ServerConfig,
-  DefaultsConfig,
-  TVHConfig,
-  CLIOptions,
-} from './types/config.js';
+export type { ServerConfig, DefaultsConfig, TVHConfig, CLIOptions } from './types/config.js';

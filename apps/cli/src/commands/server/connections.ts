@@ -24,7 +24,7 @@ export function createConnectionsCommand(): Command {
 
         spinner.stop();
 
-        if (!response.entries || response.entries.length === 0) {
+        if (response.entries.length === 0) {
           console.log('No active connections');
           return;
         }
@@ -41,7 +41,7 @@ export function createConnectionsCommand(): Command {
           response.entries,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);

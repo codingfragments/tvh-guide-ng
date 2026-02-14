@@ -107,11 +107,7 @@ describe('EpgStore', () => {
     });
 
     it('should get events by ids', () => {
-      store.replaceAllEvents([
-        makeEvent({ eventId: 1 }),
-        makeEvent({ eventId: 2 }),
-        makeEvent({ eventId: 3 }),
-      ]);
+      store.replaceAllEvents([makeEvent({ eventId: 1 }), makeEvent({ eventId: 2 }), makeEvent({ eventId: 3 })]);
 
       const results = store.getEventsByIds([1, 3]);
       expect(results).toHaveLength(2);
@@ -143,7 +139,14 @@ describe('EpgStore', () => {
   describe('channels', () => {
     it('should store and retrieve channels', () => {
       store.replaceAllChannels([
-        { uuid: 'ch-1', name: 'Das Erste HD', number: 1, enabled: true, icon: '/icon1.png', iconPublicUrl: 'http://example.com/icon1.png' },
+        {
+          uuid: 'ch-1',
+          name: 'Das Erste HD',
+          number: 1,
+          enabled: true,
+          icon: '/icon1.png',
+          iconPublicUrl: 'http://example.com/icon1.png',
+        },
         { uuid: 'ch-2', name: 'ZDF HD', number: 2 },
       ]);
 
@@ -155,9 +158,7 @@ describe('EpgStore', () => {
     });
 
     it('should look up channel by UUID', () => {
-      store.replaceAllChannels([
-        { uuid: 'abc-def', name: 'ARD', number: 1 },
-      ]);
+      store.replaceAllChannels([{ uuid: 'abc-def', name: 'ARD', number: 1 }]);
 
       const ch = store.getChannelByUuidOrNumber('abc-def');
       expect(ch).toBeDefined();
@@ -165,9 +166,7 @@ describe('EpgStore', () => {
     });
 
     it('should look up channel by number', () => {
-      store.replaceAllChannels([
-        { uuid: 'abc-def', name: 'ARD', number: 1 },
-      ]);
+      store.replaceAllChannels([{ uuid: 'abc-def', name: 'ARD', number: 1 }]);
 
       const ch = store.getChannelByUuidOrNumber('1');
       expect(ch).toBeDefined();
@@ -194,7 +193,13 @@ describe('EpgStore', () => {
   describe('indexing projection', () => {
     it('should return lightweight events for indexing', () => {
       store.replaceAllEvents([
-        makeEvent({ eventId: 1, title: 'Tagesschau', subtitle: 'News', summary: 'Daily news', description: 'Full desc' }),
+        makeEvent({
+          eventId: 1,
+          title: 'Tagesschau',
+          subtitle: 'News',
+          summary: 'Daily news',
+          description: 'Full desc',
+        }),
       ]);
 
       const indexable = store.getAllEventsForIndexing();

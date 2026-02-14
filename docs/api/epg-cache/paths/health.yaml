@@ -13,7 +13,7 @@
     tags:
       - Health
     responses:
-      "200":
+      '200':
         description: Health status of the cache service.
         content:
           application/json:
@@ -22,9 +22,9 @@
             example:
               status: healthy
               cacheAge: 542
-              lastRefresh: "2026-02-14T10:00:00.000Z"
+              lastRefresh: '2026-02-14T10:00:00.000Z'
               refreshStatus: idle
               totalEvents: 48521
               totalChannels: 150
               lastRefreshDuration: 12.5
-              nextRefresh: "2026-02-14T11:00:00.000Z"
+              nextRefresh: '2026-02-14T11:00:00.000Z'

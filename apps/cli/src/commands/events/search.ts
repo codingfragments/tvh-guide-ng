@@ -36,9 +36,7 @@ export function createSearchCommand(): Command {
               limit: 999,
               start: 0,
             });
-            const channel = channelsResponse.entries.find(
-              (ch) => ch.number === channelNumber
-            );
+            const channel = channelsResponse.entries.find((ch) => ch.number === channelNumber);
             if (channel) {
               channelUuid = channel.uuid;
             } else {
@@ -51,9 +49,7 @@ export function createSearchCommand(): Command {
 
         // Build filter
         const now = Math.floor(Date.now() / 1000);
-        const filter: FilterCondition[] = [
-          { field: 'title', type: 'string', comparison: 'regex', value: query },
-        ];
+        const filter: FilterCondition[] = [{ field: 'title', type: 'string', comparison: 'regex', value: query }];
 
         if (options.genre) {
           filter.push({
@@ -118,7 +114,7 @@ export function createSearchCommand(): Command {
           response.entries,
           globalOpts.format || options.format,
           columns,
-          config.defaults?.color !== false
+          config.defaults?.color !== false,
         );
 
         console.log(output);

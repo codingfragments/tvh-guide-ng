@@ -55,7 +55,7 @@ servers:
         default: localhost
         description: Server hostname or IP
       port:
-        default: "9981"
+        default: '9981'
         description: HTTP port
 
 security:

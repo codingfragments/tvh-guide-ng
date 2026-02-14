@@ -43,10 +43,7 @@ describe('Config API', () => {
 
       const result = await client.loadConfig();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/config/load'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/config/load'), expect.any(Object));
       expect(result.uuid).toBeDefined();
     });
 
@@ -61,10 +58,7 @@ describe('Config API', () => {
 
       const result = await client.loadConfig('node-1');
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('node=node-1'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('node=node-1'), expect.any(Object));
       expect(result.uuid).toBe('node-1');
     });
   });
@@ -100,10 +94,7 @@ describe('Config API', () => {
 
       const result = await client.getServerCapabilities();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/serverinfo'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/serverinfo'), expect.any(Object));
       expect(result).toBeDefined();
       expect(result.entries).toEqual(mockServerInfo.capabilities);
     });
@@ -135,10 +126,7 @@ describe('Config API', () => {
 
       const result = await client.getServerInfo();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/serverinfo'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/serverinfo'), expect.any(Object));
       expect(result).toEqual(mockServerInfo);
       expect(result.name).toBe('Test TVHeadend Server');
       expect(result.api_version).toBe(20);
@@ -154,10 +142,7 @@ describe('Config API', () => {
 
       const result = await client.getConfigDvrGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/config/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/config/grid'), expect.any(Object));
       expect(result).toBeDefined();
     });
   });

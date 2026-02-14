@@ -28,9 +28,12 @@ describe('request', () => {
 
     const result = await request<typeof data>('http://localhost:3000/api/health');
     expect(result).toEqual(data);
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/health', expect.objectContaining({
-      method: 'GET',
-    }));
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:3000/api/health',
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
   });
 
   it('makes a POST request', async () => {
@@ -41,9 +44,12 @@ describe('request', () => {
       method: 'POST',
     });
     expect(result).toEqual(data);
-    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/api/cache/refresh', expect.objectContaining({
-      method: 'POST',
-    }));
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:3000/api/cache/refresh',
+      expect.objectContaining({
+        method: 'POST',
+      }),
+    );
   });
 
   it('passes timeout via AbortSignal', async () => {
@@ -57,64 +63,43 @@ describe('request', () => {
   });
 
   it('throws BadRequestError on 400', async () => {
-    vi.mocked(fetch).mockResolvedValue(mockFetchResponse(
-      { error: 'Query parameter "q" is required' },
-      400,
-      'Bad Request',
-    ));
+    vi.mocked(fetch).mockResolvedValue(
+      mockFetchResponse({ error: 'Query parameter "q" is required' }, 400, 'Bad Request'),
+    );
 
-    await expect(request('http://localhost:3000/api/events/search'))
-      .rejects.toThrow(BadRequestError);
+    await expect(request('http://localhost:3000/api/events/search')).rejects.toThrow(BadRequestError);
   });
 
   it('throws NotFoundError on 404', async () => {
-    vi.mocked(fetch).mockResolvedValue(mockFetchResponse(
-      { error: 'Event not found' },
-      404,
-      'Not Found',
-    ));
+    vi.mocked(fetch).mockResolvedValue(mockFetchResponse({ error: 'Event not found' }, 404, 'Not Found'));
 
-    await expect(request('http://localhost:3000/api/events/999'))
-      .rejects.toThrow(NotFoundError);
+    await expect(request('http://localhost:3000/api/events/999')).rejects.toThrow(NotFoundError);
   });
 
   it('throws ConflictError on 409', async () => {
-    vi.mocked(fetch).mockResolvedValue(mockFetchResponse(
-      { error: 'Refresh already in progress' },
-      409,
-      'Conflict',
-    ));
+    vi.mocked(fetch).mockResolvedValue(mockFetchResponse({ error: 'Refresh already in progress' }, 409, 'Conflict'));
 
-    await expect(request('http://localhost:3000/api/cache/refresh', { method: 'POST' }))
-      .rejects.toThrow(ConflictError);
+    await expect(request('http://localhost:3000/api/cache/refresh', { method: 'POST' })).rejects.toThrow(ConflictError);
   });
 
   it('throws EpgCacheError on other HTTP errors', async () => {
-    vi.mocked(fetch).mockResolvedValue(mockFetchResponse(
-      'Internal Server Error',
-      500,
-      'Internal Server Error',
-    ));
+    vi.mocked(fetch).mockResolvedValue(mockFetchResponse('Internal Server Error', 500, 'Internal Server Error'));
 
-    await expect(request('http://localhost:3000/api/health'))
-      .rejects.toThrow(EpgCacheError);
+    await expect(request('http://localhost:3000/api/health')).rejects.toThrow(EpgCacheError);
   });
 
   it('throws NetworkError when fetch rejects', async () => {
     vi.mocked(fetch).mockRejectedValue(new TypeError('fetch failed'));
 
-    await expect(request('http://localhost:3000/api/health'))
-      .rejects.toThrow(NetworkError);
+    await expect(request('http://localhost:3000/api/health')).rejects.toThrow(NetworkError);
   });
 
   it('throws NetworkError on timeout', async () => {
     const timeoutError = new DOMException('The operation was aborted.', 'TimeoutError');
     vi.mocked(fetch).mockRejectedValue(timeoutError);
 
-    await expect(request('http://localhost:3000/api/health', { timeout: 100 }))
-      .rejects.toThrow(NetworkError);
-    await expect(request('http://localhost:3000/api/health', { timeout: 100 }))
-      .rejects.toThrow('Request timed out');
+    await expect(request('http://localhost:3000/api/health', { timeout: 100 })).rejects.toThrow(NetworkError);
+    await expect(request('http://localhost:3000/api/health', { timeout: 100 })).rejects.toThrow('Request timed out');
   });
 
   it('throws EpgCacheError on invalid JSON response', async () => {
@@ -128,10 +113,8 @@ describe('request', () => {
     } as unknown as Response;
     vi.mocked(fetch).mockResolvedValue(badResponse);
 
-    await expect(request('http://localhost:3000/api/health'))
-      .rejects.toThrow(EpgCacheError);
-    await expect(request('http://localhost:3000/api/health'))
-      .rejects.toThrow('Failed to parse response');
+    await expect(request('http://localhost:3000/api/health')).rejects.toThrow(EpgCacheError);
+    await expect(request('http://localhost:3000/api/health')).rejects.toThrow('Failed to parse response');
   });
 });
 

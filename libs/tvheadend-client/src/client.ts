@@ -256,7 +256,7 @@ export class TVHeadendClient {
    * @param newName - New channel name
    */
   async renameChannel(channelNumber: number, newName: string): Promise<void> {
-    await this.post<void>('/api/channel/rename', {
+    await this.post<undefined>('/api/channel/rename', {
       number: channelNumber,
       name: newName,
     });
@@ -408,7 +408,7 @@ export class TVHeadendClient {
    * @param params - Entry UUID to cancel
    */
   async cancelDvrEntry(params: DvrCancelParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/cancel', params);
+    await this.post<undefined>('/api/dvr/entry/cancel', params);
   }
 
   /**
@@ -416,7 +416,7 @@ export class TVHeadendClient {
    * @param params - Entry UUID to stop
    */
   async stopDvrEntry(params: DvrStopParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/stop', params);
+    await this.post<undefined>('/api/dvr/entry/stop', params);
   }
 
   /**
@@ -424,7 +424,7 @@ export class TVHeadendClient {
    * @param params - Entry UUID to remove
    */
   async removeDvrEntry(params: DvrRemoveParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/remove', params);
+    await this.post<undefined>('/api/dvr/entry/remove', params);
   }
 
   /**
@@ -432,7 +432,7 @@ export class TVHeadendClient {
    * @param params - Old and new file paths
    */
   async notifyDvrFileMoved(params: DvrFileMovedParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/filemoved', params);
+    await this.post<undefined>('/api/dvr/entry/filemoved', params);
   }
 
   /**
@@ -440,7 +440,7 @@ export class TVHeadendClient {
    * @param params - Entry UUID
    */
   async moveDvrToFinished(params: DvrMoveFinishedParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/move/finished', params);
+    await this.post<undefined>('/api/dvr/entry/move/finished', params);
   }
 
   /**
@@ -448,7 +448,7 @@ export class TVHeadendClient {
    * @param params - Entry UUID
    */
   async moveDvrToFailed(params: DvrMoveFailedParams): Promise<void> {
-    await this.post<void>('/api/dvr/entry/move/failed', params);
+    await this.post<undefined>('/api/dvr/entry/move/failed', params);
   }
 
   /**
@@ -456,14 +456,14 @@ export class TVHeadendClient {
    * @param uuid - Entry UUID to re-record
    */
   async rerecordDvrEntry(uuid: string): Promise<void> {
-    await this.post<void>('/api/dvr/entry/rerecord', { uuid });
+    await this.post<undefined>('/api/dvr/entry/rerecord', { uuid });
   }
 
   /**
    * Re-record all failed recordings
    */
   async rerecordAllFailed(): Promise<void> {
-    await this.post<void>('/api/dvr/entry/rerecord/all');
+    await this.post<undefined>('/api/dvr/entry/rerecord/all');
   }
 
   /**
@@ -558,7 +558,7 @@ export class TVHeadendClient {
    * @param params - Configuration updates
    */
   async saveConfig(params: ConfigSaveParams): Promise<void> {
-    await this.post<void>('/api/config/save', params);
+    await this.post<undefined>('/api/config/save', params);
   }
 
   /**
@@ -631,7 +631,7 @@ export class TVHeadendClient {
    * @param params - Optional input UUID (clears all if not specified)
    */
   async clearInputStats(params?: InputStatsClearParams): Promise<void> {
-    await this.post<void>('/api/status/inputclrstats', params);
+    await this.post<undefined>('/api/status/inputclrstats', params);
   }
 
   /**
@@ -639,7 +639,7 @@ export class TVHeadendClient {
    * @param params - Connection ID to cancel
    */
   async cancelConnection(params: ConnectionCancelParams): Promise<void> {
-    await this.post<void>('/api/status/connections/cancel', params);
+    await this.post<undefined>('/api/status/connections/cancel', params);
   }
 
   /**

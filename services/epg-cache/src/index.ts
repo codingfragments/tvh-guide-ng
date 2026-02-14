@@ -15,12 +15,15 @@ function main(): void {
   const scheduler = new RefreshScheduler(client, store, searchIndex, config.refreshInterval);
   const app = createApp(store, searchIndex, scheduler, config.refreshInterval);
 
-  const server = serve({
-    fetch: app.fetch,
-    port: config.httpPort,
-  }, (info) => {
-    console.log(`EPG Cache service listening on http://localhost:${info.port}`);
-  });
+  const server = serve(
+    {
+      fetch: app.fetch,
+      port: config.httpPort,
+    },
+    (info) => {
+      console.log(`EPG Cache service listening on http://localhost:${String(info.port)}`);
+    },
+  );
 
   scheduler.start();
 

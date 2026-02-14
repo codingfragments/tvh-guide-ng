@@ -32,14 +32,14 @@ The server starts immediately and serves health/empty responses while the first 
 
 The service loads a `.env` file from the current working directory if present (using Node's built-in `process.loadEnvFile()`). Copy `.env.example` to `.env` and adjust as needed. Environment variables set in the shell take precedence.
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `TVH_URL` | Yes | — | TVHeadend server URL |
-| `TVH_USERNAME` | No | (empty) | Username for authentication |
-| `TVH_PASSWORD` | No | (empty) | Password for authentication |
-| `EPG_REFRESH_INTERVAL` | No | 3600 | Refresh interval in seconds |
-| `EPG_HTTP_PORT` | No | 3000 | HTTP server port |
-| `EPG_SQLITE_PATH` | No | ./data/epg-cache.db | SQLite database file path |
+| Variable               | Required | Default             | Description                 |
+| ---------------------- | -------- | ------------------- | --------------------------- |
+| `TVH_URL`              | Yes      | —                   | TVHeadend server URL        |
+| `TVH_USERNAME`         | No       | (empty)             | Username for authentication |
+| `TVH_PASSWORD`         | No       | (empty)             | Password for authentication |
+| `EPG_REFRESH_INTERVAL` | No       | 3600                | Refresh interval in seconds |
+| `EPG_HTTP_PORT`        | No       | 3000                | HTTP server port            |
+| `EPG_SQLITE_PATH`      | No       | ./data/epg-cache.db | SQLite database file path   |
 
 ## API Reference
 
@@ -95,7 +95,7 @@ curl "http://localhost:3000/api/events/search?q=Krimi&channel=1&start=1704067200
   "data": [
     {
       "score": 15.2,
-      "event": { "eventId": 123, "title": "Tagesschau", "channelName": "Das Erste HD", "..." : "..." }
+      "event": { "eventId": 123, "title": "Tagesschau", "channelName": "Das Erste HD", "...": "..." }
     }
   ],
   "meta": { "cacheAge": 120, "lastRefresh": "...", "refreshStatus": "idle", "totalEvents": 48521 }

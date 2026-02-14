@@ -12,9 +12,7 @@ import { createShowCommand } from './show.js';
  * Create the channels command group
  */
 export function createChannelsCommand(): Command {
-  const channels = new Command('channels').description(
-    'Channel browsing and management'
-  );
+  const channels = new Command('channels').description('Channel browsing and management');
 
   channels.addCommand(createListCommand());
   channels.addCommand(createSearchCommand());

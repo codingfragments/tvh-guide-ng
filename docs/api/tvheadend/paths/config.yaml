@@ -58,7 +58,7 @@
                 description: Configuration data
                 additionalProperties: true
           example:
-            node: "dvr/config/profile"
+            node: 'dvr/config/profile'
             conf:
               retention_days: 30
               pre_extra_time: 2
@@ -112,13 +112,13 @@
                         $ref: '../components/schemas/config.yaml#/DvrConfig'
             example:
               entries:
-                - uuid: "550e8400-e29b-41d4-a716-446655440015"
+                - uuid: '550e8400-e29b-41d4-a716-446655440015'
                   enabled: true
-                  name: "Default Profile"
+                  name: 'Default Profile'
                   retention_days: 30
                   pre_extra_time: 2
                   post_extra_time: 5
-                  storage: "/storage/recordings"
+                  storage: '/storage/recordings'
               total: 1
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'
@@ -153,11 +153,11 @@
                   items:
                     type: string
               example:
-                name: "TVHeadend"
-                version: "4.3.2024"
-                sw_version: "4.3-2024"
+                name: 'TVHeadend'
+                version: '4.3.2024'
+                sw_version: '4.3-2024'
                 api_version: 18
-                capabilities: ["epg", "dvr", "imagecache", "timeshift"]
+                capabilities: ['epg', 'dvr', 'imagecache', 'timeshift']
 
 /api/config/capabilities:
   get:

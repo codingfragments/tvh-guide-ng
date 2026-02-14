@@ -46,10 +46,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrEntryGrid({ limit: 10 });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/entry/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/entry/grid'), expect.any(Object));
       expect(result).toEqual(mockDvrGridResponse);
     });
   });
@@ -97,10 +94,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrEntryGridFailed();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/entry/grid_failed'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/entry/grid_failed'), expect.any(Object));
       expect(result).toEqual(mockDvrGridResponse);
     });
   });
@@ -131,10 +125,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrEntryClass();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/entry/class'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/entry/class'), expect.any(Object));
       expect(result.caption).toBeDefined();
     });
   });
@@ -341,10 +332,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrAutorecGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/autorec/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/autorec/grid'), expect.any(Object));
       expect(result).toEqual(mockDvrAutorecGridResponse);
     });
   });
@@ -401,10 +389,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrTimerecGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/timerec/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/timerec/grid'), expect.any(Object));
       expect(result).toBeDefined();
     });
   });
@@ -418,10 +403,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrConfigGrid();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/config/grid'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/config/grid'), expect.any(Object));
       expect(result).toEqual(mockDvrConfigGridResponse);
     });
   });
@@ -435,10 +417,7 @@ describe('DVR API', () => {
 
       const result = await client.getDvrConfigClass();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/dvr/config/class'),
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/dvr/config/class'), expect.any(Object));
       expect(result.caption).toBeDefined();
     });
   });

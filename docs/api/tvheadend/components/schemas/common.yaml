@@ -4,7 +4,7 @@ UUID:
   type: string
   format: uuid
   description: Universally unique identifier
-  example: "550e8400-e29b-41d4-a716-446655440000"
+  example: '550e8400-e29b-41d4-a716-446655440000'
 
 Timestamp:
   type: integer
@@ -26,9 +26,9 @@ BooleanInteger:
 
 Language:
   type: string
-  pattern: "^[a-z]{3}$"
+  pattern: '^[a-z]{3}$'
   description: ISO 639-2/B three-letter language code
-  example: "eng"
+  example: 'eng'
 
 ChannelNumber:
   type: integer
@@ -40,7 +40,7 @@ ChannelIcon:
   type: string
   format: uri
   description: URL to channel icon/logo
-  example: "http://localhost:9981/imagecache/123"
+  example: 'http://localhost:9981/imagecache/123'
 
 Duration:
   type: integer
@@ -51,7 +51,7 @@ Duration:
 FilePath:
   type: string
   description: File system path
-  example: "/storage/recordings/movie.mkv"
+  example: '/storage/recordings/movie.mkv'
 
 FileSize:
   type: integer

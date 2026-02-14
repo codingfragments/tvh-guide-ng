@@ -26,7 +26,7 @@ export function prompt(question: string): Promise<string> {
  */
 export function promptPassword(question: string): Promise<string> {
   return new Promise((resolve) => {
-    const stdin = process.stdin as any;
+    const stdin = process.stdin;
 
     // Ensure stdin is in the correct state
     stdin.setEncoding('utf8');
@@ -68,7 +68,7 @@ export function promptPassword(question: string): Promise<string> {
     };
 
     const cleanup = () => {
-      if (stdin.setRawMode) {
+      if (stdin.isTTY) {
         stdin.setRawMode(false);
       }
       stdin.pause();

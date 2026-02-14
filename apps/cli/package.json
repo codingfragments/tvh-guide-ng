@@ -18,7 +18,7 @@
     "start": "node dist/cli.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "echo 'Lint script placeholder'",
+    "lint": "eslint src/",
     "clean": "rm -rf dist"
   },
   "keywords": [

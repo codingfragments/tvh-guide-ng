@@ -2,16 +2,9 @@
  * Tests for HTTP utilities
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { request, buildUrl, serializeFilter } from '../../utils/http.js';
-import {
-  TVHeadendError,
-  AuthenticationError,
-  AuthorizationError,
-  NotFoundError,
-  BadRequestError,
-  NetworkError,
-} from '../../utils/errors.js';
+import { AuthenticationError, AuthorizationError, NotFoundError } from '../../utils/errors.js';
 
 // Mock node-fetch
 vi.mock('node-fetch', () => ({
@@ -55,9 +48,7 @@ describe('HTTP Utilities', () => {
         text: async () => 'Invalid parameters',
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        'Invalid parameters',
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow('Invalid parameters');
     });
 
     it('should throw AuthenticationError on 401', async () => {
@@ -68,9 +59,7 @@ describe('HTTP Utilities', () => {
         text: async () => 'Invalid credentials',
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        AuthenticationError,
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(AuthenticationError);
     });
 
     it('should throw AuthorizationError on 403', async () => {
@@ -81,9 +70,7 @@ describe('HTTP Utilities', () => {
         text: async () => 'Permission denied',
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        AuthorizationError,
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(AuthorizationError);
     });
 
     it('should throw NotFoundError on 404', async () => {
@@ -105,9 +92,7 @@ describe('HTTP Utilities', () => {
         text: async () => 'Server error',
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        'HTTP 500: Server error',
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow('HTTP 500: Server error');
     });
 
     it('should handle empty error text', async () => {
@@ -131,9 +116,7 @@ describe('HTTP Utilities', () => {
         },
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        'HTTP 500: Unknown error',
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow('HTTP 500: Unknown error');
     });
 
     it('should throw TVHeadendError on JSON parse failure', async () => {
@@ -144,9 +127,7 @@ describe('HTTP Utilities', () => {
         },
       } as any);
 
-      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow(
-        'Failed to parse response',
-      );
+      await expect(request('http://localhost:9981/api/test', {})).rejects.toThrow('Failed to parse response');
     });
 
     it('should handle non-Error exceptions in network failure', async () => {

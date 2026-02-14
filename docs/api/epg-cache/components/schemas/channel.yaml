@@ -10,7 +10,7 @@ CachedChannel:
       type: string
       format: uuid
       description: Channel UUID.
-      example: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+      example: 'd3f1a2b4-5678-9abc-def0-1234567890ab'
     enabled:
       type: boolean
       description: Whether the channel is enabled.
@@ -18,22 +18,22 @@ CachedChannel:
     name:
       type: string
       description: Channel display name.
-      example: "Das Erste HD"
+      example: 'Das Erste HD'
     number:
       type:
         - integer
-        - "null"
+        - 'null'
       description: Channel number.
       example: 1
     icon:
       type:
         - string
-        - "null"
+        - 'null'
       description: Channel icon path.
-      example: "imagecache/42"
+      example: 'imagecache/42'
     iconPublicUrl:
       type:
         - string
-        - "null"
+        - 'null'
       description: Public URL of the channel icon.
-      example: "https://example.com/icons/das-erste.png"
+      example: 'https://example.com/icons/das-erste.png'

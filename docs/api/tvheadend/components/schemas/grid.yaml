@@ -70,4 +70,4 @@ SortDirection:
     - DESC
   description: Sort direction for grid results
   default: ASC
-  example: "DESC"
+  example: 'DESC'

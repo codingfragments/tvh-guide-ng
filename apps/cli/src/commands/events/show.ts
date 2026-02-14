@@ -40,7 +40,7 @@ export function createShowCommand(): Command {
           console.log('API Response:', JSON.stringify(response, null, 2));
         }
 
-        if (!response.entries || response.entries.length === 0) {
+        if (response.entries.length === 0) {
           console.log(useColor ? chalk.red(`Event not found: ${eventId}`) : `Event not found: ${eventId}`);
           process.exit(1);
         }

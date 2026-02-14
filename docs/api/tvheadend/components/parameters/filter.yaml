@@ -40,7 +40,7 @@ FilterParameter:
     oneOf:
       - type: string
         description: Simple string search across multiple fields
-        example: "news"
+        example: 'news'
 
       - type: object
         description: Single field filter
@@ -48,7 +48,7 @@ FilterParameter:
           field:
             type: string
             description: Name of the field to filter on
-            example: "title"
+            example: 'title'
           type:
             type: string
             enum: [string, numeric, boolean]
@@ -69,10 +69,10 @@ FilterParameter:
           - field
           - value
         example:
-          field: "title"
-          type: "string"
-          value: "news"
-          comparison: "contains"
+          field: 'title'
+          type: 'string'
+          value: 'news'
+          comparison: 'contains'
 
       - type: array
         description: Multiple field filters (AND logic)
@@ -96,17 +96,17 @@ FilterParameter:
             - field
             - value
         example:
-          - field: "channelname"
-            type: "string"
-            value: "BBC"
-          - field: "start"
-            type: "numeric"
+          - field: 'channelname'
+            type: 'string'
+            value: 'BBC'
+          - field: 'start'
+            type: 'numeric'
             value: 1704067200
-            comparison: "gt"
+            comparison: 'gt'
 
   examples:
     simpleSearch:
-      value: "news"
+      value: 'news'
       summary: Simple search for "news"
 
     titleFilter:
@@ -134,10 +134,10 @@ ChannelFilterParameter:
     type: string
   examples:
     single:
-      value: "1a2b3c4d5e6f7890abcdef1234567890"
+      value: '1a2b3c4d5e6f7890abcdef1234567890'
       summary: Single channel
     multiple:
-      value: "1a2b3c4d5e6f7890abcdef1234567890,9876543210fedcba0987654321fedcba"
+      value: '1a2b3c4d5e6f7890abcdef1234567890,9876543210fedcba0987654321fedcba'
       summary: Multiple channels (comma-separated)
 
 ChannelTagFilterParameter:
@@ -148,7 +148,7 @@ ChannelTagFilterParameter:
   schema:
     type: string
     format: uuid
-  example: "550e8400-e29b-41d4-a716-446655440007"
+  example: '550e8400-e29b-41d4-a716-446655440007'
 
 ContentTypeFilterParameter:
   name: contentType

@@ -19,12 +19,14 @@ Most grid endpoints support filtering through a flexible `filter` query paramete
 **Searches:** Title, description, channel name, and other text fields
 
 **Example:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/epg/events/grid?filter=news'
 ```
 
 **Matches events where:**
+
 - Title contains "news", OR
 - Description contains "news", OR
 - Channel name contains "news"
@@ -36,6 +38,7 @@ curl -u user:pass \
 **Format:** `filter={JSON_object}`
 
 **JSON structure:**
+
 ```json
 {
   "field": "fieldName",
@@ -46,6 +49,7 @@ curl -u user:pass \
 ```
 
 **Example - Filter by channel name:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -53,6 +57,7 @@ curl -u user:pass -G \
 ```
 
 **Example - Filter by start time (after timestamp):**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -66,6 +71,7 @@ curl -u user:pass -G \
 **All conditions must match (AND logic)**
 
 **Example - BBC channels AND after specific time:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -76,6 +82,7 @@ curl -u user:pass -G \
 ```
 
 **Example - Movies longer than 90 minutes:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -92,6 +99,7 @@ curl -u user:pass -G \
 **type:** `"string"`
 
 **Comparison operators:**
+
 - `contains` (default) - Substring match (case-insensitive)
 - `starts` - Starts with
 - `ends` - Ends with
@@ -99,6 +107,7 @@ curl -u user:pass -G \
 - `regex` - Regular expression match
 
 **Examples:**
+
 ```bash
 # Contains "documentary"
 filter={"field":"title","type":"string","value":"documentary","comparison":"contains"}
@@ -121,6 +130,7 @@ filter={"field":"title","type":"string","value":"news|documentary","comparison":
 **type:** `"numeric"`
 
 **Comparison operators:**
+
 - `eq` - Equal to
 - `ne` - Not equal to
 - `gt` - Greater than
@@ -131,6 +141,7 @@ filter={"field":"title","type":"string","value":"news|documentary","comparison":
 > **Note:** The TVHeadend API uses `le` (not `lte`) for "less than or equal". Some older documentation may reference `lte`, but `le` is the correct operator name.
 
 **Examples:**
+
 ```bash
 # Events starting after 2024-01-01 00:00:00
 filter={"field":"start","type":"numeric","value":1704067200,"comparison":"gte"}
@@ -152,6 +163,7 @@ filter={"field":"filesize","type":"numeric","value":1073741824,"comparison":"gt"
 **Values:** `0` (false) or `1` (true)
 
 **Example:**
+
 ```bash
 # HD programs only
 filter={"field":"hd","type":"boolean","value":1}
@@ -189,6 +201,7 @@ The `FilterCondition.comparison` type supports: `eq`, `ne`, `lt`, `le`, `gt`, `g
 #### Filter by Channel
 
 **Single channel:**
+
 ```bash
 # Using dedicated channel parameter
 curl -u user:pass \
@@ -196,6 +209,7 @@ curl -u user:pass \
 ```
 
 **Multiple channels:**
+
 ```bash
 # Comma-separated UUIDs
 curl -u user:pass \
@@ -205,6 +219,7 @@ curl -u user:pass \
 #### Filter by Time Range
 
 **Programs between two times:**
+
 ```bash
 START_TIME=1704067200  # 2024-01-01 00:00:00
 END_TIME=1704153600    # 2024-01-02 00:00:00
@@ -220,6 +235,7 @@ curl -u user:pass -G \
 #### Filter by Content Type
 
 **Movies only (content type 0x10 = 16):**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -231,6 +247,7 @@ curl -u user:pass \
 ```
 
 **Common content types:**
+
 - `16` (0x10) - Movie/Drama
 - `32` (0x20) - News/Current affairs
 - `48` (0x30) - Show/Game show
@@ -241,6 +258,7 @@ curl -u user:pass \
 #### Filter by Duration
 
 **Long-form content (>90 minutes):**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -265,6 +283,7 @@ curl -u user:pass \
 #### Filter by Tag
 
 **Channels with specific tag:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/channel/grid?tags=tag-uuid-hd'
@@ -273,6 +292,7 @@ curl -u user:pass \
 #### Filter by Name
 
 **BBC channels:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/channel/grid' \
@@ -282,6 +302,7 @@ curl -u user:pass -G \
 #### Filter by Number Range
 
 **Channels 100-199:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/channel/grid' \
@@ -296,6 +317,7 @@ curl -u user:pass -G \
 #### Filter by Status
 
 **Completed recordings only:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/dvr/entry/grid' \
@@ -307,6 +329,7 @@ curl -u user:pass \
 ```
 
 **Scheduled recordings:**
+
 ```bash
 curl -u user:pass \
   'http://localhost:9981/api/dvr/entry/grid?status=scheduled'
@@ -315,6 +338,7 @@ curl -u user:pass \
 #### Filter by Channel
 
 **Recordings from specific channel:**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/dvr/entry/grid' \
@@ -324,6 +348,7 @@ curl -u user:pass -G \
 #### Filter by Date Range
 
 **Recordings from last 7 days:**
+
 ```bash
 WEEK_AGO=$(date -d '7 days ago' +%s)
 
@@ -351,6 +376,7 @@ curl -u user:pass -G \
 ```
 
 **Response:**
+
 ```json
 {
   "entries": [...],
@@ -367,6 +393,7 @@ Filter parameters must be URL-encoded, especially JSON structures.
 ### Using curl
 
 **Option 1: `--data-urlencode` (recommended):**
+
 ```bash
 curl -u user:pass -G \
   'http://localhost:9981/api/epg/events/grid' \
@@ -374,6 +401,7 @@ curl -u user:pass -G \
 ```
 
 **Option 2: Manual encoding:**
+
 ```bash
 FILTER='{"field":"title","type":"string","value":"news"}'
 ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$FILTER'))")
@@ -388,11 +416,11 @@ curl -u user:pass \
 const filter = {
   field: 'title',
   type: 'string',
-  value: 'news'
+  value: 'news',
 };
 
 const params = new URLSearchParams({
-  filter: JSON.stringify(filter)
+  filter: JSON.stringify(filter),
 });
 
 const url = `http://localhost:9981/api/epg/events/grid?${params}`;
@@ -487,7 +515,7 @@ class FilterBuilder {
       field,
       type: 'string',
       value,
-      comparison
+      comparison,
     });
     return this;
   }
@@ -497,7 +525,7 @@ class FilterBuilder {
       field,
       type: 'numeric',
       value,
-      comparison
+      comparison,
     });
     return this;
   }
@@ -506,7 +534,7 @@ class FilterBuilder {
     this.filters.push({
       field,
       type: 'boolean',
-      value: value ? 1 : 0
+      value: value ? 1 : 0,
     });
     return this;
   }
@@ -526,17 +554,14 @@ const filter = new FilterBuilder()
   .build();
 
 const params = new URLSearchParams({
-  filter: JSON.stringify(filter)
+  filter: JSON.stringify(filter),
 });
 
-const response = await fetch(
-  `http://localhost:9981/api/epg/events/grid?${params}`,
-  {
-    headers: {
-      'Authorization': 'Basic ' + btoa('user:pass')
-    }
-  }
-);
+const response = await fetch(`http://localhost:9981/api/epg/events/grid?${params}`, {
+  headers: {
+    Authorization: 'Basic ' + btoa('user:pass'),
+  },
+});
 ```
 
 ## Common Pitfalls
@@ -633,6 +658,7 @@ Reduces dataset before applying text search.
 ### 4. Use Indexes Fields
 
 Fields likely indexed (faster):
+
 - `uuid`
 - `channelUuid` / `channel`
 - `start` / `stop` (timestamps)
@@ -644,12 +670,14 @@ Fields likely indexed (faster):
 ### No Results Returned
 
 **Check:**
+
 1. Filter syntax is valid JSON
 2. Field names match schema exactly
 3. Values are correct type
 4. Comparison operator is appropriate
 
 **Debug:**
+
 ```bash
 # Remove filters to see if data exists
 curl -u user:pass 'http://localhost:9981/api/epg/events/grid?limit=10'
@@ -663,6 +691,7 @@ curl -u user:pass 'http://localhost:9981/api/epg/events/grid?limit=10&filter={"f
 **Cause:** Malformed filter parameter
 
 **Solution:**
+
 1. Validate JSON syntax
 2. Check URL encoding
 3. Verify field names
@@ -673,6 +702,7 @@ curl -u user:pass 'http://localhost:9981/api/epg/events/grid?limit=10&filter={"f
 **Cause:** Case-insensitive matching or partial matches
 
 **Example:**
+
 ```bash
 # Searching for "BBC" might match:
 # - "BBC One"
@@ -681,6 +711,7 @@ curl -u user:pass 'http://localhost:9981/api/epg/events/grid?limit=10&filter={"f
 ```
 
 **Solution:** Use more specific values or `eq` comparison:
+
 ```bash
 filter={"field":"channelname","type":"string","value":"BBC One","comparison":"eq"}
 ```

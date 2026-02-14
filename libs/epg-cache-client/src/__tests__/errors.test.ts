@@ -1,11 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  EpgCacheError,
-  BadRequestError,
-  NotFoundError,
-  ConflictError,
-  NetworkError,
-} from '../errors.js';
+import { EpgCacheError, BadRequestError, NotFoundError, ConflictError, NetworkError } from '../errors.js';
 
 describe('EpgCacheError', () => {
   it('creates an error with message and status code', () => {

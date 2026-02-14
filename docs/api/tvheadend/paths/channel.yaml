@@ -28,7 +28,7 @@
         description: Filter by channel tag UUID(s)
         schema:
           type: string
-        example: "tag-uuid-hd"
+        example: 'tag-uuid-hd'
     responses:
       '200':
         description: Successful response with channels
@@ -41,21 +41,21 @@
                 summary: All channels
                 value:
                   entries:
-                    - uuid: "550e8400-e29b-41d4-a716-446655440010"
+                    - uuid: '550e8400-e29b-41d4-a716-446655440010'
                       enabled: true
-                      name: "BBC One HD"
+                      name: 'BBC One HD'
                       number: 101
-                      icon: "http://localhost:9981/imagecache/1"
+                      icon: 'http://localhost:9981/imagecache/1'
                   total: 1
               hdChannelsOnly:
                 summary: HD channels filtered by tag
                 value:
                   entries:
-                    - uuid: "550e8400-e29b-41d4-a716-446655440011"
+                    - uuid: '550e8400-e29b-41d4-a716-446655440011'
                       enabled: true
-                      name: "BBC One HD"
+                      name: 'BBC One HD'
                       number: 101
-                      tags: ["550e8400-e29b-41d4-a716-446655440012"]
+                      tags: ['550e8400-e29b-41d4-a716-446655440012']
                   total: 1
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'
@@ -125,7 +125,7 @@
                   - name
           example:
             conf:
-              name: "My Channel"
+              name: 'My Channel'
               number: 999
               enabled: true
     responses:
@@ -140,7 +140,7 @@
                   type: string
                   description: UUID of created channel
               example:
-                uuid: "new-channel-uuid-123"
+                uuid: 'new-channel-uuid-123'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -195,11 +195,11 @@
               $ref: '../components/schemas/channel.yaml#/ChannelTagGridResponse'
             example:
               entries:
-                - uuid: "550e8400-e29b-41d4-a716-446655440013"
-                  name: "HD Channels"
+                - uuid: '550e8400-e29b-41d4-a716-446655440013'
+                  name: 'HD Channels'
                   enabled: true
-                - uuid: "550e8400-e29b-41d4-a716-446655440014"
-                  name: "Favorites"
+                - uuid: '550e8400-e29b-41d4-a716-446655440014'
+                  name: 'Favorites'
                   enabled: true
               total: 2
       '401':
@@ -233,8 +233,8 @@
                         type: string
               example:
                 entries:
-                  - key: "tag-uuid-hd"
-                    val: "HD Channels"
+                  - key: 'tag-uuid-hd'
+                    val: 'HD Channels'
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'
 
@@ -273,8 +273,8 @@
               - uuid
               - name
           example:
-            uuid: "channel-uuid-123"
-            name: "BBC One HD (Renamed)"
+            uuid: 'channel-uuid-123'
+            name: 'BBC One HD (Renamed)'
     responses:
       '200':
         description: Channel renamed successfully
@@ -361,9 +361,9 @@
                   - name
           example:
             conf:
-              name: "Sports Channels"
+              name: 'Sports Channels'
               enabled: true
-              comment: "All sports-related channels"
+              comment: 'All sports-related channels'
               index: 10
     responses:
       '200':
@@ -376,7 +376,7 @@
                 uuid:
                   type: string
               example:
-                uuid: "tag-uuid-sports"
+                uuid: 'tag-uuid-sports'
       '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
       '401':
@@ -415,9 +415,9 @@
                     $ref: '../components/schemas/channel.yaml#/ChannelCategory'
               example:
                 entries:
-                  - key: "0x10"
-                    val: "Movie/Drama"
-                  - key: "0x40"
-                    val: "Sports"
+                  - key: '0x10'
+                    val: 'Movie/Drama'
+                  - key: '0x40'
+                    val: 'Sports'
       '401':
         $ref: '../components/responses/errors.yaml#/Unauthorized'

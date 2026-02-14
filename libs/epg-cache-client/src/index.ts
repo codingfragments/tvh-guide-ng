@@ -13,10 +13,4 @@ export type {
   RefreshAcceptedResponse,
 } from './types.js';
 
-export {
-  EpgCacheError,
-  BadRequestError,
-  NotFoundError,
-  ConflictError,
-  NetworkError,
-} from './errors.js';
+export { EpgCacheError, BadRequestError, NotFoundError, ConflictError, NetworkError } from './errors.js';

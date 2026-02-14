@@ -18,14 +18,14 @@
         description: Search query string for fuzzy text matching.
         schema:
           type: string
-        example: "Tagesschau"
+        example: 'Tagesschau'
       - $ref: '../components/parameters/query.yaml#/ChannelParam'
       - $ref: '../components/parameters/query.yaml#/StartParam'
       - $ref: '../components/parameters/query.yaml#/StopParam'
       - $ref: '../components/parameters/query.yaml#/GenreParam'
       - $ref: '../components/parameters/query.yaml#/LimitParam'
     responses:
-      "200":
+      '200':
         description: Search results with relevance scores and cache metadata.
         content:
           application/json:
@@ -46,19 +46,19 @@
                 - score: 15.2
                   event:
                     eventId: 123456
-                    channelUuid: "d3f1a2b4-5678-9abc-def0-1234567890ab"
-                    channelName: "Das Erste HD"
+                    channelUuid: 'd3f1a2b4-5678-9abc-def0-1234567890ab'
+                    channelName: 'Das Erste HD'
                     start: 1704067200
                     stop: 1704068100
-                    title: "Tagesschau"
+                    title: 'Tagesschau'
               meta:
                 cacheAge: 120
-                lastRefresh: "2026-02-14T10:00:00.000Z"
+                lastRefresh: '2026-02-14T10:00:00.000Z'
                 refreshStatus: idle
                 totalEvents: 48521
-      "400":
+      '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
-      "404":
+      '404':
         $ref: '../components/responses/errors.yaml#/NotFound'
 
 /api/events/timerange:
@@ -89,7 +89,7 @@
       - $ref: '../components/parameters/query.yaml#/GenreParam'
       - $ref: '../components/parameters/query.yaml#/LimitParam'
     responses:
-      "200":
+      '200':
         description: Events within the requested timerange.
         content:
           application/json:
@@ -105,9 +105,9 @@
                     $ref: '../components/schemas/event.yaml#/EpgEvent'
                 meta:
                   $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
-      "400":
+      '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
-      "404":
+      '404':
         $ref: '../components/responses/errors.yaml#/NotFound'
 
 /api/events/{eventId}:
@@ -126,7 +126,7 @@
           type: integer
         example: 123456
     responses:
-      "200":
+      '200':
         description: The requested event with cache metadata.
         content:
           application/json:
@@ -140,7 +140,7 @@
                   $ref: '../components/schemas/event.yaml#/EpgEvent'
                 meta:
                   $ref: '../components/schemas/common.yaml#/CacheHealthMeta'
-      "400":
+      '400':
         $ref: '../components/responses/errors.yaml#/BadRequest'
-      "404":
+      '404':
         $ref: '../components/responses/errors.yaml#/NotFound'

@@ -8,7 +8,7 @@ UuidParameter:
   schema:
     type: string
     format: uuid
-  example: "550e8400-e29b-41d4-a716-446655440000"
+  example: '550e8400-e29b-41d4-a716-446655440000'
 
 UuidPathParameter:
   name: uuid
@@ -18,7 +18,7 @@ UuidPathParameter:
   schema:
     type: string
     format: uuid
-  example: "550e8400-e29b-41d4-a716-446655440000"
+  example: '550e8400-e29b-41d4-a716-446655440000'
 
 LanguageParameter:
   name: language
@@ -27,8 +27,8 @@ LanguageParameter:
   required: false
   schema:
     type: string
-    pattern: "^[a-z]{3}$"
-  example: "eng"
+    pattern: '^[a-z]{3}$'
+  example: 'eng'
 
 NodeParameter:
   name: node
@@ -37,7 +37,7 @@ NodeParameter:
   required: false
   schema:
     type: string
-  example: "channel"
+  example: 'channel'
 
 OpParameter:
   name: op
@@ -52,7 +52,7 @@ OpParameter:
       - list
       - create
       - delete
-  example: "get"
+  example: 'get'
 
 ConfParameter:
   name: conf
@@ -81,4 +81,4 @@ EntryIdParameter:
   required: true
   schema:
     type: string
-  example: "dvr-entry-123"
+  example: 'dvr-entry-123'

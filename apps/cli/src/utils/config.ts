@@ -45,7 +45,7 @@ export function loadConfig(): TVHConfig | null {
     }
 
     return result?.config || null;
-  } catch (error) {
+  } catch {
     // If config file has syntax errors or doesn't exist, return null
     return null;
   }
@@ -68,7 +68,7 @@ export function getConfigPath(): string | null {
     }
 
     return result?.filepath || null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -77,13 +77,8 @@ export function getConfigPath(): string | null {
  * Merge configuration from file and CLI options
  * CLI options take precedence over config file
  */
-export function mergeConfig(
-  configFile: TVHConfig | null,
-  cliOptions: CLIOptions
-): TVHConfig {
-  const format = cliOptions.json
-    ? 'json'
-    : cliOptions.format || configFile?.defaults?.format || 'table';
+export function mergeConfig(configFile: TVHConfig | null, cliOptions: CLIOptions): TVHConfig {
+  const format = cliOptions.json ? 'json' : cliOptions.format || configFile?.defaults?.format || 'table';
 
   const color =
     cliOptions.color !== undefined
@@ -94,9 +89,9 @@ export function mergeConfig(
 
   return {
     server: {
-      url: cliOptions.url || configFile?.server?.url || '',
-      username: cliOptions.username || configFile?.server?.username,
-      password: cliOptions.password || configFile?.server?.password,
+      url: cliOptions.url || configFile?.server.url || '',
+      username: cliOptions.username || configFile?.server.username,
+      password: cliOptions.password || configFile?.server.password,
     },
     defaults: {
       format,
