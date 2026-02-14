@@ -17,6 +17,11 @@
     "node": "24.13.1",
     "pnpm": "10.4.1"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  },
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.15.0",
     "browser-sync": "^3.0.4"
