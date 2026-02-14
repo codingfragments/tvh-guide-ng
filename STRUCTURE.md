@@ -13,6 +13,7 @@ tvh-guide-ng/
 │   ├── epg-cache/           # EPG caching service with SQLite + fuzzy search
 │   └── epg-service/         # EPG data backend service
 ├── libs/                    # Shared libraries
+│   ├── epg-cache-client/    # Type-safe EPG Cache service API client
 │   ├── shared/              # Common types, utilities, constants
 │   └── tvheadend-client/    # Type-safe TVHeadend API client
 └── docs/                    # Project documentation
@@ -25,6 +26,7 @@ All packages use the `@tvh-guide/` namespace:
 - `@tvh-guide/web` — Frontend application
 - `@tvh-guide/epg-cache` — EPG caching service with SQLite storage and fuzzy search
 - `@tvh-guide/epg-service` — EPG backend service
+- `@tvh-guide/epg-cache-client` — Type-safe EPG Cache service API client
 - `@tvh-guide/shared` — Shared types and utilities
 - `@tvh-guide/tvheadend-client` — Type-safe TVHeadend API client
 
@@ -132,6 +134,7 @@ All packages use the `@tvh-guide/` namespace:
 - When extracting domain logic that should be tested independently
 
 **Example packages**:
+- `libs/epg-cache-client` — Type-safe client for the EPG Cache service HTTP API
 - `libs/shared` — Common types and utilities
 - `libs/tvheadend-client` — Type-safe TVHeadend API client library
 - `libs/ui-components` — (future) Shared UI component library

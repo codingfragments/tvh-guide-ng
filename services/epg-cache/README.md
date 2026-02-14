@@ -138,6 +138,18 @@ curl -X POST http://localhost:3000/api/cache/refresh
 # Returns 202 Accepted or 409 if already refreshing
 ```
 
+## Client Library
+
+Use [`@tvh-guide/epg-cache-client`](../../libs/epg-cache-client/) for type-safe access from other packages:
+
+```typescript
+import { EpgCacheClient } from '@tvh-guide/epg-cache-client';
+
+const client = new EpgCacheClient({ baseUrl: 'http://localhost:3000' });
+const health = await client.getHealth();
+const results = await client.searchEvents({ q: 'Tagesschau' });
+```
+
 ## Architecture
 
 ```
