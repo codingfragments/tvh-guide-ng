@@ -1,6 +1,17 @@
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import type { EpgCacheConfig } from './types.js';
 
+function loadEnvFile(): void {
+  const envPath = resolve(process.cwd(), '.env');
+  if (existsSync(envPath)) {
+    process.loadEnvFile(envPath);
+  }
+}
+
 export function loadConfig(): EpgCacheConfig {
+  loadEnvFile();
+
   const url = process.env.TVH_URL;
   if (!url) {
     throw new Error('TVH_URL environment variable is required');

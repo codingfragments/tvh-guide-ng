@@ -73,6 +73,7 @@ describe('HTTP Server', () => {
       expect(body.totalEvents).toBe(3);
       expect(body.totalChannels).toBe(2);
       expect(body.refreshStatus).toBe('idle');
+      expect(body.lastRefreshDuration).toBeGreaterThanOrEqual(0);
       expect(body.nextRefresh).toBe('2026-02-14T11:00:00.000Z');
     });
 

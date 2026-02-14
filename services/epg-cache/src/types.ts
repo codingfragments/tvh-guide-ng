@@ -26,6 +26,7 @@ export interface HealthResponse {
   refreshStatus: 'idle' | 'refreshing' | 'error';
   totalEvents: number;
   totalChannels: number;
+  lastRefreshDuration: number | null;
   nextRefresh: string | null;
 }
 

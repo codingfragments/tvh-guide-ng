@@ -54,6 +54,7 @@ export function createApp(
       refreshStatus: meta.status,
       totalEvents: meta.eventCount,
       totalChannels: meta.channelCount,
+      lastRefreshDuration: meta.lastRefreshEnd > 0 ? meta.lastRefreshDuration : null,
       nextRefresh: nextRefresh ? nextRefresh.toISOString() : null,
     };
 

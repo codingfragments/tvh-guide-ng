@@ -16,6 +16,12 @@ TVHeadend's API only supports regex-based filtering on individual fields. This s
 ```bash
 pnpm --filter @tvh-guide/epg-cache build
 
+# Option 1: Use a .env file
+cp services/epg-cache/.env.example services/epg-cache/.env
+# Edit .env with your TVHeadend credentials
+node services/epg-cache/dist/index.js
+
+# Option 2: Inline environment variables
 TVH_URL=http://tvheadend:9981 TVH_USERNAME=admin TVH_PASSWORD=pass \
   node services/epg-cache/dist/index.js
 ```
@@ -23,6 +29,8 @@ TVH_URL=http://tvheadend:9981 TVH_USERNAME=admin TVH_PASSWORD=pass \
 The server starts immediately and serves health/empty responses while the first refresh runs.
 
 ## Configuration
+
+The service loads a `.env` file from the current working directory if present (using Node's built-in `process.loadEnvFile()`). Copy `.env.example` to `.env` and adjust as needed. Environment variables set in the shell take precedence.
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|

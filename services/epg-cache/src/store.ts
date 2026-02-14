@@ -1,3 +1,5 @@
+import { mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 import Database from 'better-sqlite3';
 import type { EpgEvent } from '@tvh-guide/tvheadend-client';
 import type { SyncMeta, IndexableEvent, CachedChannel } from './types.js';
@@ -63,6 +65,9 @@ export class EpgStore {
   private db: Database.Database;
 
   constructor(dbPath: string = ':memory:') {
+    if (dbPath !== ':memory:') {
+      mkdirSync(dirname(dbPath), { recursive: true });
+    }
     this.db = new Database(dbPath);
     this.db.pragma('journal_mode = WAL');
     this.db.pragma('foreign_keys = ON');
