@@ -1,0 +1,39 @@
+CachedChannel:
+  type: object
+  description: Cached channel stored in SQLite.
+  required:
+    - uuid
+    - enabled
+    - name
+  properties:
+    uuid:
+      type: string
+      format: uuid
+      description: Channel UUID.
+      example: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+    enabled:
+      type: boolean
+      description: Whether the channel is enabled.
+      example: true
+    name:
+      type: string
+      description: Channel display name.
+      example: "Das Erste HD"
+    number:
+      type:
+        - integer
+        - "null"
+      description: Channel number.
+      example: 1
+    icon:
+      type:
+        - string
+        - "null"
+      description: Channel icon path.
+      example: "imagecache/42"
+    iconPublicUrl:
+      type:
+        - string
+        - "null"
+      description: Public URL of the channel icon.
+      example: "https://example.com/icons/das-erste.png"

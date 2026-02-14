@@ -1,0 +1,47 @@
+ChannelParam:
+  name: channel
+  in: query
+  required: false
+  description: |
+    Filter by channel. Accepts a channel UUID or channel number.
+    Returns 404 if the channel is not found.
+  schema:
+    type: string
+  example: "1"
+
+StartParam:
+  name: start
+  in: query
+  required: false
+  description: Start of timerange filter (Unix epoch seconds).
+  schema:
+    type: integer
+  example: 1704067200
+
+StopParam:
+  name: stop
+  in: query
+  required: false
+  description: End of timerange filter (Unix epoch seconds).
+  schema:
+    type: integer
+  example: 1704153600
+
+GenreParam:
+  name: genre
+  in: query
+  required: false
+  description: Filter by content type code (e.g. 16 = Movie).
+  schema:
+    type: integer
+  example: 16
+
+LimitParam:
+  name: limit
+  in: query
+  required: false
+  description: Maximum number of results to return.
+  schema:
+    type: integer
+    minimum: 1
+  example: 20

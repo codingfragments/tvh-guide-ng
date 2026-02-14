@@ -1,0 +1,108 @@
+EpgEvent:
+  type: object
+  description: EPG event representing a TV program.
+  required:
+    - eventId
+    - channelUuid
+    - channelName
+    - start
+    - stop
+    - title
+  properties:
+    eventId:
+      type: integer
+      description: Unique event ID.
+      example: 123456
+    channelUuid:
+      type: string
+      format: uuid
+      description: UUID of the channel broadcasting this event.
+      example: "d3f1a2b4-5678-9abc-def0-1234567890ab"
+    channelName:
+      type: string
+      description: Human-readable channel name.
+      example: "Das Erste HD"
+    channelNumber:
+      type: integer
+      description: Channel number.
+      example: 1
+    channelIcon:
+      type: string
+      description: Channel icon URL.
+      example: "imagecache/42"
+    start:
+      type: integer
+      description: Event start time (Unix epoch seconds).
+      example: 1704067200
+    stop:
+      type: integer
+      description: Event end time (Unix epoch seconds).
+      example: 1704070800
+    duration:
+      type: integer
+      description: Event duration in seconds.
+      example: 3600
+    title:
+      type: string
+      description: Event title/name.
+      example: "Tagesschau"
+    subtitle:
+      type: string
+      description: Episode subtitle or secondary title.
+    summary:
+      type: string
+      description: Short description.
+    description:
+      type: string
+      description: Full detailed description.
+    genre:
+      type: array
+      items:
+        type: integer
+      description: Genre/category codes.
+    contentType:
+      type: integer
+      description: Primary content type code.
+      example: 16
+    seriesLink:
+      type: string
+      description: Series link identifier.
+    episodeNumber:
+      type: integer
+      description: Episode number within season.
+    seasonNumber:
+      type: integer
+      description: Season number.
+    partNumber:
+      type: integer
+      description: Part number (for multi-part episodes).
+    partCount:
+      type: integer
+      description: Total number of parts.
+    episodeUri:
+      type: string
+      description: Episode URI for unique identification.
+    image:
+      type: string
+      description: Event poster/thumbnail image URL.
+    nextEventId:
+      type: integer
+      description: ID of the next event on this channel.
+    ageRating:
+      type: integer
+      description: Minimum age rating.
+    starRating:
+      type: integer
+      description: Star rating.
+    hd:
+      type: boolean
+      description: HD flag.
+    widescreen:
+      type: boolean
+      description: Widescreen flag.
+    audioDesc:
+      type: boolean
+      description: Audio description available.
+    subtitled:
+      type: boolean
+      description: Subtitles available.

@@ -1,0 +1,23 @@
+/api/cache/refresh:
+  post:
+    operationId: triggerRefresh
+    summary: Trigger manual cache refresh
+    description: |
+      Triggers an immediate full refresh of the EPG cache from TVHeadend.
+      Returns 202 Accepted if the refresh was started, or 409 Conflict if a
+      refresh is already in progress.
+
+      The refresh runs asynchronously. Use the health endpoint to monitor progress.
+    tags:
+      - Cache
+    responses:
+      "202":
+        description: Refresh started successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/error.yaml#/RefreshAccepted'
+            example:
+              message: "Refresh started"
+      "409":
+        $ref: '../components/responses/errors.yaml#/Conflict'
