@@ -16,7 +16,8 @@
     "outDir": "dist",
     "paths": {
       "@tvh-guide/shared": ["../../libs/shared/src"],
-      "@tvh-guide/tvheadend-client": ["../../libs/tvheadend-client/src"]
+      "@tvh-guide/tvheadend-client": ["../../libs/tvheadend-client/src"],
+      "@tvh-guide/epg-cache-client": ["../../libs/epg-cache-client/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build"]
