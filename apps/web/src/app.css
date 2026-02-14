@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "./themes/macchiato.ts";
+@plugin "./themes/latte.ts";

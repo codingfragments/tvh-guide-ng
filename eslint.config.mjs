@@ -1,11 +1,24 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginSvelte from 'eslint-plugin-svelte';
+import svelteParser from 'svelte-eslint-parser';
+import globals from 'globals';
 
 export default tseslint.config(
   // Global ignores
   {
-    ignores: ['dist/', 'build/', 'node_modules/', 'coverage/', 'docs/', '**/*.js', '**/*.mjs', '**/*.d.ts'],
+    ignores: [
+      'dist/',
+      'build/',
+      'node_modules/',
+      'coverage/',
+      'docs/',
+      '.svelte-kit/',
+      '**/*.js',
+      '**/*.mjs',
+      '**/*.d.ts',
+    ],
   },
 
   // Base: recommended + strict type-checked
@@ -23,6 +36,32 @@ export default tseslint.config(
     rules: {
       // Allow numbers and booleans in template literals (common TS pattern)
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
+    },
+  },
+
+  // Svelte files: use svelte-eslint-parser with TypeScript support
+  ...eslintPluginSvelte.configs['flat/recommended'],
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: {
+        parser: tseslint.parser,
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: ['.svelte'],
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+    rules: {
+      // SvelteKit handles navigation internally; resolve() not needed for static paths
+      'svelte/no-navigation-without-resolve': 'off',
+      // Virtual modules and SvelteKit generated types can't always be resolved
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
     },
   },
 
@@ -54,7 +93,7 @@ export default tseslint.config(
 
   // Config files: disable type-checked rules (no tsconfig covers them)
   {
-    files: ['**/tsup.config.ts', '**/vitest.config.ts'],
+    files: ['**/tsup.config.ts', '**/vitest.config.ts', '**/vite.config.ts', '**/svelte.config.js'],
     ...tseslint.configs.disableTypeChecked,
   },
 
