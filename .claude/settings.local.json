@@ -1,4 +1,5 @@
 {
+  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(git -C /Users/stefan/projekteHome/marxworld/media/tvh-guide-ng log --oneline -5)",
@@ -13,7 +14,27 @@
       "Bash(pkill:*)",
       "Bash(ls:*)",
       "Bash(pnpm validate:openapi:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git -C \"/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng\" log --oneline -20)",
+      "Bash(git -C \"/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng\" ls-tree:*)",
+      "Bash(git -C \"/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng\" show c7d277a:package.json)",
+      "Bash(pnpm --filter @tvh-guide/tvheadend-client install)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(pnpm:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)",
+      "Bash(node:*)",
+      "Bash(apps/cli/dist/cli.js:*)",
+      "Bash(./apps/cli/dist/cli.js auth config:*)",
+      "Bash(./apps/cli/dist/cli.js auth status:*)",
+      "Bash(./apps/cli/dist/cli.js:*)",
+      "Bash(grep:*)",
+      "Bash(./dist/cli.js events show:*)",
+      "Bash(/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng/apps/cli/dist/cli.js events show:*)",
+      "Bash(/Users/stefan.marx/projekteHome/marxworld/media/tvh-guide-ng/apps/cli/dist/cli.js channels list:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

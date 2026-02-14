@@ -1,0 +1,56 @@
+{
+  "name": "@tvh-guide/epg-cache",
+  "version": "0.1.0",
+  "description": "EPG caching service with SQLite storage and fuzzy text search",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "echo 'Lint script placeholder'",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "tvheadend",
+    "epg",
+    "cache",
+    "search",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tvh-guide/tvheadend-client": "workspace:*",
+    "better-sqlite3": "^11.0.0",
+    "hono": "^4.0.0",
+    "@hono/node-server": "^1.0.0",
+    "minisearch": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  },
+  "volta": {
+    "node": "24.13.1"
+  }
+}

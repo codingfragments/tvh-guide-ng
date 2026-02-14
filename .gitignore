@@ -38,3 +38,4 @@ pnpm-debug.log*
 
 # Generated documentation
 docs/api/tvheadend/api-docs.html
+data

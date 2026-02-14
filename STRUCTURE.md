@@ -10,6 +10,7 @@ tvh-guide-ng/
 │   ├── cli/                 # Command-line interface for TVHeadend
 │   └── web/                 # SvelteKit EPG frontend
 ├── services/                # Backend services
+│   ├── epg-cache/           # EPG caching service with SQLite + fuzzy search
 │   └── epg-service/         # EPG data backend service
 ├── libs/                    # Shared libraries
 │   ├── shared/              # Common types, utilities, constants
@@ -22,6 +23,7 @@ tvh-guide-ng/
 All packages use the `@tvh-guide/` namespace:
 - `@tvh-guide/cli` — Command-line interface for TVHeadend
 - `@tvh-guide/web` — Frontend application
+- `@tvh-guide/epg-cache` — EPG caching service with SQLite storage and fuzzy search
 - `@tvh-guide/epg-service` — EPG backend service
 - `@tvh-guide/shared` — Shared types and utilities
 - `@tvh-guide/tvheadend-client` — Type-safe TVHeadend API client
@@ -93,6 +95,7 @@ All packages use the `@tvh-guide/` namespace:
 - When isolating a specific domain or responsibility
 
 **Example packages**:
+- `services/epg-cache` — EPG caching with SQLite + MiniSearch (syncs from TVHeadend, serves HTTP API)
 - `services/epg-service` — EPG data backend
 - `services/auth-service` — (future) Authentication service
 - `services/recording-service` — (future) Recording management
