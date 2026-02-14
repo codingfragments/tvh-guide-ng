@@ -1,0 +1,9 @@
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Platform adapters
+.output
+.vercel
+.netlify
+.wrangler

@@ -67,6 +67,7 @@ ESLint v9 flat config lives at `eslint.config.mjs` (root). Per-package lint scri
 | -------------------- | ------------------------------------------------- |
 | Base                 | `eslint/recommended` + `strictTypeChecked`        |
 | Type-aware parsing   | `projectService: true` (auto-discovers tsconfigs) |
+| Svelte files         | `eslint-plugin-svelte` + `svelte-eslint-parser`   |
 | Test files           | Type-checked rules disabled; `any` allowed        |
 | CLI command handlers | `no-unsafe-*` relaxed (Commander returns `any`)   |
 | Config files         | Type-checked rules fully disabled                 |
@@ -84,3 +85,36 @@ pnpm -r lint         # same (root script delegates)
 - `restrict-template-expressions`: numbers and booleans allowed in template literals
 - `no-unnecessary-condition`: `captureStackTrace?.()` suppressed (V8-specific API)
 - Test files: `disableTypeChecked` + `no-explicit-any` off + `no-non-null-assertion` off
+
+## Svelte
+
+### Runes (Svelte 5)
+
+All components use Svelte 5 runes — no legacy `export let` or `$:` reactive statements.
+
+| Rune         | Purpose                      | Example                                   |
+| ------------ | ---------------------------- | ----------------------------------------- |
+| `$state()`   | Reactive variable            | `let count = $state(0);`                  |
+| `$derived()` | Computed value               | `const double = $derived(count * 2);`     |
+| `$props()`   | Component props              | `let { title, items } = $props();`        |
+| `$effect()`  | Side effect (runs on change) | `$effect(() => { console.log(count); });` |
+
+### Component Files
+
+- SvelteKit route components: `+page.svelte`, `+layout.svelte`, `+error.svelte`
+- Server-side logic: `+page.server.ts`, `+layout.server.ts`, `+server.ts`
+- Reusable components: PascalCase in `$lib/components/` (e.g., `ChannelCard.svelte`)
+- Use `{@render children()}` instead of `<slot />`
+
+### Styling
+
+- Tailwind CSS v4 with CSS-first config (no `tailwind.config.js`)
+- DaisyUI v5 component classes for consistent theming
+- Catppuccin Macchiato (dark, default) and Latte (light) themes
+- Theme switching via `data-theme` attribute on `<html>`
+
+### Data Loading
+
+- Use `+page.server.ts` load functions for server-side data
+- Private env vars via `$env/static/private` (never exposed to browser)
+- SvelteKit API routes (`+server.ts`) as backend stubs — not generic proxies

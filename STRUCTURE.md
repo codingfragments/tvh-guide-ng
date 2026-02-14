@@ -24,7 +24,7 @@ tvh-guide-ng/
 All packages use the `@tvh-guide/` namespace:
 
 - `@tvh-guide/cli` — Command-line interface for TVHeadend
-- `@tvh-guide/web` — Frontend application
+- `@tvh-guide/web` — SvelteKit EPG frontend (SSR, Tailwind CSS v4, DaisyUI v5, PWA)
 - `@tvh-guide/epg-cache` — EPG caching service with SQLite storage and fuzzy search
 - `@tvh-guide/epg-service` — EPG backend service
 - `@tvh-guide/epg-cache-client` — Type-safe EPG Cache service API client
@@ -68,7 +68,7 @@ All packages use the `@tvh-guide/` namespace:
 **Example packages**:
 
 - `apps/cli` — Command-line interface for managing TVHeadend EPG and recordings
-- `apps/web` — Main EPG web interface
+- `apps/web` — SvelteKit EPG web app (Svelte 5, Tailwind CSS v4, DaisyUI v5, Catppuccin themes, PWA)
 - `apps/admin` — (future) Admin configuration panel
 - `apps/mobile` — (future) Mobile EPG app
 
