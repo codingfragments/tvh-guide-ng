@@ -14,7 +14,8 @@
     "docs:build": "echo 'Stoplight Elements uses static HTML - no build needed'",
     "docs:serve": "browser-sync start --server docs/api --files 'docs/api/**/*' --no-open --port 8080",
     "docs:watch": "browser-sync start --server docs/api --files 'docs/api/**/*.yaml,docs/api/**/*.yml,docs/api/**/*.html' --no-open --port 8080",
-    "docs:generate-md": "npx widdershins --resolve docs/api/tvheadend/openapi.yaml -o docs/api/tvheadend/API_REFERENCE.md && npx widdershins --resolve docs/api/epg-cache/openapi.yaml -o docs/api/epg-cache/API_REFERENCE.md"
+    "docs:generate-md": "npx widdershins --resolve docs/api/tvheadend/openapi.yaml -o docs/api/tvheadend/API_REFERENCE.md && npx widdershins --resolve docs/api/epg-cache/openapi.yaml -o docs/api/epg-cache/API_REFERENCE.md",
+    "dev:storybook": "pnpm --filter @tvh-guide/epg-cache run dev & pnpm --filter @tvh-guide/web run storybook & wait"
   },
   "volta": {
     "node": "24.13.1",
