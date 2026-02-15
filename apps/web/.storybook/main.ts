@@ -11,7 +11,21 @@ const config: StorybookConfig = {
   ],
   viteFinal(config) {
     config.plugins ??= [];
-    config.plugins.push(tailwindcss());
+    config.plugins.push(
+      tailwindcss(),
+      {
+        name: 'mock-sveltekit-env',
+        resolveId(id: string) {
+          if (id === '$env/static/public') return '\0$env/static/public';
+        },
+        load(id: string) {
+          if (id === '\0$env/static/public') {
+            const url = process.env.PUBLIC_EPG_CACHE_URL ?? 'http://localhost:3000';
+            return `export const PUBLIC_EPG_CACHE_URL = ${JSON.stringify(url)};`;
+          }
+        },
+      },
+    );
     return config;
   },
 };

@@ -1,3 +1,5 @@
+import { PUBLIC_EPG_CACHE_URL } from '$env/static/public';
+
 export type PiconVariant = 'default' | 'light' | 'dark' | 'white' | 'black';
 
 export const PICON_VARIANTS: readonly PiconVariant[] = [
@@ -31,7 +33,7 @@ export function parsePiconUrl(url: string): ParsedPiconUrl | null {
 }
 
 export function getBaseUrl(): string {
-	return import.meta.env.PUBLIC_EPG_CACHE_URL ?? 'http://localhost:3000';
+	return PUBLIC_EPG_CACHE_URL || 'http://localhost:3000';
 }
 
 export function buildPiconImageUrl(
