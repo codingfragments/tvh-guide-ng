@@ -11,7 +11,8 @@
   let {
     mainItems = defaultMainItems,
     utilityItems = defaultUtilityItems,
-  }: { mainItems?: NavItem[]; utilityItems?: NavItem[] } = $props();
+    activePath,
+  }: { mainItems?: NavItem[]; utilityItems?: NavItem[]; activePath?: string } = $props();
 
   let collapsed = $state(false);
 
@@ -25,7 +26,7 @@
     localStorage.setItem('tvh-guide-sidebar-collapsed', String(collapsed));
   }
 
-  const pathname = $derived(page.url.pathname);
+  const pathname = $derived(activePath ?? page.url.pathname);
 </script>
 
 <aside

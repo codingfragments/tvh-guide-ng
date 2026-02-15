@@ -235,18 +235,58 @@ render with DaisyUI + Catppuccin theming.
 
 ### Route Mocking
 
-Components that use `$app/state` (e.g. Sidebar, BottomNav) need route mocking. Override the URL per-story:
+Components that use `$app/state` (e.g. Sidebar, BottomNav) accept an optional `activePath` prop that overrides the
+router-derived pathname. Use this in stories with a `select` control instead of creating separate stories per route:
 
 ```svelte
-<Story
-  name="Active: Guide"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/guide') } } },
-  }}
-/>
+const { Story } = defineMeta({
+  component: Sidebar,
+  args: { activePath: '/now' },
+  argTypes: {
+    activePath: {
+      control: 'select',
+      options: ['/now', '/guide', '/channels', '/settings', '/'],
+    },
+  },
+});
 ```
 
-The default mock URL is `/now` (set in `.storybook/preview.ts`).
+The default SvelteKit page mock URL is `/now` (set in `.storybook/preview.ts`).
+
+### Viewport Globals
+
+Storybook 10 uses `globals` (not the old `parameters.viewport`) to control the viewport per story.
+
+**Every component meta must set `globals.viewport`.** Storybook does not reset viewport globals when navigating between
+stories ([storybookjs/storybook#27073](https://github.com/storybookjs/storybook/issues/27073)). Without an explicit
+value, navigating from e.g. BottomNav (`mobile1`) to Sidebar would keep the mobile viewport. Setting
+`value: undefined` restores the default responsive viewport.
+
+Desktop / responsive components:
+
+```ts
+const { Story } = defineMeta({
+  globals: {
+    viewport: { value: undefined, isRotated: false },
+  },
+});
+```
+
+Mobile-first components:
+
+```ts
+const { Story } = defineMeta({
+  globals: {
+    viewport: { value: 'mobile1', isRotated: false },
+  },
+});
+```
+
+Override per-story when needed:
+
+```svelte
+<Story name="Tablet Width" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
+```
 
 ### Convention
 

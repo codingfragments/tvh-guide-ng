@@ -6,9 +6,10 @@
   let {
     mainItems = defaultMainItems,
     utilityItems = defaultUtilityItems,
-  }: { mainItems?: NavItem[]; utilityItems?: NavItem[] } = $props();
+    activePath,
+  }: { mainItems?: NavItem[]; utilityItems?: NavItem[]; activePath?: string } = $props();
 
-  const pathname = $derived(page.url.pathname);
+  const pathname = $derived(activePath ?? page.url.pathname);
   const allItems = $derived([...mainItems, ...utilityItems]);
 </script>
 

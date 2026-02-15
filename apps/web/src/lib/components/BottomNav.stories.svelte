@@ -1,10 +1,43 @@
 <script module lang="ts">
   import { defineMeta } from '@storybook/addon-svelte-csf';
+  import {
+    Home as HomeIcon,
+    CalendarDays as CalendarDaysIcon,
+    List as ListIcon,
+    Settings as SettingsIcon,
+  } from 'lucide-svelte';
+  import type { NavItem } from '$lib/navigation';
   import BottomNav from './BottomNav.svelte';
+
+  const storyMainItems: NavItem[] = [
+    { href: '/now', label: 'Now', icon: HomeIcon },
+    { href: '/guide', label: 'Guide', icon: CalendarDaysIcon },
+    { href: '/channels', label: 'Channels', icon: ListIcon },
+  ];
+
+  const storyUtilityItems: NavItem[] = [
+    { href: '/settings', label: 'Settings', icon: SettingsIcon },
+  ];
 
   const { Story } = defineMeta({
     title: 'Components/BottomNav',
     component: BottomNav,
+    args: {
+      activePath: '/now',
+      mainItems: storyMainItems,
+      utilityItems: storyUtilityItems,
+    },
+    argTypes: {
+      activePath: {
+        control: 'select',
+        options: ['/now', '/guide', '/channels', '/settings', '/'],
+      },
+      mainItems: { table: { disable: true } },
+      utilityItems: { table: { disable: true } },
+    },
+    globals: {
+      viewport: { value: 'mobile1', isRotated: false },
+    },
     parameters: {
       layout: 'fullscreen',
     },
@@ -12,93 +45,18 @@
 </script>
 
 <!-- Container <1024px so lg:hidden stays visible -->
-<Story
-  name="Active: Now"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/now') } } },
-  }}
->
-  {#snippet children()}
+<Story name="Default">
+  {#snippet template(args)}
     <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
+      <BottomNav {...args} />
     </div>
   {/snippet}
 </Story>
 
-<Story
-  name="Active: Guide"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/guide') } } },
-  }}
->
-  {#snippet children()}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Active: Channels"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/channels') } } },
-  }}
->
-  {#snippet children()}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Active: Recordings"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/recordings') } } },
-  }}
->
-  {#snippet children()}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Active: Settings"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/settings') } } },
-  }}
->
-  {#snippet children()}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="No Active Route"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/') } } },
-  }}
->
-  {#snippet children()}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Tablet Width"
-  parameters={{
-    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/now') } } },
-  }}
->
-  {#snippet children()}
+<Story name="Tablet Width" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
+  {#snippet template(args)}
     <div style="width: 768px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav />
+      <BottomNav {...args} />
     </div>
   {/snippet}
 </Story>
