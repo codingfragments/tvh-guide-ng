@@ -189,6 +189,69 @@ The web app (`apps/web`) uses a responsive shell with three layout zones:
 
 Persisted in `localStorage` key `tvh-guide-sidebar-collapsed`.
 
+## Storybook (Component Development)
+
+The web app includes [Storybook](https://storybook.js.org/) for isolated component development and visual testing.
+
+### Running Storybook
+
+```bash
+pnpm --filter @tvh-guide/web run storybook      # dev server on http://localhost:6006
+pnpm --filter @tvh-guide/web run storybook:build # production build → storybook-static/
+```
+
+### Writing Stories
+
+Stories use the [Svelte CSF](https://github.com/storybookjs/addon-svelte-csf) format (`.stories.svelte` files) with the `defineMeta()` API.
+
+Place story files next to their components:
+
+```
+src/lib/components/
+  MyComponent.svelte
+  MyComponent.stories.svelte
+```
+
+Minimal example:
+
+```svelte
+<script module lang="ts">
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+
+  const { Story } = defineMeta({
+    title: 'Components/MyComponent',
+    component: MyComponent,
+  });
+</script>
+
+<Story name="Default" />
+```
+
+### Theme Switching
+
+The toolbar includes a theme switcher (macchiato / latte) powered by `@storybook/addon-themes`. All stories automatically
+render with DaisyUI + Catppuccin theming.
+
+### Route Mocking
+
+Components that use `$app/state` (e.g. Sidebar, BottomNav) need route mocking. Override the URL per-story:
+
+```svelte
+<Story
+  name="Active: Guide"
+  parameters={{
+    sveltekit_experimental: { state: { page: { url: new URL('http://localhost/guide') } } },
+  }}
+/>
+```
+
+The default mock URL is `/now` (set in `.storybook/preview.ts`).
+
+### Convention
+
+Every new UI component in `apps/web` must include a `.stories.svelte` file with at least a "Default" story.
+
 ## Extending the Monorepo
 
 ### Adding a New Package
