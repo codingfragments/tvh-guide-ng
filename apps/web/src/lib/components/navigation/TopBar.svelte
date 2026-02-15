@@ -4,7 +4,7 @@
   import { Tv as TvIcon } from 'lucide-svelte';
 </script>
 
-<div class="navbar bg-base-200 shrink-0">
+<div class="navbar bg-base-200 shrink-0 safe-pt">
   <!-- Brand (mobile only — desktop shows brand in sidebar) -->
   <div class="flex-1 lg:hidden">
     <a href="/now" class="btn btn-ghost gap-2 text-xl">
