@@ -8,10 +8,16 @@ export default defineConfig({
     tailwindcss(),
     sveltekit(),
     SvelteKitPWA({
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
         name: 'TVH Guide',
         short_name: 'TVH Guide',
         description: 'Electronic Program Guide for TVHeadend',
+        id: '/',
+        start_url: '/',
+        scope: '/',
         theme_color: '#24273a',
         background_color: '#24273a',
         display: 'standalone',

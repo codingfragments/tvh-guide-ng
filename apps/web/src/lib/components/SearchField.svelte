@@ -46,7 +46,7 @@
 
 {#if mobileOpen}
   <!-- Mobile search overlay -->
-  <div class="fixed inset-0 z-50 flex items-start bg-base-100 p-4 md:hidden">
+  <div class="fixed inset-0 z-50 flex items-start bg-base-100 p-4 safe-pt md:hidden">
     <form onsubmit={handleSubmit} class="flex w-full items-center gap-2">
       <label class="input input-bordered flex items-center gap-2 flex-1">
         <SearchIcon class="size-4 opacity-50" />
