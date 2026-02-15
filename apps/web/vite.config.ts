@@ -8,6 +8,9 @@ export default defineConfig({
     tailwindcss(),
     sveltekit(),
     SvelteKitPWA({
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
         name: 'TVH Guide',
         short_name: 'TVH Guide',
