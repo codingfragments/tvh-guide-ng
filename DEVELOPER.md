@@ -158,6 +158,37 @@ Icons are inline SVGs styled with Tailwind classes. They inherit `currentColor` 
 
 Browse the full catalog with search at: https://lucide.dev/icons/
 
+## Web App Layout Architecture
+
+The web app (`apps/web`) uses a responsive shell with three layout zones:
+
+| Breakpoint | Sidebar | Bottom Dock | Search |
+| --- | --- | --- | --- |
+| Phone (<md) | Hidden | Visible (icons + labels) | Icon, opens overlay |
+| Tablet (md-lg) | Hidden | Visible | Inline field |
+| Desktop (lg+) | Persistent, collapsible | Hidden | Inline field |
+
+### Key files
+
+| File | Purpose |
+| --- | --- |
+| `src/lib/navigation.ts` | Centralized nav config (routes, icons, labels, `isActive` helper) |
+| `src/lib/components/Sidebar.svelte` | Desktop sidebar with collapse/expand to icon rail |
+| `src/lib/components/BottomNav.svelte` | Mobile/tablet dock (DaisyUI v5 `dock`) |
+| `src/lib/components/TopBar.svelte` | Top bar (brand on mobile, search, theme toggle) |
+| `src/lib/components/SearchField.svelte` | Search input (inline on md+, icon-to-overlay on mobile) |
+| `src/lib/components/ThemeToggle.svelte` | Dark/light theme swap |
+
+### Adding a nav item
+
+1. Add an entry to `mainNavItems` or `utilityNavItems` in `src/lib/navigation.ts`
+2. Create the route page under `src/routes/<name>/+page.svelte`
+3. Both Sidebar and BottomNav render from the same config automatically
+
+### Sidebar collapse state
+
+Persisted in `localStorage` key `tvh-guide-sidebar-collapsed`.
+
 ## Extending the Monorepo
 
 ### Adding a New Package
