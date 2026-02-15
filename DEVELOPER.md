@@ -168,14 +168,25 @@ The web app (`apps/web`) uses a responsive shell with three layout zones:
 | Tablet (md-lg) | Hidden | Visible | Inline field |
 | Desktop (lg+) | Persistent, collapsible | Hidden | Inline field |
 
+### Component organization
+
+```
+src/lib/components/
+  navigation/    → Shell & nav: Sidebar, BottomNav, TopBar
+  epg/           → EPG-related views (upcoming)
+  common/        → Shared widgets (upcoming)
+  SearchField.svelte
+  ThemeToggle.svelte
+```
+
 ### Key files
 
 | File | Purpose |
 | --- | --- |
 | `src/lib/navigation.ts` | Centralized nav config (routes, icons, labels, `isActive` helper) |
-| `src/lib/components/Sidebar.svelte` | Desktop sidebar with collapse/expand to icon rail |
-| `src/lib/components/BottomNav.svelte` | Mobile/tablet dock (DaisyUI v5 `dock`) |
-| `src/lib/components/TopBar.svelte` | Top bar (brand on mobile, search, theme toggle) |
+| `src/lib/components/navigation/Sidebar.svelte` | Desktop sidebar with collapse/expand to icon rail |
+| `src/lib/components/navigation/BottomNav.svelte` | Mobile/tablet dock (DaisyUI v5 `dock`) |
+| `src/lib/components/navigation/TopBar.svelte` | Top bar (brand on mobile, search, theme toggle) |
 | `src/lib/components/SearchField.svelte` | Search input (inline on md+, icon-to-overlay on mobile) |
 | `src/lib/components/ThemeToggle.svelte` | Dark/light theme swap |
 
@@ -204,12 +215,16 @@ pnpm --filter @tvh-guide/web run storybook:build # production build → storyboo
 
 Stories use the [Svelte CSF](https://github.com/storybookjs/addon-svelte-csf) format (`.stories.svelte` files) with the `defineMeta()` API.
 
-Place story files next to their components:
+Place story files next to their components, following the subfolder structure:
 
 ```
 src/lib/components/
-  MyComponent.svelte
-  MyComponent.stories.svelte
+  navigation/
+    Sidebar.svelte
+    Sidebar.stories.svelte
+  common/
+    MyWidget.svelte
+    MyWidget.stories.svelte
 ```
 
 Minimal example:

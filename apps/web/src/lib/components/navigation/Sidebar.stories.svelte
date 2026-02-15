@@ -7,7 +7,7 @@
     Settings as SettingsIcon,
   } from 'lucide-svelte';
   import type { NavItem } from '$lib/navigation';
-  import BottomNav from './BottomNav.svelte';
+  import Sidebar from './Sidebar.svelte';
 
   const storyMainItems: NavItem[] = [
     { href: '/now', label: 'Now', icon: HomeIcon },
@@ -20,8 +20,8 @@
   ];
 
   const { Story } = defineMeta({
-    title: 'Components/BottomNav',
-    component: BottomNav,
+    title: 'Navigation/Sidebar',
+    component: Sidebar,
     args: {
       activePath: '/now',
       mainItems: storyMainItems,
@@ -36,7 +36,7 @@
       utilityItems: { table: { disable: true } },
     },
     globals: {
-      viewport: { value: 'mobile1', isRotated: false },
+      viewport: { value: undefined, isRotated: false },
     },
     parameters: {
       layout: 'fullscreen',
@@ -44,19 +44,22 @@
   });
 </script>
 
-<!-- Container <1024px so lg:hidden stays visible -->
+<!-- Force lg: visibility with a wide container -->
 <Story name="Default">
   {#snippet template(args)}
-    <div style="width: 375px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav {...args} />
+    <div style="width: 1280px; height: 600px;" class="flex">
+      <Sidebar {...args} />
     </div>
   {/snippet}
 </Story>
 
-<Story name="Tablet Width" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
+<Story name="Collapsed (Icon Rail)">
   {#snippet template(args)}
-    <div style="width: 768px; height: 200px;" class="flex flex-col justify-end">
-      <BottomNav {...args} />
+    <div style="width: 1280px; height: 600px;" class="flex">
+      <p class="absolute top-2 right-2 text-sm text-base-content/60 z-10">
+        Click the collapse button at the bottom of the sidebar
+      </p>
+      <Sidebar {...args} />
     </div>
   {/snippet}
 </Story>

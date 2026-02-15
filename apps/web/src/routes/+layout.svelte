@@ -1,9 +1,9 @@
 <script lang="ts">
   import { pwaInfo } from 'virtual:pwa-info';
   import '../app.css';
-  import Sidebar from '$lib/components/Sidebar.svelte';
-  import TopBar from '$lib/components/TopBar.svelte';
-  import BottomNav from '$lib/components/BottomNav.svelte';
+  import Sidebar from '$lib/components/navigation/Sidebar.svelte';
+  import TopBar from '$lib/components/navigation/TopBar.svelte';
+  import BottomNav from '$lib/components/navigation/BottomNav.svelte';
   import { mainNavItems, utilityNavItems } from '$lib/navigation';
 
   let { children } = $props();

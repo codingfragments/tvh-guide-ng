@@ -3,7 +3,7 @@
   import TopBar from './TopBar.svelte';
 
   const { Story } = defineMeta({
-    title: 'Components/TopBar',
+    title: 'Navigation/TopBar',
     component: TopBar,
     globals: {
       viewport: { value: undefined, isRotated: false },
