@@ -1,9 +1,15 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { mainNavItems, utilityNavItems, isActive } from '$lib/navigation';
+  import type { NavItem } from '$lib/navigation';
+  import { mainNavItems as defaultMainItems, utilityNavItems as defaultUtilityItems, isActive } from '$lib/navigation';
+
+  let {
+    mainItems = defaultMainItems,
+    utilityItems = defaultUtilityItems,
+  }: { mainItems?: NavItem[]; utilityItems?: NavItem[] } = $props();
 
   const pathname = $derived(page.url.pathname);
-  const allItems = [...mainNavItems, ...utilityNavItems];
+  const allItems = $derived([...mainItems, ...utilityItems]);
 </script>
 
 <div class="dock lg:hidden">
