@@ -7,7 +7,17 @@
 @plugin "./themes/macchiato.ts";
 @plugin "./themes/latte.ts";
 
-/* Safe-area insets for iOS notch/home indicator */
+/* Safe-area insets for iOS PWA (notch / home indicator) */
+@utility safe-pt {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 @utility safe-pb {
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Scroll clearance so content isn't hidden behind the fixed dock.
+   Dock height = 4rem + safe-area-inset-bottom, plus 1rem breathing room. */
+@utility dock-clearance {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
 }

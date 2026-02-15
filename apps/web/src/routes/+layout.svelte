@@ -26,7 +26,7 @@
   <div class="flex flex-1 flex-col min-w-0">
     <TopBar />
 
-    <main class="flex-1 overflow-y-auto p-4 pb-20 lg:p-6 lg:pb-6">
+    <main class="flex-1 overflow-y-auto px-4 pt-4 dock-clearance lg:px-6 lg:pt-6 lg:pb-6">
       {@render children()}
     </main>
 
