@@ -6,3 +6,8 @@
 
 @plugin "./themes/macchiato.ts";
 @plugin "./themes/latte.ts";
+
+/* Safe-area insets for iOS notch/home indicator */
+@utility safe-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
