@@ -1,7 +1,11 @@
+import { readFileSync } from 'node:fs';
 import { Hono } from 'hono';
 import type { EpgStore } from './store.js';
 import type { SearchIndex } from './search.js';
 import type { RefreshScheduler } from './scheduler.js';
+import type { PiconIndex } from './picon.js';
+import { PICON_VARIANTS } from './picon.js';
+import type { PiconVariant } from './picon.js';
 import type { CacheHealthMeta, ApiResponse, HealthResponse, SearchResult } from './types.js';
 
 export function createApp(
@@ -9,6 +13,7 @@ export function createApp(
   searchIndex: SearchIndex,
   scheduler: RefreshScheduler,
   refreshIntervalSeconds: number,
+  piconIndex: PiconIndex | null = null,
 ): Hono {
   const app = new Hono();
 
@@ -180,6 +185,52 @@ export function createApp(
 
     void scheduler.refresh();
     return c.json({ message: 'Refresh started' }, 202);
+  });
+
+  // Picon by channel name
+  app.get('/api/picon/channel/:channelName', (c) => {
+    if (!piconIndex) {
+      return c.json({ error: 'Picon support is not configured' }, 503);
+    }
+
+    const variantParam = c.req.query('variant') ?? 'default';
+    if (!PICON_VARIANTS.has(variantParam)) {
+      return c.json({ error: `Invalid variant "${variantParam}". Valid: ${[...PICON_VARIANTS].join(', ')}` }, 400);
+    }
+
+    const channelName = c.req.param('channelName');
+    const result = piconIndex.resolveByChannelName(channelName, variantParam as PiconVariant);
+    if (!result) {
+      return c.json({ error: `No picon found for channel "${channelName}"` }, 404);
+    }
+
+    const body = readFileSync(result.filePath);
+    c.header('Content-Type', result.contentType);
+    c.header('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+    return c.body(body);
+  });
+
+  // Picon by service reference
+  app.get('/api/picon/srp/:serviceRef', (c) => {
+    if (!piconIndex) {
+      return c.json({ error: 'Picon support is not configured' }, 503);
+    }
+
+    const variantParam = c.req.query('variant') ?? 'default';
+    if (!PICON_VARIANTS.has(variantParam)) {
+      return c.json({ error: `Invalid variant "${variantParam}". Valid: ${[...PICON_VARIANTS].join(', ')}` }, 400);
+    }
+
+    const serviceRef = c.req.param('serviceRef');
+    const result = piconIndex.resolveByServiceRef(serviceRef, variantParam as PiconVariant);
+    if (!result) {
+      return c.json({ error: `No picon found for service reference "${serviceRef}"` }, 404);
+    }
+
+    const body = readFileSync(result.filePath);
+    c.header('Content-Type', result.contentType);
+    c.header('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+    return c.body(body);
   });
 
   return app;

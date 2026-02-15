@@ -45,3 +45,15 @@ Conflict:
           summary: Refresh already running
           value:
             error: 'Refresh already in progress'
+
+ServiceUnavailable:
+  description: Feature not configured or temporarily unavailable.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/error.yaml#/ErrorResponse'
+      examples:
+        piconNotConfigured:
+          summary: Picon support not configured
+          value:
+            error: 'Picon support is not configured'

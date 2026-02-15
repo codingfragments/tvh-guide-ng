@@ -36,6 +36,14 @@ export class ConflictError extends EpgCacheError {
   }
 }
 
+/** Service unavailable error (503) — e.g., picon support not configured */
+export class ServiceUnavailableError extends EpgCacheError {
+  constructor(message = 'Service unavailable') {
+    super(message, 503);
+    this.name = 'ServiceUnavailableError';
+  }
+}
+
 /** Network or connection error */
 export class NetworkError extends EpgCacheError {
   constructor(

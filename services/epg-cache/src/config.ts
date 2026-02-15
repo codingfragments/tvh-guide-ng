@@ -26,5 +26,6 @@ export function loadConfig(): EpgCacheConfig {
     refreshInterval: parseInt(process.env.EPG_REFRESH_INTERVAL ?? '3600', 10),
     httpPort: parseInt(process.env.EPG_HTTP_PORT ?? '3000', 10),
     sqlitePath: process.env.EPG_SQLITE_PATH ?? './data/epg-cache.db',
+    piconPath: process.env.PICON_PATH ?? null,
   };
 }

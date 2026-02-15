@@ -75,6 +75,7 @@ export interface EpgCacheConfig {
   refreshInterval: number;
   httpPort: number;
   sqlitePath: string;
+  piconPath: string | null;
 }
 
 /** Lightweight event projection for search indexing */

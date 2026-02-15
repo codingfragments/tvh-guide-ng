@@ -1,0 +1,104 @@
+/api/picon/channel/{channelName}:
+  get:
+    operationId: getPiconByChannelName
+    summary: Get channel icon by name
+    description: |
+      Resolve a channel icon (picon) by channel name using the SNP (Service Name Picon)
+      algorithm. The name is normalized (NFKD, strip diacritics, lowercase, strip
+      non-alphanumeric) and looked up in the picons index.
+
+      Returns the logo image directly (SVG or PNG). SVG is preferred when available.
+    tags:
+      - Picons
+    parameters:
+      - name: channelName
+        in: path
+        required: true
+        description: Channel name (will be normalized via SNP algorithm).
+        schema:
+          type: string
+        example: 'Das Erste HD'
+      - name: variant
+        in: query
+        required: false
+        description: |
+          Logo variant. Falls back to `default` if the requested variant is not available.
+        schema:
+          type: string
+          enum: [default, light, dark, white, black]
+          default: default
+    responses:
+      '200':
+        description: Channel icon image.
+        content:
+          image/svg+xml:
+            schema:
+              type: string
+              format: binary
+          image/png:
+            schema:
+              type: string
+              format: binary
+        headers:
+          Cache-Control:
+            schema:
+              type: string
+              example: 'public, max-age=86400, stale-while-revalidate=604800'
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+      '503':
+        $ref: '../components/responses/errors.yaml#/ServiceUnavailable'
+
+/api/picon/srp/{serviceRef}:
+  get:
+    operationId: getPiconByServiceRef
+    summary: Get channel icon by service reference
+    description: |
+      Resolve a channel icon (picon) by DVB service reference (SRP).
+      The reference is looked up directly in the SRP index.
+
+      Returns the logo image directly (SVG or PNG). SVG is preferred when available.
+    tags:
+      - Picons
+    parameters:
+      - name: serviceRef
+        in: path
+        required: true
+        description: DVB service reference identifier (e.g. `1D5_B_1_130000`).
+        schema:
+          type: string
+        example: '1D5_B_1_130000'
+      - name: variant
+        in: query
+        required: false
+        description: |
+          Logo variant. Falls back to `default` if the requested variant is not available.
+        schema:
+          type: string
+          enum: [default, light, dark, white, black]
+          default: default
+    responses:
+      '200':
+        description: Channel icon image.
+        content:
+          image/svg+xml:
+            schema:
+              type: string
+              format: binary
+          image/png:
+            schema:
+              type: string
+              format: binary
+        headers:
+          Cache-Control:
+            schema:
+              type: string
+              example: 'public, max-age=86400, stale-while-revalidate=604800'
+      '400':
+        $ref: '../components/responses/errors.yaml#/BadRequest'
+      '404':
+        $ref: '../components/responses/errors.yaml#/NotFound'
+      '503':
+        $ref: '../components/responses/errors.yaml#/ServiceUnavailable'

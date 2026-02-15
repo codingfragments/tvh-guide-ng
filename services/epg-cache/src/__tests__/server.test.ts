@@ -1,7 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
+import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { createApp } from '../server.js';
 import { EpgStore } from '../store.js';
 import { SearchIndex } from '../search.js';
+import { PiconIndex } from '../picon.js';
 import type { RefreshScheduler } from '../scheduler.js';
 import type { EpgEvent } from '@tvh-guide/tvheadend-client';
 
@@ -255,6 +259,108 @@ describe('HTTP Server', () => {
       (scheduler.isRefreshing as ReturnType<typeof vi.fn>).mockReturnValue(true);
       const res = await app.request('/api/cache/refresh', { method: 'POST' });
       expect(res.status).toBe(409);
+    });
+  });
+
+  describe('Picon endpoints (no piconIndex)', () => {
+    it('should return 503 for /api/picon/channel when picons not configured', async () => {
+      const res = await app.request('/api/picon/channel/Das%20Erste%20HD');
+      expect(res.status).toBe(503);
+      const body = await res.json();
+      expect(body.error).toContain('not configured');
+    });
+
+    it('should return 503 for /api/picon/srp when picons not configured', async () => {
+      const res = await app.request('/api/picon/srp/1D5_B_1_130000');
+      expect(res.status).toBe(503);
+    });
+  });
+});
+
+describe('Picon endpoints (with piconIndex)', () => {
+  let piconFixturePath: string;
+  let piconIndex: PiconIndex;
+  let piconApp: ReturnType<typeof createApp>;
+  let piconStore: EpgStore;
+
+  beforeAll(() => {
+    piconFixturePath = join(tmpdir(), `picon-server-test-${Date.now()}`);
+    const logosDir = join(piconFixturePath, 'logos');
+    mkdirSync(logosDir, { recursive: true });
+
+    writeFileSync(
+      join(piconFixturePath, 'snp.index'),
+      ['daserstehd=daserste', 'zdfhd=zdf'].join('\n'),
+    );
+    writeFileSync(
+      join(piconFixturePath, 'srp.index'),
+      ['1D5_B_1_130000=daserste'].join('\n'),
+    );
+    writeFileSync(join(logosDir, 'daserste.default.svg'), '<svg>daserste</svg>');
+    writeFileSync(join(logosDir, 'zdf.default.png'), Buffer.from([0x89, 0x50, 0x4e, 0x47]));
+
+    piconIndex = new PiconIndex(piconFixturePath);
+  });
+
+  afterAll(() => {
+    rmSync(piconFixturePath, { recursive: true, force: true });
+  });
+
+  beforeEach(() => {
+    piconStore = new EpgStore(':memory:');
+    const searchIndex = new SearchIndex();
+    const scheduler = createMockScheduler();
+    piconApp = createApp(piconStore, searchIndex, scheduler, 3600, piconIndex);
+  });
+
+  afterEach(() => {
+    piconStore.close();
+  });
+
+  describe('GET /api/picon/channel/:channelName', () => {
+    it('should return SVG with correct headers', async () => {
+      const res = await piconApp.request('/api/picon/channel/Das%20Erste%20HD');
+      expect(res.status).toBe(200);
+      expect(res.headers.get('Content-Type')).toBe('image/svg+xml');
+      expect(res.headers.get('Cache-Control')).toBe('public, max-age=86400, stale-while-revalidate=604800');
+      const body = await res.text();
+      expect(body).toContain('<svg>');
+    });
+
+    it('should return PNG with correct content type', async () => {
+      const res = await piconApp.request('/api/picon/channel/ZDF%20HD');
+      expect(res.status).toBe(200);
+      expect(res.headers.get('Content-Type')).toBe('image/png');
+    });
+
+    it('should return 404 for unknown channel', async () => {
+      const res = await piconApp.request('/api/picon/channel/NonexistentChannel');
+      expect(res.status).toBe(404);
+    });
+
+    it('should return 400 for invalid variant', async () => {
+      const res = await piconApp.request('/api/picon/channel/Das%20Erste%20HD?variant=neon');
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toContain('Invalid variant');
+    });
+  });
+
+  describe('GET /api/picon/srp/:serviceRef', () => {
+    it('should return image by service reference', async () => {
+      const res = await piconApp.request('/api/picon/srp/1D5_B_1_130000');
+      expect(res.status).toBe(200);
+      expect(res.headers.get('Content-Type')).toBe('image/svg+xml');
+    });
+
+    it('should return 404 for unknown service reference', async () => {
+      const res = await piconApp.request('/api/picon/srp/AAAA_B_1_130000');
+      expect(res.status).toBe(404);
+    });
+
+    it('should return 400 for invalid variant', async () => {
+      const res = await piconApp.request('/api/picon/srp/1D5_B_1_130000?variant=rainbow');
+      expect(res.status).toBe(400);
     });
   });
 });

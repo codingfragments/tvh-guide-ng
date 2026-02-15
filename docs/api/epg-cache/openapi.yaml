@@ -42,6 +42,8 @@ tags:
     description: Channel listing.
   - name: Cache
     description: Cache management operations.
+  - name: Picons
+    description: Channel icon (picon) lookup by name or service reference.
 
 paths:
   /api/health:
@@ -56,6 +58,10 @@ paths:
     $ref: './paths/channels.yaml#/~1api~1channels'
   /api/cache/refresh:
     $ref: './paths/cache.yaml#/~1api~1cache~1refresh'
+  /api/picon/channel/{channelName}:
+    $ref: './paths/picons.yaml#/~1api~1picon~1channel~1{channelName}'
+  /api/picon/srp/{serviceRef}:
+    $ref: './paths/picons.yaml#/~1api~1picon~1srp~1{serviceRef}'
 
 components:
   schemas:
@@ -91,3 +97,5 @@ components:
       $ref: './components/responses/errors.yaml#/NotFound'
     Conflict:
       $ref: './components/responses/errors.yaml#/Conflict'
+    ServiceUnavailable:
+      $ref: './components/responses/errors.yaml#/ServiceUnavailable'

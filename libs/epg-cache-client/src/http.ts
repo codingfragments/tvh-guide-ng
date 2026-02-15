@@ -1,4 +1,11 @@
-import { EpgCacheError, BadRequestError, NotFoundError, ConflictError, NetworkError } from './errors.js';
+import {
+  EpgCacheError,
+  BadRequestError,
+  NotFoundError,
+  ConflictError,
+  ServiceUnavailableError,
+  NetworkError,
+} from './errors.js';
 
 export interface RequestOptions {
   method?: string;
@@ -43,6 +50,8 @@ export async function request<T>(url: string, options: RequestOptions = {}): Pro
         throw new NotFoundError(errorBody || 'Resource not found');
       case 409:
         throw new ConflictError(errorBody || 'Conflict');
+      case 503:
+        throw new ServiceUnavailableError(errorBody || 'Service unavailable');
       default:
         throw new EpgCacheError(
           `HTTP ${String(response.status)}: ${errorBody || response.statusText}`,
@@ -57,6 +66,54 @@ export async function request<T>(url: string, options: RequestOptions = {}): Pro
   } catch (error) {
     throw new EpgCacheError(`Failed to parse response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+/**
+ * Makes an HTTP request expecting a binary response (e.g., image).
+ * Returns the raw Response on success; throws on error.
+ */
+export async function requestBinary(url: string, options: RequestOptions = {}): Promise<Response> {
+  const { method = 'GET', timeout } = options;
+
+  const fetchOptions: RequestInit = {
+    method,
+    signal: timeout ? AbortSignal.timeout(timeout) : undefined,
+  };
+
+  let response: Response;
+  try {
+    response = await fetch(url, fetchOptions);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      throw new NetworkError('Request timed out');
+    }
+    throw new NetworkError(
+      `Network request failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      error instanceof Error ? error : undefined,
+    );
+  }
+
+  if (!response.ok) {
+    const errorBody = await response.text().catch(() => 'Unknown error');
+
+    switch (response.status) {
+      case 400:
+        throw new BadRequestError(errorBody || 'Bad request');
+      case 404:
+        throw new NotFoundError(errorBody || 'Resource not found');
+      case 409:
+        throw new ConflictError(errorBody || 'Conflict');
+      case 503:
+        throw new ServiceUnavailableError(errorBody || 'Service unavailable');
+      default:
+        throw new EpgCacheError(
+          `HTTP ${String(response.status)}: ${errorBody || response.statusText}`,
+          response.status,
+        );
+    }
+  }
+
+  return response;
 }
 
 /**

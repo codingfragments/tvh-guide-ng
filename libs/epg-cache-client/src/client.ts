@@ -1,4 +1,4 @@
-import { request, buildUrl } from './http.js';
+import { request, requestBinary, buildUrl } from './http.js';
 import type {
   EpgCacheClientConfig,
   HealthResponse,
@@ -9,6 +9,8 @@ import type {
   EpgEvent,
   CachedChannel,
   RefreshAcceptedResponse,
+  PiconByChannelParams,
+  PiconByServiceRefParams,
 } from './types.js';
 
 const DEFAULT_TIMEOUT = 10_000;
@@ -71,6 +73,36 @@ export class EpgCacheClient {
     return request<RefreshAcceptedResponse>(url, {
       method: 'POST',
       timeout: this.timeout,
+    });
+  }
+
+  /** GET /api/picon/channel/:channelName — returns raw Response with image body */
+  async getPiconByChannelName(params: PiconByChannelParams): Promise<Response> {
+    const url = buildUrl(this.baseUrl, `/api/picon/channel/${encodeURIComponent(params.channelName)}`, {
+      variant: params.variant,
+    });
+    return requestBinary(url, { timeout: this.timeout });
+  }
+
+  /** GET /api/picon/srp/:serviceRef — returns raw Response with image body */
+  async getPiconByServiceRef(params: PiconByServiceRefParams): Promise<Response> {
+    const url = buildUrl(this.baseUrl, `/api/picon/srp/${encodeURIComponent(params.serviceRef)}`, {
+      variant: params.variant,
+    });
+    return requestBinary(url, { timeout: this.timeout });
+  }
+
+  /** Build a URL for use in <img src> — picon by channel name */
+  getPiconUrlByChannelName(params: PiconByChannelParams): string {
+    return buildUrl(this.baseUrl, `/api/picon/channel/${encodeURIComponent(params.channelName)}`, {
+      variant: params.variant,
+    });
+  }
+
+  /** Build a URL for use in <img src> — picon by service reference */
+  getPiconUrlByServiceRef(params: PiconByServiceRefParams): string {
+    return buildUrl(this.baseUrl, `/api/picon/srp/${encodeURIComponent(params.serviceRef)}`, {
+      variant: params.variant,
     });
   }
 }

@@ -69,6 +69,21 @@ export interface RefreshAcceptedResponse {
   message: string;
 }
 
+/** Picon logo variant */
+export type PiconVariant = 'default' | 'light' | 'dark' | 'white' | 'black';
+
+/** Parameters for picon lookup by channel name */
+export interface PiconByChannelParams {
+  channelName: string;
+  variant?: PiconVariant;
+}
+
+/** Parameters for picon lookup by service reference */
+export interface PiconByServiceRefParams {
+  serviceRef: string;
+  variant?: PiconVariant;
+}
+
 /** Client configuration */
 export interface EpgCacheClientConfig {
   /** Base URL of the EPG cache service (e.g., 'http://localhost:3000') */

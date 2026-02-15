@@ -11,6 +11,16 @@ export type {
   EpgEvent,
   CachedChannel,
   RefreshAcceptedResponse,
+  PiconVariant,
+  PiconByChannelParams,
+  PiconByServiceRefParams,
 } from './types.js';
 
-export { EpgCacheError, BadRequestError, NotFoundError, ConflictError, NetworkError } from './errors.js';
+export {
+  EpgCacheError,
+  BadRequestError,
+  NotFoundError,
+  ConflictError,
+  ServiceUnavailableError,
+  NetworkError,
+} from './errors.js';
