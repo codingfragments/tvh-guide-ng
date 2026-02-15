@@ -93,7 +93,7 @@ export default tseslint.config(
 
   // Config files: disable type-checked rules (no tsconfig covers them)
   {
-    files: ['**/tsup.config.ts', '**/vitest.config.ts', '**/vite.config.ts', '**/svelte.config.js'],
+    files: ['**/tsup.config.ts', '**/vitest.config.ts', '**/vite.config.ts', '**/svelte.config.js', '**/.storybook/*.ts'],
     ...tseslint.configs.disableTypeChecked,
   },
 

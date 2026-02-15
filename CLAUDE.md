@@ -80,6 +80,14 @@ Services communicate via network APIs (HTTP/GraphQL), not code imports.
 - Style with Tailwind classes: `<SearchIcon class="size-5 text-primary" />`
 - Browse available icons at https://lucide.dev/icons/
 
+## Storybook (Web App)
+
+- Every new UI component in `apps/web` must include a `.stories.svelte` file
+- Place stories next to their component: `MyComponent.stories.svelte`
+- Use the Svelte CSF format with `defineMeta()` from `@storybook/addon-svelte-csf`
+- Include at least a "Default" story; add responsive and state variants as needed
+- Run `pnpm --filter @tvh-guide/web run storybook` to verify stories render correctly
+
 ## Code Quality
 
 ### Markdownlint Configuration
