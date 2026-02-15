@@ -5,7 +5,14 @@
     PanelLeftClose as PanelLeftCloseIcon,
     PanelLeftOpen as PanelLeftOpenIcon,
   } from 'lucide-svelte';
-  import { mainNavItems, utilityNavItems, isActive } from '$lib/navigation';
+  import type { NavItem } from '$lib/navigation';
+  import { mainNavItems as defaultMainItems, utilityNavItems as defaultUtilityItems, isActive } from '$lib/navigation';
+
+  let {
+    mainItems = defaultMainItems,
+    utilityItems = defaultUtilityItems,
+    activePath,
+  }: { mainItems?: NavItem[]; utilityItems?: NavItem[]; activePath?: string } = $props();
 
   let collapsed = $state(false);
 
@@ -19,7 +26,7 @@
     localStorage.setItem('tvh-guide-sidebar-collapsed', String(collapsed));
   }
 
-  const pathname = $derived(page.url.pathname);
+  const pathname = $derived(activePath ?? page.url.pathname);
 </script>
 
 <aside
@@ -37,7 +44,7 @@
 
   <!-- Main nav -->
   <ul class="menu flex-1 gap-1 px-2">
-    {#each mainNavItems as item (item.href)}
+    {#each mainItems as item (item.href)}
       <li>
         <a
           href={item.href}
@@ -55,7 +62,7 @@
 
   <!-- Utility nav (bottom) -->
   <ul class="menu gap-1 px-2 pb-2">
-    {#each utilityNavItems as item (item.href)}
+    {#each utilityItems as item (item.href)}
       <li>
         <a
           href={item.href}

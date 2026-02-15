@@ -1,6 +1,6 @@
 <script lang="ts">
-  import SearchField from './SearchField.svelte';
-  import ThemeToggle from './ThemeToggle.svelte';
+  import SearchField from '$lib/components/SearchField.svelte';
+  import ThemeToggle from '$lib/components/ThemeToggle.svelte';
   import { Tv as TvIcon } from 'lucide-svelte';
 </script>
 

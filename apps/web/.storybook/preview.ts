@@ -3,6 +3,9 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import '../src/app.css';
 
 const preview: Preview = {
+  initialGlobals: {
+    viewport: { value: undefined, isRotated: false },
+  },
   decorators: [
     withThemeByDataAttribute({
       themes: {

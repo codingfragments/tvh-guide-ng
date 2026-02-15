@@ -1,11 +1,14 @@
 <script lang="ts">
   import { pwaInfo } from 'virtual:pwa-info';
   import '../app.css';
-  import Sidebar from '$lib/components/Sidebar.svelte';
-  import TopBar from '$lib/components/TopBar.svelte';
-  import BottomNav from '$lib/components/BottomNav.svelte';
+  import Sidebar from '$lib/components/navigation/Sidebar.svelte';
+  import TopBar from '$lib/components/navigation/TopBar.svelte';
+  import BottomNav from '$lib/components/navigation/BottomNav.svelte';
+  import { mainNavItems, utilityNavItems } from '$lib/navigation';
 
   let { children } = $props();
+
+  const navItems = { mainItems: mainNavItems, utilityItems: utilityNavItems };
 
   const webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 </script>
@@ -17,7 +20,7 @@
 
 <div class="flex h-dvh overflow-hidden">
   <!-- Desktop sidebar -->
-  <Sidebar />
+  <Sidebar mainItems={navItems.mainItems} utilityItems={navItems.utilityItems} />
 
   <!-- Main column -->
   <div class="flex flex-1 flex-col min-w-0">
@@ -28,6 +31,6 @@
     </main>
 
     <!-- Mobile/tablet bottom dock -->
-    <BottomNav />
+    <BottomNav mainItems={navItems.mainItems} utilityItems={navItems.utilityItems} />
   </div>
 </div>

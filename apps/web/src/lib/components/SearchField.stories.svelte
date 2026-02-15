@@ -8,7 +8,7 @@
   });
 </script>
 
-<Story name="Desktop Inline" parameters={{ viewport: { defaultViewport: 'tablet' } }}>
+<Story name="Desktop Inline" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
   {#snippet children()}
     <div style="width: 600px;" class="p-4">
       <SearchField />
@@ -16,7 +16,7 @@
   {/snippet}
 </Story>
 
-<Story name="Mobile Icon Button" parameters={{ viewport: { defaultViewport: 'mobile1' } }}>
+<Story name="Mobile Icon Button" globals={{ viewport: { value: 'mobile1', isRotated: false } }}>
   {#snippet children()}
     <div style="width: 375px;" class="p-4">
       <SearchField />
@@ -24,7 +24,7 @@
   {/snippet}
 </Story>
 
-<Story name="Mobile Overlay" parameters={{ viewport: { defaultViewport: 'mobile1' } }}>
+<Story name="Mobile Overlay" globals={{ viewport: { value: 'mobile1', isRotated: false } }}>
   {#snippet children()}
     <div style="width: 375px;" class="p-4">
       <p class="text-sm text-base-content/60 mb-2">Click the search icon to open the overlay</p>
@@ -33,7 +33,7 @@
   {/snippet}
 </Story>
 
-<Story name="In Navbar Context">
+<Story name="In Navbar Context" globals={{ viewport: { value: undefined, isRotated: false } }}>
   {#snippet children()}
     <div class="navbar bg-base-200">
       <div class="flex-1"></div>

@@ -5,6 +5,9 @@
   const { Story } = defineMeta({
     title: 'Components/ThemeToggle',
     component: ThemeToggle,
+    globals: {
+      viewport: { value: undefined, isRotated: false },
+    },
   });
 </script>
 

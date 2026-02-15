@@ -3,12 +3,15 @@
   import TopBar from './TopBar.svelte';
 
   const { Story } = defineMeta({
-    title: 'Components/TopBar',
+    title: 'Navigation/TopBar',
     component: TopBar,
+    globals: {
+      viewport: { value: undefined, isRotated: false },
+    },
   });
 </script>
 
-<Story name="Desktop" parameters={{ viewport: { defaultViewport: 'responsive' } }}>
+<Story name="Desktop">
   {#snippet children()}
     <div style="width: 1024px;">
       <TopBar />
@@ -16,7 +19,7 @@
   {/snippet}
 </Story>
 
-<Story name="Mobile" parameters={{ viewport: { defaultViewport: 'mobile1' } }}>
+<Story name="Mobile" globals={{ viewport: { value: 'mobile1', isRotated: false } }}>
   {#snippet children()}
     <div style="width: 375px;">
       <TopBar />
@@ -24,7 +27,7 @@
   {/snippet}
 </Story>
 
-<Story name="Tablet" parameters={{ viewport: { defaultViewport: 'tablet' } }}>
+<Story name="Tablet" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
   {#snippet children()}
     <div style="width: 768px;">
       <TopBar />
