@@ -16,6 +16,13 @@ tvh-guide-ng/
 │   ├── epg-cache-client/    # Type-safe EPG Cache service API client
 │   ├── shared/              # Common types, utilities, constants
 │   └── tvheadend-client/    # Type-safe TVHeadend API client
+├── docker/                  # Docker build & deployment files
+│   ├── web/                 # Web app Dockerfile
+│   ├── epg-cache/           # EPG Cache service Dockerfile
+│   ├── docker-compose.yml   # Working compose stack
+│   ├── docker-compose.template.yml  # Fully documented template
+│   ├── build.sh             # Image build script
+│   └── .env.example         # Environment variable template
 └── docs/                    # Project documentation
 ```
 

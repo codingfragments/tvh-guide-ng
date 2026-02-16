@@ -1,0 +1,115 @@
+# ============================================================================
+# tvh-guide-ng Docker Compose — Full Configuration Template
+# ============================================================================
+#
+# Copy this file and customise it for your setup:
+#   cp docker-compose.template.yml docker-compose.yml
+#
+# Then create a .env file (see .env.example) and run:
+#   docker compose up -d
+#
+# ============================================================================
+
+services:
+  # --------------------------------------------------------------------------
+  # EPG Cache Service
+  # --------------------------------------------------------------------------
+  # Syncs EPG data from TVHeadend into a local SQLite database and serves
+  # it via an HTTP API with fuzzy text search.
+  epg-cache:
+    build:
+      context: ..
+      dockerfile: docker/epg-cache/Dockerfile
+    image: tvh-guide-epg-cache:${IMAGE_TAG:-latest}
+    container_name: tvh-guide-epg-cache
+    ports:
+      - "${EPG_CACHE_PORT:-3100}:3000"
+    environment:
+      # REQUIRED — TVHeadend connection URL (e.g. http://192.168.1.10:9981)
+      - TVH_URL=${TVH_URL:?Set TVH_URL in .env}
+
+      # TVHeadend credentials (leave empty if no auth is configured)
+      - TVH_USERNAME=${TVH_USERNAME:-}
+      - TVH_PASSWORD=${TVH_PASSWORD:-}
+
+      # How often to re-sync EPG data from TVHeadend (in seconds, default: 1 hour)
+      - EPG_REFRESH_INTERVAL=${EPG_REFRESH_INTERVAL:-3600}
+
+      # SQLite database path inside the container (mapped to a volume below)
+      - EPG_SQLITE_PATH=/data/epg-cache.db
+
+      # Path to picon images inside the container (uncomment volume below)
+      # - PICON_PATH=/picons
+
+    volumes:
+      # Persistent SQLite storage — survives container restarts
+      - epg-data:/data
+
+      # Picon images — uncomment and set the host path to your picons directory
+      # - /path/to/picons:/picons:ro
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/channels').then(r => { if (!r.ok) process.exit(1) })"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    # Resource limits (uncomment to apply)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 512M
+    #       cpus: "1.0"
+    #     reservations:
+    #       memory: 128M
+
+    # Use this to put epg-cache on the same Docker network as an existing
+    # TVHeadend container, so TVH_URL can use the container name:
+    # networks:
+    #   - tvheadend_default
+
+  # --------------------------------------------------------------------------
+  # Web Frontend
+  # --------------------------------------------------------------------------
+  # SvelteKit SSR application that displays the EPG guide.
+  # NOTE: PUBLIC_EPG_CACHE_URL is baked in at build time. If you change it,
+  # you must rebuild the image.
+  web:
+    build:
+      context: ..
+      dockerfile: docker/web/Dockerfile
+      args:
+        # URL the browser uses to reach the EPG Cache API.
+        # For same-host deployments, use http://localhost:<EPG_CACHE_PORT>
+        # For Docker-internal SSR, the default (http://epg-cache:3000) works.
+        PUBLIC_EPG_CACHE_URL: ${PUBLIC_EPG_CACHE_URL:-http://epg-cache:3000}
+    image: tvh-guide-web:${IMAGE_TAG:-latest}
+    container_name: tvh-guide-web
+    ports:
+      - "${WEB_PORT:-8080}:3000"
+    depends_on:
+      epg-cache:
+        condition: service_healthy
+    restart: unless-stopped
+
+    # Resource limits (uncomment to apply)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 256M
+    #       cpus: "0.5"
+    #     reservations:
+    #       memory: 64M
+
+# Named volumes
+volumes:
+  epg-data:
+    driver: local
+
+# Uncomment to join an existing Docker network (e.g. for TVHeadend access):
+# networks:
+#   tvheadend_default:
+#     external: true

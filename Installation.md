@@ -1,6 +1,21 @@
 # Installation & CLI Reference
 
-## Prerequisites
+## Docker (Recommended for Deployment)
+
+The fastest way to deploy tvh-guide-ng is with Docker Compose:
+
+```bash
+cd docker
+cp .env.example .env
+# Edit .env — set TVH_URL to your TVHeadend instance
+docker compose up -d
+```
+
+See [docker/README.md](docker/README.md) for full configuration options, networking guides, and troubleshooting.
+
+## From Source
+
+### Prerequisites
 
 ### Volta (Node.js version manager)
 

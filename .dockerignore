@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Version control
+.git/
+.gitignore
+
+# Build artifacts
+coverage/
+.svelte-kit/
+dist/
+build/
+*.tsbuildinfo
+
+# Runtime data
+data/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (secrets)
+.env
+.env.local
+.env.*.local
+
+# Documentation and meta (not needed in image)
+docs/
+*.md
+!docker/README.md
+LICENSE
+
+# Storybook
+storybook-static/
+
+# Claude / AI
+.claude/
