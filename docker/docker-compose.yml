@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: docker/epg-cache/Dockerfile
-    image: ${IMAGE_REGISTRY:-}tvh-guide-epg-cache:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY-ghcr.io/codingfragments/}tvh-guide-epg-cache:${IMAGE_TAG:-latest}
     ports:
       - "3100:3000"
     environment:
@@ -31,7 +31,7 @@ services:
       dockerfile: docker/web/Dockerfile
       args:
         PUBLIC_EPG_CACHE_URL: ${PUBLIC_EPG_CACHE_URL:-http://epg-cache:3000}
-    image: ${IMAGE_REGISTRY:-}tvh-guide-web:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY-ghcr.io/codingfragments/}tvh-guide-web:${IMAGE_TAG:-latest}
     ports:
       - "8080:3000"
     depends_on:
