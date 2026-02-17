@@ -20,7 +20,7 @@ services:
     build:
       context: ..
       dockerfile: docker/epg-cache/Dockerfile
-    image: tvh-guide-epg-cache:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-}tvh-guide-epg-cache:${IMAGE_TAG:-latest}
     container_name: tvh-guide-epg-cache
     ports:
       - "${EPG_CACHE_PORT:-3100}:3000"
@@ -86,7 +86,7 @@ services:
         # For same-host deployments, use http://localhost:<EPG_CACHE_PORT>
         # For Docker-internal SSR, the default (http://epg-cache:3000) works.
         PUBLIC_EPG_CACHE_URL: ${PUBLIC_EPG_CACHE_URL:-http://epg-cache:3000}
-    image: tvh-guide-web:${IMAGE_TAG:-latest}
+    image: ${IMAGE_REGISTRY:-}tvh-guide-web:${IMAGE_TAG:-latest}
     container_name: tvh-guide-web
     ports:
       - "${WEB_PORT:-8080}:3000"

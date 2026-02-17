@@ -26,11 +26,55 @@ The web UI will be available at <http://localhost:8080> and the EPG Cache API at
 
 ```bash
 # From the repository root:
-./docker/build.sh                        # Build all images
-./docker/build.sh --tag v1.0.0           # Build with a specific tag
-./docker/build.sh --service web          # Build only the web image
-./docker/build.sh --service epg-cache    # Build only the epg-cache image
+./docker/build.sh                              # Build all images (current arch)
+./docker/build.sh --tag v1.0.0                 # Build with a specific tag
+./docker/build.sh --service web                # Build only the web image
+./docker/build.sh --service epg-cache          # Build only the epg-cache image
 ```
+
+### Build script options
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--tag TAG` | Docker image tag | `latest` |
+| `--service NAME` | Build only `web` or `epg-cache` | both |
+| `--registry REGISTRY` | Registry prefix (e.g. `ghcr.io/codingfragments`) | local only |
+| `--epg-cache-url URL` | `PUBLIC_EPG_CACHE_URL` baked into the web build | `http://epg-cache:3000` |
+| `--platform PLATFORMS` | Target platforms (`all`, or e.g. `linux/amd64,linux/arm64`) | current arch |
+| `--push` | Push images to the registry | off |
+
+### Multi-architecture builds
+
+Build images for both ARM (Apple Silicon, Raspberry Pi) and Intel/AMD simultaneously:
+
+```bash
+# Build for both architectures (images stay local in buildx cache)
+./docker/build.sh --platform all
+
+# Build for a single target architecture
+./docker/build.sh --platform linux/amd64       # Intel/AMD only
+./docker/build.sh --platform linux/arm64       # ARM only
+```
+
+The script automatically creates a Docker Buildx builder with QEMU emulation support on first use. Multi-platform images require either `--push` to a registry or will be kept in the buildx cache (not loaded into the local Docker image list).
+
+### Pushing to a container registry
+
+Use `--registry` to prefix image names with a registry path, and `--push` to upload:
+
+```bash
+# GitHub Container Registry (ghcr.io)
+docker login ghcr.io -u YOUR_USERNAME
+./docker/build.sh --registry ghcr.io/codingfragments --platform all --push --tag v1.0.0
+
+# Docker Hub
+docker login
+./docker/build.sh --registry docker.io/myuser --push --tag v1.0.0
+```
+
+This produces images like `ghcr.io/codingfragments/tvh-guide-web:v1.0.0` with manifests for both `linux/amd64` and `linux/arm64`.
+
+Without `--registry`, images are tagged locally as `tvh-guide-web` and `tvh-guide-epg-cache`.
 
 ### Using Docker Compose
 
@@ -38,6 +82,17 @@ The web UI will be available at <http://localhost:8080> and the EPG Cache API at
 cd docker
 docker compose build
 ```
+
+### Using pre-built images
+
+If images have been pushed to a registry, you can skip building and pull them directly. Set the `IMAGE_REGISTRY` and `IMAGE_TAG` variables in your `.env`:
+
+```env
+IMAGE_REGISTRY=ghcr.io/codingfragments/
+IMAGE_TAG=v1.0.0
+```
+
+Then use `docker compose pull && docker compose up -d` (no build step needed).
 
 ## Configuration Reference
 
@@ -64,6 +119,7 @@ docker compose build
 |----------|---------|-------------|
 | `EPG_CACHE_PORT` | `3100` | Host port for the EPG Cache API |
 | `WEB_PORT` | `8080` | Host port for the web UI |
+| `IMAGE_REGISTRY` | _(empty)_ | Registry prefix with trailing slash (e.g. `ghcr.io/codingfragments/`) |
 | `IMAGE_TAG` | `latest` | Docker image tag |
 
 ## Volumes & Persistence
