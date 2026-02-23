@@ -113,7 +113,7 @@ export function createApp(
       const event = eventMap.get(sr.eventId);
       if (!event) continue;
       if (channelUuid && event.channelUuid !== channelUuid) continue;
-      if (start !== undefined && stop !== undefined && (event.start >= stop || event.stop <= start)) continue;
+      if (start !== undefined && stop !== undefined && (event.start > stop || event.stop <= start)) continue;
       if (genre !== undefined && event.contentType !== genre) continue;
       results.push({ score: sr.score, event });
       if (results.length >= limit) break;

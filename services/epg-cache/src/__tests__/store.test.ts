@@ -95,6 +95,30 @@ describe('EpgStore', () => {
       expect(results[0].eventId).toBe(1);
     });
 
+    it('should return the new event at an exact boundary (point-in-time)', () => {
+      store.replaceAllEvents([
+        makeEvent({ eventId: 1, start: 1000, stop: 2000 }),
+        makeEvent({ eventId: 2, start: 2000, stop: 3000 }),
+      ]);
+
+      // At exactly 2000, event 1 has ended and event 2 has started
+      const results = store.getEventsByTimerange(2000, 2000);
+      expect(results).toHaveLength(1);
+      expect(results[0].eventId).toBe(2);
+    });
+
+    it('should include event starting at query stop boundary', () => {
+      store.replaceAllEvents([
+        makeEvent({ eventId: 1, start: 1000, stop: 2000 }),
+        makeEvent({ eventId: 2, start: 2000, stop: 3000 }),
+      ]);
+
+      // Range [1500, 2000] should include both: event 1 is still on, event 2 starts at boundary
+      const results = store.getEventsByTimerange(1500, 2000);
+      expect(results).toHaveLength(2);
+      expect(results.map((e) => e.eventId)).toEqual([1, 2]);
+    });
+
     it('should limit timerange results', () => {
       store.replaceAllEvents([
         makeEvent({ eventId: 1, start: 1000, stop: 2000 }),

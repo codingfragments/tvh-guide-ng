@@ -159,7 +159,7 @@ export class EpgStore {
     stop: number,
     opts?: { channelUuid?: string; contentType?: number; limit?: number },
   ): EpgEvent[] {
-    let sql = 'SELECT * FROM events WHERE start < ? AND stop > ?';
+    let sql = 'SELECT * FROM events WHERE start <= ? AND stop > ?';
     const params: unknown[] = [stop, start];
 
     if (opts?.channelUuid) {
