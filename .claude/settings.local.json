@@ -69,7 +69,21 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:api.github.com)",
       "Bash(curl:*)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "Bash(xargs:*)",
+      "Bash(export PATH=\"/Applications/Docker.app/Contents/Resources/bin:$PATH\")",
+      "Bash(/Users/stefan/projekteHome/marxworld/media/tvh-guide-ng/docker/build.sh:*)",
+      "Bash(export PATH=\"/Applications/Docker.app/Contents/Resources/bin:/usr/bin:$PATH\")",
+      "Bash(export PATH=\"/Applications/Docker.app/Contents/Resources/bin:/usr/bin:/bin:$PATH\")",
+      "Bash(docker ps:*)",
+      "Bash(docker stop:*)",
+      "Bash(docker rm:*)",
+      "Bash(docker run:*)",
+      "Bash(TVH_URL=http://test:9981 docker compose:*)",
+      "Bash(TVH_URL=http://test:9981 IMAGE_REGISTRY=ghcr.io/codingfragments/ IMAGE_TAG=v1.0.0 docker compose:*)",
+      "Bash(docker login:*)",
+      "Bash(echo:*)",
+      "Bash(TVH_URL=http://test:9981 IMAGE_REGISTRY= docker compose:*)"
     ]
   },
   "model": "opus"
