@@ -1,7 +1,10 @@
 <script lang="ts">
   import { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from 'lucide-svelte';
   import {
+    type CustomTimeAppearance,
     type PresetTime,
+    buildTimeOptions,
+    getCustomTimeAppearanceClass,
     generateDays,
     findDayIndex,
     clampDate,
@@ -11,21 +14,19 @@
     isSameDay,
   } from './time-select-utils.js';
 
-  const DEFAULT_PRESETS: PresetTime[] = [
-    { label: '06:00', hour: 6, minute: 0 },
-    { label: '12:00', hour: 12, minute: 0 },
-    { label: '20:15', hour: 20, minute: 15 },
-    { label: '22:00', hour: 22, minute: 0 },
-  ];
-
   let {
     timestamp = $bindable(new Date()),
     startDate,
     endDate,
-    presetTimes = DEFAULT_PRESETS,
+    presetTimes,
     nowLabel = 'Jetzt',
     hideTimeSelect = false,
     dayPickerWidth,
+    enableCustomTime = false,
+    highlightNow = false,
+    customTimeLabel = 'Custom',
+    customTimeStepMinutes,
+    customTimeAppearance,
   }: {
     timestamp?: Date;
     startDate?: Date;
@@ -34,20 +35,44 @@
     nowLabel?: string;
     hideTimeSelect?: boolean;
     dayPickerWidth?: string;
+    enableCustomTime?: boolean;
+    highlightNow?: boolean;
+    customTimeLabel?: string;
+    customTimeStepMinutes?: number;
+    customTimeAppearance?: CustomTimeAppearance;
   } = $props();
 
   const effectiveStart = $derived(startDate ?? normalizeToMidnight(new Date()));
   const effectiveEnd = $derived.by(() => {
     if (endDate) return endDate;
-    const d = new Date();
-    d.setDate(d.getDate() + 14);
-    return d;
+    return new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
   });
 
   const days = $derived(generateDays(effectiveStart, effectiveEnd));
   const selectedIndex = $derived(findDayIndex(days, timestamp));
   const canScrollLeft = $derived(selectedIndex > 0);
   const canScrollRight = $derived(selectedIndex < days.length - 1);
+  const effectivePresetTimes = $derived(presetTimes ?? []);
+  const effectiveCustomTimeStep = $derived(
+    Number.isInteger(customTimeStepMinutes) && customTimeStepMinutes > 0 ? customTimeStepMinutes : 15,
+  );
+  const effectiveCustomAppearance = $derived(customTimeAppearance ?? 'outline');
+  const customTimeOptions = $derived(buildTimeOptions(effectiveCustomTimeStep));
+  const customTimeClass = $derived(getCustomTimeAppearanceClass(effectiveCustomAppearance));
+  const customValue = $derived(
+    `${String(timestamp.getHours()).padStart(2, '0')}:${String(timestamp.getMinutes()).padStart(2, '0')}`,
+  );
+  const quickCustomOptions = $derived.by(() => {
+    const quick: PresetTime[] = [];
+
+    for (const preset of effectivePresetTimes) {
+      const key = `${preset.hour}:${preset.minute}`;
+      if (quick.some((entry) => `${entry.hour}:${entry.minute}` === key)) continue;
+      quick.push(preset);
+    }
+
+    return quick;
+  });
 
   let carouselRef = $state<HTMLElement | null>(null);
 
@@ -97,6 +122,16 @@
     }
   }
 
+  function selectCustomValue(value: string) {
+    const match = /^(\d{2}):(\d{2})$/.exec(value);
+    if (!match) return;
+    const hour = Number(match[1]);
+    const minute = Number(match[2]);
+    if (Number.isNaN(hour) || Number.isNaN(minute)) return;
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return;
+    timestamp = setTimeKeepDate(timestamp, hour, minute);
+  }
+
   function prevDay() {
     if (canScrollLeft) selectDay(selectedIndex - 1);
   }
@@ -127,7 +162,7 @@
       role="listbox"
       aria-label="Tagesauswahl"
     >
-      {#each days as day, i}
+      {#each days as day, i (day.date.getTime())}
         <button
           class="flex w-[2.75rem] shrink-0 flex-col items-center rounded-lg py-1 text-xs transition-colors
 						{selectedIndex === i ? 'border-accent border-2 bg-base-100 font-bold' : 'btn-ghost border-2 border-transparent'}
@@ -157,9 +192,9 @@
   <!-- Time controls -->
   {#if !hideTimeSelect}
     <div class="flex shrink-0 items-center gap-1 md:ml-auto">
-      {#each presetTimes as preset}
+      {#each effectivePresetTimes as preset (`${preset.hour}:${preset.minute}:${preset.label}`)}
         <button
-          class="btn btn-ghost btn-sm"
+          class={`btn btn-ghost btn-sm ${enableCustomTime ? 'hidden md:inline-flex' : ''}`}
           onclick={() => {
             selectPreset(preset);
           }}
@@ -167,9 +202,36 @@
           {preset.label}
         </button>
       {/each}
-      <button class="btn btn-ghost btn-sm" onclick={selectNow}>
+      <button class={`btn btn-ghost btn-sm ${highlightNow ? 'font-bold underline' : ''}`} onclick={selectNow}>
         {nowLabel}
       </button>
+      {#if enableCustomTime}
+        <label class="sr-only" for="custom-time-select">{customTimeLabel}</label>
+        <select
+          id="custom-time-select"
+          class={customTimeClass}
+          value={customValue}
+          aria-label={customTimeLabel}
+          onchange={(event) => {
+            selectCustomValue((event.currentTarget as HTMLSelectElement).value);
+          }}
+        >
+          {#if quickCustomOptions.length > 0}
+            <optgroup label="Quick">
+              {#each quickCustomOptions as option (`q-${option.hour}:${option.minute}`)}
+                <option value={`${String(option.hour).padStart(2, '0')}:${String(option.minute).padStart(2, '0')}`}>
+                  {option.label}
+                </option>
+              {/each}
+            </optgroup>
+          {/if}
+          <optgroup label={`All (${effectiveCustomTimeStep}m)`}>
+            {#each customTimeOptions as option (`a-${option.hour}:${option.minute}`)}
+              <option value={option.label}>{option.label}</option>
+            {/each}
+          </optgroup>
+        </select>
+      {/if}
     </div>
   {/if}
 </div>

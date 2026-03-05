@@ -1,7 +1,7 @@
-<script lang="ts">
-	import TimeSelect from './TimeSelect.svelte';
-	import { setDateKeepTime, setTimeKeepDate, normalizeToMidnight } from './time-select-utils.js';
-	import type { PresetTime } from './time-select-utils.js';
+	<script lang="ts">
+		import TimeSelect from './TimeSelect.svelte';
+		import { setDateKeepTime, setTimeKeepDate } from './time-select-utils.js';
+	import type { CustomTimeAppearance, PresetTime } from './time-select-utils.js';
 
 	let {
 		startDate,
@@ -10,6 +10,11 @@
 		nowLabel,
 		hideTimeSelect = false,
 		dayPickerWidth,
+		enableCustomTime = false,
+		highlightNow = false,
+		customTimeLabel,
+		customTimeStepMinutes,
+		customTimeAppearance,
 		showReadout = false,
 		showExternalControls = false,
 	}: {
@@ -19,6 +24,11 @@
 		nowLabel?: string;
 		hideTimeSelect?: boolean;
 		dayPickerWidth?: string;
+		enableCustomTime?: boolean;
+		highlightNow?: boolean;
+		customTimeLabel?: string;
+		customTimeStepMinutes?: number;
+		customTimeAppearance?: CustomTimeAppearance;
 		showReadout?: boolean;
 		showExternalControls?: boolean;
 	} = $props();
@@ -26,29 +36,22 @@
 	let timestamp = $state(new Date());
 
 	function jumpTomorrow() {
-		const tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
+		const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
 		timestamp = setTimeKeepDate(setDateKeepTime(timestamp, tomorrow), 14, 0);
 	}
 
 	function jumpPlus3() {
-		const target = new Date(timestamp);
-		target.setDate(target.getDate() + 3);
-		timestamp = target;
+		const targetDay = new Date(timestamp.getTime() + 3 * 24 * 60 * 60 * 1000);
+		timestamp = setDateKeepTime(timestamp, targetDay);
 	}
 
 	function jumpMinus3() {
-		const target = new Date(timestamp);
-		target.setDate(target.getDate() - 3);
-		timestamp = target;
+		const targetDay = new Date(timestamp.getTime() - 3 * 24 * 60 * 60 * 1000);
+		timestamp = setDateKeepTime(timestamp, targetDay);
 	}
 
 	function jumpLastDay() {
-		const effective = endDate ?? (() => {
-			const d = new Date();
-			d.setDate(d.getDate() + 14);
-			return d;
-		})();
+		const effective = endDate ?? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
 		timestamp = setTimeKeepDate(setDateKeepTime(timestamp, effective), 20, 15);
 	}
 
@@ -74,6 +77,11 @@
 		{nowLabel}
 		{hideTimeSelect}
 		{dayPickerWidth}
+		{enableCustomTime}
+		{highlightNow}
+		{customTimeLabel}
+		{customTimeStepMinutes}
+		{customTimeAppearance}
 	/>
 
 	<!-- Live readout -->
