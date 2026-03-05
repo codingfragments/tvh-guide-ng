@@ -39,9 +39,7 @@
   const effectiveStart = $derived(startDate ?? normalizeToMidnight(new Date()));
   const effectiveEnd = $derived.by(() => {
     if (endDate) return endDate;
-    const d = new Date();
-    d.setDate(d.getDate() + 14);
-    return d;
+    return new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
   });
 
   const days = $derived(generateDays(effectiveStart, effectiveEnd));
@@ -127,7 +125,7 @@
       role="listbox"
       aria-label="Tagesauswahl"
     >
-      {#each days as day, i}
+      {#each days as day, i (day.date.getTime())}
         <button
           class="flex w-[2.75rem] shrink-0 flex-col items-center rounded-lg py-1 text-xs transition-colors
 						{selectedIndex === i ? 'border-accent border-2 bg-base-100 font-bold' : 'btn-ghost border-2 border-transparent'}
@@ -157,7 +155,7 @@
   <!-- Time controls -->
   {#if !hideTimeSelect}
     <div class="flex shrink-0 items-center gap-1 md:ml-auto">
-      {#each presetTimes as preset}
+      {#each presetTimes as preset (`${preset.hour}:${preset.minute}:${preset.label}`)}
         <button
           class="btn btn-ghost btn-sm"
           onclick={() => {
