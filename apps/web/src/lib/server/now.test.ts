@@ -48,6 +48,10 @@ describe('toNowEventItems', () => {
         start: 100,
         stop: 200,
         title: 'Show 2',
+        description: 'Show 2 details',
+        image: 'https://example.com/show-2.jpg',
+        seasonNumber: 1,
+        episodeNumber: 2,
       },
       {
         eventId: 1,
@@ -64,5 +68,9 @@ describe('toNowEventItems', () => {
     expect(items[0].channelNumber).toBe(1);
     expect(items[1].channelNumber).toBe(2);
     expect(items[0].piconUrl).toBe('picon://channel/Das Erste HD');
+    expect(items[1].description).toBe('Show 2 details');
+    expect(items[1].image).toBe('https://example.com/show-2.jpg');
+    expect(items[1].seasonNumber).toBe(1);
+    expect(items[1].episodeNumber).toBe(2);
   });
 });
