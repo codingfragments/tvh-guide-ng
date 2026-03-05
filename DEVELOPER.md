@@ -38,6 +38,25 @@ Required variables:
 | `EPG_REFRESH_INTERVAL` | `3600` | Seconds between EPG data refreshes |
 | `EPG_SQLITE_PATH` | `./data/epg-cache.db` | Path to the SQLite database file |
 
+### Web App Live Stream (Experimental)
+
+For server-side live stream URL resolution/proxy in `apps/web`:
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `TVH_URL` | *(required)* | TVHeadend base URL (e.g. `http://tvheadend:9981`) |
+| `TVH_USERNAME` | *(required)* | TVHeadend username with streaming privilege |
+| `TVH_PASSWORD` | *(required)* | TVHeadend password |
+| `TVH_STREAM_PROFILE_MAP` | `""` | Optional JSON map: `{"hls":"webtv-h264-aac-mpegts"}` |
+| `TVH_STREAM_DEFAULT_TRANSPORT` | `""` | Optional fallback transport when request omits `profile`/`transport` |
+| `TVH_STREAM_PATH_TEMPLATE` | `/stream/channel/{channelUuid}` | Optional stream URL template |
+
+SvelteKit env handling in this feature:
+
+- Public vars: `$env/static/public` (`PUBLIC_*`) only
+- Secrets: `$env/dynamic/private` in server routes only
+- No TVHeadend credentials imported in client-side `.svelte` modules
+
 ## Running the Full Stack
 
 ```bash
@@ -350,3 +369,4 @@ pnpm add -D -w some-tool
 - [Installation.md](Installation.md) -- setup and pnpm workspace commands
 - [docs/CODING_STYLE.md](docs/CODING_STYLE.md) -- TypeScript, Svelte, and formatting conventions
 - [docs/DESIGN_GUIDE.md](docs/DESIGN_GUIDE.md) -- architecture principles and dependency flow
+- [docs/LIVE_STREAM_EXPERIMENT.md](docs/LIVE_STREAM_EXPERIMENT.md) -- live playback feature design and API contract

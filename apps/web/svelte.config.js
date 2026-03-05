@@ -7,6 +7,9 @@ const config = {
       out: 'build',
       precompress: true,
     }),
+    alias: {
+      '@tvh-guide/tvheadend-client': '../../libs/tvheadend-client/src/index.ts',
+    },
     serviceWorker: {
       register: false,
     },
