@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Clock3 as Clock3Icon } from 'lucide-svelte';
   import TimeSelect from '$lib/components/epg/TimeSelect.svelte';
   import NowEventGrid from '$lib/components/now/NowEventGrid.svelte';
   import type { PageData } from './$types';
@@ -9,8 +8,6 @@
 
   let selectedTimestamp = $state(new Date(data.now.timestamp * 1000));
   let activeNavigation = $state(false);
-
-  const lastUpdatedLabel = $derived(formatDateTime(data.now.timestamp));
 
   $effect(() => {
     if (!data.isNowMode) return;
@@ -40,35 +37,25 @@
     });
   });
 
-  function formatDateTime(ts: number): string {
-    return new Intl.DateTimeFormat(undefined, {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(new Date(ts * 1000));
-  }
 </script>
 
 <svelte:head>
   <title>Now — TVH Guide</title>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl space-y-6 py-4">
-  <header class="space-y-2">
-    <h1 class="text-2xl font-bold">Now</h1>
-    <p class="flex items-center gap-2 text-sm text-base-content/70">
-      <Clock3Icon class="size-4" />
-      Timestamp: {lastUpdatedLabel}
-      {#if data.isNowMode}
-        <span class="badge badge-success badge-sm">Auto-refresh 5m</span>
-      {/if}
-    </p>
-  </header>
-
-  <section class="card border border-base-300 bg-base-100 shadow-sm">
-    <div class="card-body gap-3">
+<div class="mx-auto max-w-7xl space-y-4 py-3">
+  <section class="bg-transparent">
+    <div class="p-0">
       <TimeSelect bind:timestamp={selectedTimestamp} />
     </div>
   </section>
+
+  <header class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold">Now</h1>
+    {#if data.isNowMode}
+      <span class="badge badge-success badge-sm">Auto-refresh 5m</span>
+    {/if}
+  </header>
 
   <NowEventGrid items={data.now.items} />
 </div>

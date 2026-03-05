@@ -17,6 +17,22 @@
 
 <Story name="Default" />
 
+<Story name="Desktop Layout">
+  {#snippet template()}
+    <div style="width: 720px; max-width: 100%;">
+      <NowEventCard item={nowStoryItems[0]} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Mobile Layout" globals={{ viewport: { value: 'mobile1', isRotated: false } }}>
+  {#snippet template()}
+    <div style="width: 360px; max-width: 100%;">
+      <NowEventCard item={nowStoryItems[0]} />
+    </div>
+  {/snippet}
+</Story>
+
 <Story
   name="LongText"
   args={{

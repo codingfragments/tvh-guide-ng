@@ -15,10 +15,34 @@
   });
 </script>
 
-<Story name="Desktop" />
+<Story name="Desktop">
+  {#snippet template()}
+    <div style="width: 1280px; max-width: 100%;">
+      <NowEventGrid items={nowStoryItems} />
+    </div>
+  {/snippet}
+</Story>
 
-<Story name="Tablet" globals={{ viewport: { value: 'tablet', isRotated: false } }} />
+<Story name="Tablet" globals={{ viewport: { value: 'tablet', isRotated: false } }}>
+  {#snippet template()}
+    <div style="width: 900px; max-width: 100%;">
+      <NowEventGrid items={nowStoryItems} />
+    </div>
+  {/snippet}
+</Story>
 
-<Story name="Mobile" globals={{ viewport: { value: 'mobile1', isRotated: false } }} />
+<Story name="Mobile" globals={{ viewport: { value: 'mobile1', isRotated: false } }}>
+  {#snippet template()}
+    <div style="width: 375px; max-width: 100%;">
+      <NowEventGrid items={nowStoryItems} />
+    </div>
+  {/snippet}
+</Story>
 
-<Story name="Empty" args={{ items: [] }} />
+<Story name="Empty" args={{ items: [] }}>
+  {#snippet template()}
+    <div style="width: 1280px; max-width: 100%;">
+      <NowEventGrid items={[]} />
+    </div>
+  {/snippet}
+</Story>
