@@ -2,7 +2,23 @@
   import NowEventCard from './NowEventCard.svelte';
   import type { NowEventItem } from './types.js';
 
-  let { items }: { items: NowEventItem[] } = $props();
+  let {
+    items,
+    selectedEventId = null,
+    onSelect,
+    withSidePanel = false,
+  }: {
+    items: NowEventItem[];
+    selectedEventId?: number | null;
+    onSelect?: ((item: NowEventItem) => void) | undefined;
+    withSidePanel?: boolean;
+  } = $props();
+
+  const gridClass = $derived(
+    withSidePanel
+      ? 'grid grid-cols-1 gap-4 xl:grid-cols-2'
+      : 'grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3',
+  );
 </script>
 
 {#if items.length === 0}
@@ -13,9 +29,13 @@
     </div>
   </div>
 {:else}
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+  <div class={gridClass}>
     {#each items as item (item.eventId)}
-      <NowEventCard {item} />
+      <NowEventCard
+        {item}
+        selected={selectedEventId === item.eventId}
+        onSelect={onSelect ? () => onSelect(item) : undefined}
+      />
     {/each}
   </div>
 {/if}

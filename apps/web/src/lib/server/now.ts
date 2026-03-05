@@ -10,6 +10,10 @@ export interface EpgCacheEvent {
   title: string;
   subtitle?: string;
   summary?: string;
+  description?: string;
+  image?: string;
+  episodeNumber?: number;
+  seasonNumber?: number;
 }
 
 export function parseTimestampOrNow(raw: string | null, nowTs: number = Math.floor(Date.now() / 1000)): {
@@ -47,10 +51,14 @@ export function toNowEventItems(events: EpgCacheEvent[], timestamp: number): Now
       title: event.title,
       subtitle: event.subtitle,
       summary: event.summary,
+      description: event.description,
       start: event.start,
       stop: event.stop,
       progressPct: calculateProgressPct(event.start, event.stop, timestamp),
       piconUrl: `picon://channel/${event.channelName}`,
+      image: event.image,
+      episodeNumber: event.episodeNumber,
+      seasonNumber: event.seasonNumber,
     }))
     .sort((a, b) => {
       const numberA = a.channelNumber ?? Number.MAX_SAFE_INTEGER;
