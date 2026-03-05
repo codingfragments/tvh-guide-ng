@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="Mock channel logo light">
+  <rect width="320" height="180" rx="20" fill="#f8fafc" />
+  <rect x="18" y="18" width="284" height="144" rx="14" fill="#dbeafe" />
+  <circle cx="62" cy="90" r="28" fill="#1d4ed8" />
+  <text x="104" y="98" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#1e293b">TVH</text>
+</svg>

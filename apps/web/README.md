@@ -47,6 +47,15 @@ TVH_STREAM_PATH_TEMPLATE=/stream/channel/{channelUuid}
 
 Credentials stay server-side only (`$env/dynamic/private`).
 
+## Picon Proxy
+
+`ChannelLogo` and `picon://...` URLs are resolved through the web app proxy:
+
+- `/api/picon/channel/[channelName]`
+- `/api/picon/srp/[serviceRef]`
+
+The browser no longer calls epg-cache directly for picons.
+
 ## Storybook
 
 ```bash
@@ -56,3 +65,5 @@ pnpm --filter @tvh-guide/web run storybook
 Live component stories:
 
 - `src/lib/components/live/LiveChannelPlayer.stories.svelte`
+
+Picon-based stories use static mock logos from `static/storybook/picons` so Storybook works without a running backend.
