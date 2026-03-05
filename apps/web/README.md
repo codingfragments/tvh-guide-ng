@@ -1,42 +1,58 @@
-# sv
+# @tvh-guide/web
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit frontend for TVH Guide.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
+```bash
+pnpm --filter @tvh-guide/web dev
 ```
 
-To recreate this project with the same configuration:
+## Live Stream Component (Experimental)
 
-```sh
-# recreate this project
-npx sv create --template minimal --types ts --no-install apps/web
+`LiveChannelPlayer` resolves a channel input to a TVHeadend live stream URL on the server, then plays it in a media component.
+
+Component location:
+
+- `src/lib/components/live/LiveChannelPlayer.svelte`
+
+Example usage:
+
+```svelte
+<script lang="ts">
+  import LiveChannelPlayer from '$lib/components/live/LiveChannelPlayer.svelte';
+</script>
+
+<LiveChannelPlayer channel="1" transport="hls" controls muted />
 ```
 
-## Developing
+Server endpoints used by the component:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- `GET /api/channel/[channel]`
+- `GET /api/channel/[channel]/url`
+- `GET /api/channel/[channel]/stream`
 
-```sh
-npm run dev
+### Environment Variables (`apps/web/.env`)
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```bash
+PUBLIC_EPG_CACHE_URL=http://localhost:3000
+TVH_URL=http://localhost:9981
+TVH_USERNAME=admin
+TVH_PASSWORD=secret
+# optional:
+TVH_STREAM_PROFILE_MAP={"hls":"webtv-h264-aac-mpegts"}
+TVH_STREAM_DEFAULT_TRANSPORT=hls
+TVH_STREAM_PATH_TEMPLATE=/stream/channel/{channelUuid}
 ```
 
-## Building
+Credentials stay server-side only (`$env/dynamic/private`).
 
-To create a production version of your app:
+## Storybook
 
-```sh
-npm run build
+```bash
+pnpm --filter @tvh-guide/web run storybook
 ```
 
-You can preview the production build with `npm run preview`.
+Live component stories:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- `src/lib/components/live/LiveChannelPlayer.stories.svelte`
