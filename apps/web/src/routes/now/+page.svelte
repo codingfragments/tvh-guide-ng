@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { env } from '$env/dynamic/public';
   import TimeSelect from '$lib/components/epg/TimeSelect.svelte';
+  import { parseCustomTimeAppearance, parsePresetTimes } from '$lib/components/epg/time-select-utils.js';
   import NowEventGrid from '$lib/components/now/NowEventGrid.svelte';
   import type { PageData } from './$types';
 
@@ -8,13 +10,18 @@
 
   let selectedTimestamp = $state(new Date(data.now.timestamp * 1000));
   let activeNavigation = $state(false);
+  const timePresets = parsePresetTimes(env.PUBLIC_TIMESELECT_PRESETS);
+  const customAppearance = parseCustomTimeAppearance(env.PUBLIC_TIMESELECT_CUSTOM_APPEARANCE);
 
   $effect(() => {
     if (!data.isNowMode) return;
 
-    const intervalId = setInterval(() => {
-      void goto('/now', { replaceState: true, noScroll: true, invalidateAll: true });
-    }, 5 * 60 * 1000);
+    const intervalId = setInterval(
+      () => {
+        void goto('/now', { replaceState: true, noScroll: true, invalidateAll: true });
+      },
+      5 * 60 * 1000,
+    );
 
     return () => {
       clearInterval(intervalId);
@@ -36,26 +43,29 @@
       activeNavigation = false;
     });
   });
-
 </script>
 
 <svelte:head>
   <title>Now — TVH Guide</title>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl space-y-4 py-3">
-  <section class="bg-transparent">
-    <div class="p-0">
-      <TimeSelect bind:timestamp={selectedTimestamp} />
+<div class="py-3">
+  <section
+    class="z-20 w-full bg-base-100/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-base-100/80 md:sticky md:top-0"
+  >
+    <div class="mx-auto max-w-7xl">
+      <TimeSelect
+        bind:timestamp={selectedTimestamp}
+        presetTimes={timePresets}
+        enableCustomTime={true}
+        highlightNow={data.isNowMode}
+        customTimeLabel="Uhrzeit"
+        customTimeAppearance={customAppearance}
+      />
     </div>
   </section>
 
-  <header class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold">Now</h1>
-    {#if data.isNowMode}
-      <span class="badge badge-success badge-sm">Auto-refresh 5m</span>
-    {/if}
-  </header>
-
-  <NowEventGrid items={data.now.items} />
+  <div class="mx-auto mt-2 max-w-7xl">
+    <NowEventGrid items={data.now.items} />
+  </div>
 </div>

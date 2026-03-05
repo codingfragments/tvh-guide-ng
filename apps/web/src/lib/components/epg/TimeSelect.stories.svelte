@@ -2,18 +2,34 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import TimeSelectHarness from './TimeSelectHarness.svelte';
 
+	const STORY_DEFAULT_PRESETS = [
+		{ label: '08:00', hour: 8, minute: 0 },
+		{ label: '12:00', hour: 12, minute: 0 },
+		{ label: '20:15', hour: 20, minute: 15 },
+		{ label: '22:00', hour: 22, minute: 0 },
+	];
+
 	const { Story } = defineMeta({
 		title: 'Components/EPG/TimeSelect',
 		component: TimeSelectHarness,
 		args: {
 			showReadout: false,
 			showExternalControls: false,
+			presetTimes: STORY_DEFAULT_PRESETS,
 		},
 		argTypes: {
 			showReadout: { control: 'boolean' },
 			showExternalControls: { control: 'boolean' },
 			hideTimeSelect: { control: 'boolean' },
+			enableCustomTime: { control: 'boolean' },
+			highlightNow: { control: 'boolean' },
 			nowLabel: { control: 'text' },
+			customTimeLabel: { control: 'text' },
+			customTimeStepMinutes: { control: { type: 'number', min: 5, max: 60, step: 5 } },
+			customTimeAppearance: {
+				control: 'select',
+				options: ['outline', 'ghost', 'primary', 'neutral'],
+			},
 			dayPickerWidth: { control: 'text' },
 			// Disable controls that can't be edited via Storybook (Date, arrays)
 			startDate: { table: { disable: true } },
@@ -51,13 +67,23 @@
 	args={{ hideTimeSelect: true, showExternalControls: true }}
 />
 
-<Story name="Short Range">
-	{#snippet template(args)}
-		{@const start = new Date()}
-		{@const end = (() => { const d = new Date(); d.setDate(d.getDate() + 2); return d; })()}
-		<TimeSelectHarness {...args} startDate={start} endDate={end} showExternalControls={true} />
-	{/snippet}
-</Story>
+<Story
+	name="With Custom Time"
+	args={{
+		showExternalControls: true,
+		enableCustomTime: true,
+		highlightNow: true,
+		customTimeAppearance: 'primary',
+	}}
+/>
+
+	<Story name="Short Range">
+		{#snippet template(args)}
+			{@const start = new Date()}
+			{@const end = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)}
+			<TimeSelectHarness {...args} startDate={start} endDate={end} showExternalControls={true} />
+		{/snippet}
+	</Story>
 
 <Story
 	name="Custom Now Label"

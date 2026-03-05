@@ -50,10 +50,12 @@ For server-side live stream URL resolution/proxy in `apps/web`:
 | `TVH_STREAM_PROFILE_MAP` | `""` | Optional JSON map: `{"hls":"webtv-h264-aac-mpegts"}` |
 | `TVH_STREAM_DEFAULT_TRANSPORT` | `""` | Optional fallback transport when request omits `profile`/`transport` |
 | `TVH_STREAM_PATH_TEMPLATE` | `/stream/channel/{channelUuid}` | Optional stream URL template |
+| `PUBLIC_TIMESELECT_PRESETS` | `06:00,12:00,20:15,22:00` | Optional TimeSelect presets (CSV `HH:mm,...` or JSON array) |
+| `PUBLIC_TIMESELECT_CUSTOM_APPEARANCE` | `outline` | Optional TimeSelect custom-time dropdown style (`outline`, `ghost`, `primary`, `neutral`) |
 
 SvelteKit env handling in this feature:
 
-- Public vars: `$env/static/public` (`PUBLIC_*`) only
+- Public vars: `$env/static/public` or `$env/dynamic/public` (`PUBLIC_*`) depending on optional/runtime needs
 - Secrets: `$env/dynamic/private` in server routes only
 - No TVHeadend credentials imported in client-side `.svelte` modules
 
