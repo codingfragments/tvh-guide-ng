@@ -137,6 +137,16 @@ const blob = await response.blob();
 The URL builder methods (`getPiconUrlByChannelName`, `getPiconUrlByServiceRef`) are
 intended for use in `<img>` tags where the browser handles the fetch directly.
 
+## Web App Consumption
+
+In `@tvh-guide/web`, picons are served through the SvelteKit app proxy:
+
+- `GET /api/picon/channel/:channelName`
+- `GET /api/picon/srp/:serviceRef`
+
+Frontend components should use app-local URLs (or `picon://...` indirection), not direct
+`http://localhost:3000` links to epg-cache.
+
 ## SNP Normalization
 
 The SNP (Service Name Picon) algorithm transforms channel display names into index keys:

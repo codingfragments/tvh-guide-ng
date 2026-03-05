@@ -1,5 +1,3 @@
-import { PUBLIC_EPG_CACHE_URL } from '$env/static/public';
-
 export type PiconVariant = 'default' | 'light' | 'dark' | 'white' | 'black';
 
 export const PICON_VARIANTS: readonly PiconVariant[] = [
@@ -32,20 +30,23 @@ export function parsePiconUrl(url: string): ParsedPiconUrl | null {
 	return { type, value };
 }
 
-export function getBaseUrl(): string {
-	return PUBLIC_EPG_CACHE_URL || 'http://localhost:3000';
-}
-
 export function buildPiconImageUrl(
 	piconUrl: string,
 	variant: PiconVariant = 'default',
 ): string | null {
+	if (!piconUrl) return null;
+
 	const parsed = parsePiconUrl(piconUrl);
-	if (!parsed) return null;
+	if (!parsed) {
+		// Allow direct image URLs/paths for static mocks in Storybook and custom logos.
+		return piconUrl;
+	}
 
-	const base = getBaseUrl();
+	if (import.meta.env.STORYBOOK) {
+		return `/storybook/picons/${variant}.svg`;
+	}
+
 	const encodedValue = encodeURIComponent(parsed.value);
-	const variantParam = variant !== 'default' ? `?variant=${variant}` : '';
-
-	return `${base}/api/picon/${parsed.type}/${encodedValue}${variantParam}`;
+	const variantParam = variant !== 'default' ? `?variant=${encodeURIComponent(variant)}` : '';
+	return `/api/picon/${parsed.type}/${encodedValue}${variantParam}`;
 }

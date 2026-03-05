@@ -59,7 +59,7 @@
 >
 	{#snippet template(args)}
 		<div class="flex items-center gap-4">
-			{#each PICON_VARIANTS as v}
+			{#each PICON_VARIANTS as v (v)}
 				<div class="flex flex-col items-center gap-1">
 					<ChannelLogo src={args.src} variant={v} size="lg" />
 					<span class="text-base-content/60 text-xs">{v}</span>
@@ -76,7 +76,7 @@
 >
 	{#snippet template(args)}
 		<div class="flex items-end gap-4">
-			{#each SIZES as s}
+			{#each SIZES as s (s)}
 				<div class="flex flex-col items-center gap-1">
 					<ChannelLogo src={args.src} size={s} />
 					<span class="text-base-content/60 text-xs">{s}</span>
@@ -87,11 +87,14 @@
 </Story>
 
 <Story name="German Channels">
-	{#snippet children()}
+	{#snippet template()}
+		<p class="text-base-content/60 mb-3 text-sm">
+			Storybook uses static mock picons from <code>/storybook/picons</code> (no epg-cache required).
+		</p>
 		<div class="grid grid-cols-6 gap-4">
-			{#each germanChannels as channel}
+			{#each germanChannels as channel (channel)}
 				<div class="flex flex-col items-center gap-1">
-					<ChannelLogo src="picon://channel/{channel}" size="lg" />
+					<ChannelLogo src={`picon://channel/${channel}`} size="lg" />
 					<span class="text-base-content/60 max-w-20 truncate text-center text-xs">{channel}</span>
 				</div>
 			{/each}
