@@ -1,5 +1,6 @@
 import { env } from '$env/dynamic/private';
 import type { PageServerLoad } from './$types';
+import { HLS_PROXY_PROFILE_LABEL, HLS_PROXY_PROFILE_NAME } from '$lib/components/live/live-profile-options';
 
 interface ProfileOption {
   name: string;
@@ -45,13 +46,22 @@ function normalize(value: string | undefined): string | null {
 }
 
 function ensureConfiguredOption(profiles: ProfileOption[], configuredDefaultProfile: string | null): ProfileOption[] {
-  if (!configuredDefaultProfile) return profiles;
-  if (profiles.some((profile) => profile.name === configuredDefaultProfile)) return profiles;
+  const withHlsOption = ensureHlsOption(profiles);
+  if (!configuredDefaultProfile) return withHlsOption;
+  if (withHlsOption.some((profile) => profile.name === configuredDefaultProfile)) return withHlsOption;
+  return [{ name: configuredDefaultProfile, label: configuredDefaultProfile }, ...withHlsOption];
+}
+
+function ensureHlsOption(profiles: ProfileOption[]): ProfileOption[] {
+  if (profiles.some((profile) => profile.name === HLS_PROXY_PROFILE_NAME)) {
+    return profiles;
+  }
+
   return [
-    {
-      name: configuredDefaultProfile,
-      label: configuredDefaultProfile,
-    },
     ...profiles,
+    {
+      name: HLS_PROXY_PROFILE_NAME,
+      label: HLS_PROXY_PROFILE_LABEL,
+    },
   ];
 }

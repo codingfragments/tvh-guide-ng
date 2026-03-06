@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Tv as TvIcon } from 'lucide-svelte';
   import LiveChannelPlayer from '$lib/components/live/LiveChannelPlayer.svelte';
+  import { HLS_PROXY_PROFILE_NAME } from '$lib/components/live/live-profile-options';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -14,6 +16,20 @@
     profileInput = data.defaultProfile;
     profileInitialized = true;
   });
+
+  onMount(() => {
+    if (!isAppleMobileDevice()) return;
+    if (!data.profiles.some((profile) => profile.name === HLS_PROXY_PROFILE_NAME)) return;
+    profileInput = HLS_PROXY_PROFILE_NAME;
+  });
+
+  function isAppleMobileDevice(): boolean {
+    const ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/i.test(ua)) return true;
+
+    // iPadOS may report "Macintosh" in UA; touch points distinguish iPad devices.
+    return ua.includes('Macintosh') && navigator.maxTouchPoints > 1;
+  }
 </script>
 
 <svelte:head>
@@ -35,7 +51,7 @@
       </label>
 
       <label class="form-control">
-        <span class="label-text text-sm">Profile (optional)</span>
+        <span class="label-text text-sm">Profile / Transport</span>
         <select class="select select-bordered" bind:value={profileInput}>
           {#if data.profiles.length === 0}
             <option value="" disabled>No profiles available</option>
