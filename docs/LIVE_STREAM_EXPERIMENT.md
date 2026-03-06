@@ -20,9 +20,10 @@ Set these in `apps/web/.env`:
 | `TVH_PASSWORD` | yes | TVHeadend password |
 | `TVH_STREAM_DEFAULT_PROFILE` | no | Default stream profile when no explicit profile is selected |
 | `TVH_STREAM_PATH_TEMPLATE` | no | Stream path template (`{channelUuid}` placeholder) |
+| `PUBLIC_HLS_PROXY_BASE_URL` | no | Base URL of standalone HLS proxy (empty means same origin) |
 
-`PUBLIC_*` variables are not used for this feature because credentials must remain private. Server code reads secrets via
-`$env/dynamic/private`.
+`TVH_*` secrets are server-only (`$env/dynamic/private`). `PUBLIC_HLS_PROXY_BASE_URL` is intentionally public so the
+browser can target a standalone HLS proxy service.
 
 ## API Endpoints
 
@@ -38,6 +39,7 @@ Resolves channel input through TVHeadend API and returns an internal stream URL.
 Query params:
 
 - `profile` (optional)
+- If `profile=__hls_proxy__`, playback URL is `/hlsstream/:channel/index.m3u8`.
 
 Example response:
 
@@ -77,7 +79,9 @@ Props:
 UI route:
 
 - `/now/tv` renders channel input + profile dropdown populated from `GET /api/channel/profiles`
+- `/now/tv` adds a virtual profile option `__hls_proxy__` for HLS proxy playback
 - The dropdown default can be configured with `TVH_STREAM_DEFAULT_PROFILE`
+- On iPhone/iPad devices, `__hls_proxy__` is auto-selected on first load
 
 Storybook:
 

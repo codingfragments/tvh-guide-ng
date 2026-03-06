@@ -11,6 +11,7 @@ tvh-guide-ng/
 │   └── web/                 # SvelteKit EPG frontend
 ├── services/                # Backend services
 │   ├── epg-cache/           # EPG caching service with SQLite + fuzzy search
+│   ├── hls-proxy/           # HLS proxy service with ffmpeg orchestration
 │   └── epg-service/         # EPG data backend service
 ├── libs/                    # Shared libraries
 │   ├── epg-cache-client/    # Type-safe EPG Cache service API client
@@ -33,6 +34,7 @@ All packages use the `@tvh-guide/` namespace:
 - `@tvh-guide/cli` — Command-line interface for TVHeadend
 - `@tvh-guide/web` — SvelteKit EPG frontend (SSR, Tailwind CSS v4, DaisyUI v5, PWA)
 - `@tvh-guide/epg-cache` — EPG caching service with SQLite storage and fuzzy search
+- `@tvh-guide/hls-proxy` — HLS proxy service for live channel transcoding
 - `@tvh-guide/epg-service` — EPG backend service
 - `@tvh-guide/epg-cache-client` — Type-safe EPG Cache service API client
 - `@tvh-guide/shared` — Shared types and utilities
@@ -116,6 +118,7 @@ All packages use the `@tvh-guide/` namespace:
 **Example packages**:
 
 - `services/epg-cache` — EPG caching with SQLite + MiniSearch (syncs from TVHeadend, serves HTTP API)
+- `services/hls-proxy` — Live HLS proxy that resolves TVHeadend channels and orchestrates ffmpeg transcodings per channel
 - `services/epg-service` — EPG data backend
 - `services/auth-service` — (future) Authentication service
 - `services/recording-service` — (future) Recording management
