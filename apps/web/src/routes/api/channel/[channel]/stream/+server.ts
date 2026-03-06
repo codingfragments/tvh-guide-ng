@@ -10,12 +10,11 @@ import {
 
 export const GET: RequestHandler = async ({ params, request, url }) => {
   const profile = url.searchParams.get('profile');
-  const transport = url.searchParams.get('transport');
 
   let resolvedPath: string;
   try {
     const client = createTvheadendClient();
-    const resolved = await resolveChannelStream(client, params.channel, { profile, transport });
+    const resolved = await resolveChannelStream(client, params.channel, { profile });
     resolvedPath = resolved.streamPath;
   } catch (error) {
     if (error instanceof ChannelServiceResolutionError) {
@@ -56,6 +55,10 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
     if (value) headers.set(name, value);
   }
 
+  if (!headers.has('content-type')) {
+    headers.set('content-type', resolveFallbackContentType(resolvedPath));
+  }
+
   if (!headers.has('cache-control')) {
     headers.set('cache-control', 'no-store');
   }
@@ -66,3 +69,17 @@ export const GET: RequestHandler = async ({ params, request, url }) => {
     headers,
   });
 };
+
+function resolveFallbackContentType(resolvedPath: string): string {
+  const parsed = new URL(resolvedPath, 'http://tvh.local');
+  const path = parsed.pathname.toLowerCase();
+  const profile = parsed.searchParams.get('profile')?.toLowerCase() ?? '';
+
+  if (path.endsWith('.m3u8') || profile.includes('hls')) return 'application/vnd.apple.mpegurl';
+  if (path.endsWith('.ts') || profile.includes('mpegts') || profile.includes('ts')) return 'video/mp2t';
+  if (path.endsWith('.mp4') || profile.includes('mp4')) return 'video/mp4';
+  if (path.endsWith('.mkv') || profile.includes('matroska') || profile.includes('mkv')) return 'video/x-matroska';
+  if (path.endsWith('.webm') || profile.includes('webm')) return 'video/webm';
+
+  return 'application/octet-stream';
+}

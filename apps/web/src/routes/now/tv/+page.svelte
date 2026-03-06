@@ -1,10 +1,19 @@
 <script lang="ts">
   import { Tv as TvIcon } from 'lucide-svelte';
   import LiveChannelPlayer from '$lib/components/live/LiveChannelPlayer.svelte';
+  import type { PageData } from './$types';
+
+  let { data }: { data: PageData } = $props();
 
   let channelInput = $state('1');
   let profileInput = $state('');
-  let transportInput = $state('');
+  let profileInitialized = $state(false);
+
+  $effect(() => {
+    if (profileInitialized) return;
+    profileInput = data.defaultProfile;
+    profileInitialized = true;
+  });
 </script>
 
 <svelte:head>
@@ -19,7 +28,7 @@
   </div>
 
   <div class="card bg-base-200 shadow-sm">
-    <div class="card-body grid gap-3 md:grid-cols-3">
+    <div class="card-body grid gap-3 md:grid-cols-2">
       <label class="form-control">
         <span class="label-text text-sm">Channel (number or UUID)</span>
         <input class="input input-bordered" bind:value={channelInput} placeholder="1" />
@@ -27,22 +36,33 @@
 
       <label class="form-control">
         <span class="label-text text-sm">Profile (optional)</span>
-        <input class="input input-bordered" bind:value={profileInput} placeholder="webtv-h264-aac-matroska" />
-      </label>
-
-      <label class="form-control">
-        <span class="label-text text-sm">Transport (optional)</span>
-        <input class="input input-bordered" bind:value={transportInput} placeholder="hls" />
+        <select class="select select-bordered" bind:value={profileInput}>
+          {#if data.profiles.length === 0}
+            <option value="" disabled>No profiles available</option>
+          {/if}
+          {#each data.profiles as profile (profile.name)}
+            <option value={profile.name}>
+              {profile.label}
+              {#if profile.name === data.configuredDefaultProfile}
+                (Configured default)
+              {/if}
+            </option>
+          {/each}
+        </select>
       </label>
     </div>
   </div>
 
+  {#if data.profilesError}
+    <div class="alert alert-warning">
+      <span>{data.profilesError}</span>
+    </div>
+  {/if}
+
   <LiveChannelPlayer
     channel={channelInput}
     profile={profileInput || undefined}
-    transport={transportInput || undefined}
     controls={true}
     muted={true}
-    autoplay={true}
   />
 </div>
