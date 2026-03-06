@@ -90,3 +90,13 @@ export interface ConfigLoadParams {
   /** Node identifier */
   node?: string;
 }
+
+/** Normalized stream profile entry */
+export interface StreamProfile {
+  /** Profile name used in stream query parameters */
+  name: string;
+  /** Human-readable profile label */
+  label: string;
+  /** Optional profile UUID (when exposed by the backend) */
+  uuid: string | null;
+}

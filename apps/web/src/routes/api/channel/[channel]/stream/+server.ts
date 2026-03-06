@@ -10,12 +10,11 @@ import {
 
 export const GET: RequestHandler = async ({ params, request, url }) => {
   const profile = url.searchParams.get('profile');
-  const transport = url.searchParams.get('transport');
 
   let resolvedPath: string;
   try {
     const client = createTvheadendClient();
-    const resolved = await resolveChannelStream(client, params.channel, { profile, transport });
+    const resolved = await resolveChannelStream(client, params.channel, { profile });
     resolvedPath = resolved.streamPath;
   } catch (error) {
     if (error instanceof ChannelServiceResolutionError) {

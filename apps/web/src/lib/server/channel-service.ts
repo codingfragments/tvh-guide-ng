@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { TVHeadendClient, type Channel } from '@tvh-guide/tvheadend-client';
+import { TVHeadendClient, type Channel, type StreamProfile as TvhStreamProfile } from '@tvh-guide/tvheadend-client';
 
 const DEFAULT_STREAM_PATH_TEMPLATE = '/stream/channel/{channelUuid}';
 
@@ -19,15 +19,15 @@ export class ChannelServiceResolutionError extends Error {
 
 export interface ChannelStreamOptions {
   profile?: string | null;
-  transport?: string | null;
 }
 
 export interface ResolvedChannelStream {
   channel: Channel;
   streamPath: string;
   profile: string | null;
-  transport: string | null;
 }
+
+export type StreamProfile = TvhStreamProfile;
 
 export function createTvheadendClient(): TVHeadendClient {
   const baseUrl = env.TVH_URL;
@@ -104,15 +104,18 @@ export async function resolveChannelStream(
     throw new ChannelServiceResolutionError(`Channel "${channelInput}" not found`);
   }
 
-  const transport = resolveTransport(options.transport);
-  const profile = resolveProfile(options.profile, transport);
+  const profile = await resolveProfile(options.profile);
 
   return {
     channel,
-    streamPath: buildTvhStreamPath(channel.uuid, profile, transport),
+    streamPath: buildTvhStreamPath(channel.uuid, profile),
     profile,
-    transport,
   };
+}
+
+export async function listStreamProfiles(): Promise<StreamProfile[]> {
+  const client = createTvheadendClient();
+  return client.listStreamProfiles();
 }
 
 async function querySingle(
@@ -178,36 +181,39 @@ async function queryChannelByNumberScan(client: TVHeadendClient, channelNumber: 
   return null;
 }
 
-function resolveProfile(profile: string | null | undefined, transport: string | null | undefined): string | null {
-  if (profile && profile.trim()) return profile.trim();
-  if (!transport) return null;
-
-  const raw = env.TVH_STREAM_PROFILE_MAP;
-  if (!raw) return null;
-
-  try {
-    const parsed = JSON.parse(raw) as Record<string, string>;
-    return parsed[transport.toLowerCase()] ?? null;
-  } catch {
-    throw new ChannelServiceConfigError('TVH_STREAM_PROFILE_MAP must be valid JSON (e.g. {"hls":"webtv-hls"})');
+async function resolveProfile(profile: string | null | undefined): Promise<string | null> {
+  if (profile && profile.trim()) {
+    const requested = profile.trim();
+    const normalized = await normalizeProfileToName(requested);
+    return normalized;
   }
-}
-
-function resolveTransport(transport: string | null | undefined): string | null {
-  if (transport && transport.trim()) return transport.trim();
-  if (env.TVH_STREAM_DEFAULT_TRANSPORT && env.TVH_STREAM_DEFAULT_TRANSPORT.trim()) {
-    return env.TVH_STREAM_DEFAULT_TRANSPORT.trim();
+  if (env.TVH_STREAM_DEFAULT_PROFILE && env.TVH_STREAM_DEFAULT_PROFILE.trim()) {
+    return env.TVH_STREAM_DEFAULT_PROFILE.trim();
   }
   return null;
 }
 
-function buildTvhStreamPath(channelUuid: string, profile: string | null, transport: string | null): string {
+function buildTvhStreamPath(channelUuid: string, profile: string | null): string {
   const template = (env.TVH_STREAM_PATH_TEMPLATE || DEFAULT_STREAM_PATH_TEMPLATE).trim();
   const path = template.replaceAll('{channelUuid}', encodeURIComponent(channelUuid));
   const url = new URL(path, 'http://tvh.local');
 
   if (profile) url.searchParams.set('profile', profile);
-  if (transport) url.searchParams.set('transport', transport);
 
   return `${url.pathname}${url.search}`;
+}
+
+async function normalizeProfileToName(profile: string): Promise<string> {
+  try {
+    const profiles = await listStreamProfiles();
+    const byName = profiles.find((p) => p.name === profile);
+    if (byName) return byName.name;
+
+    const byUuid = profiles.find((p) => p.uuid === profile);
+    if (byUuid) return byUuid.name;
+  } catch {
+    // Keep user-provided value if profile list lookup is unavailable.
+  }
+
+  return profile;
 }

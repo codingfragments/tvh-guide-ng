@@ -9,22 +9,19 @@ import {
 
 export const GET: RequestHandler = async ({ params, url }) => {
   const profile = url.searchParams.get('profile');
-  const transport = url.searchParams.get('transport');
 
   try {
     const client = createTvheadendClient();
-    const resolved = await resolveChannelStream(client, params.channel, { profile, transport });
+    const resolved = await resolveChannelStream(client, params.channel, { profile });
 
     return json({
       channelInput: params.channel,
       channel: resolved.channel,
       profile: resolved.profile,
-      transport: resolved.transport,
       url: `/api/channel/${encodeURIComponent(params.channel)}/stream${
-        resolved.profile || resolved.transport
+        resolved.profile
           ? `?${new URLSearchParams({
               ...(resolved.profile ? { profile: resolved.profile } : {}),
-              ...(resolved.transport ? { transport: resolved.transport } : {}),
             }).toString()}`
           : ''
       }`,

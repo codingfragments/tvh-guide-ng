@@ -11,9 +11,6 @@
   let {
     channel,
     profile,
-    transport,
-    autoplay = true,
-    autoplayDelay = 2,
     muted = true,
     controls = true,
     class: className = '',
@@ -21,9 +18,6 @@
   }: {
     channel?: string;
     profile?: string;
-    transport?: string;
-    autoplay?: boolean;
-    autoplayDelay?: number;
     muted?: boolean;
     controls?: boolean;
     class?: string;
@@ -33,7 +27,6 @@
   let loading = $state(false);
   let stream = $state<LiveStreamUrlPayload | null>(null);
   let errorMessage = $state<string | null>(null);
-  let mediaSrc = $state<string | null>(null);
   let activeRequest = 0;
 
   $effect(() => {
@@ -41,7 +34,6 @@
     const options: LiveStreamResolveOptions = {
       channel: input,
       ...(profile ? { profile } : {}),
-      ...(transport ? { transport } : {}),
     };
 
     if (!input) {
@@ -73,28 +65,6 @@
       });
   });
 
-  $effect(() => {
-    const url = stream?.url;
-    if (!url) {
-      mediaSrc = null;
-      return;
-    }
-
-    if (!autoplay) {
-      mediaSrc = url;
-      return;
-    }
-
-    mediaSrc = null;
-    const delaySeconds = Number.isFinite(autoplayDelay) ? Math.max(0, autoplayDelay) : 0;
-    const timeoutId = setTimeout(() => {
-      mediaSrc = url;
-    }, delaySeconds * 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  });
 </script>
 
 <div class={`card bg-base-200 shadow-sm ${className}`}>
@@ -126,21 +96,11 @@
       </div>
     {:else if stream}
       <div class="space-y-2">
-        {#if mediaSrc}
-          <MediaPlayer src={mediaSrc} {autoplay} {muted} {controls} />
-        {:else}
-          <div class="flex items-center gap-2 rounded-lg bg-base-100 px-4 py-6 text-sm">
-            <LoaderCircleIcon class="size-4 animate-spin text-primary" />
-            Starting playback...
-          </div>
-        {/if}
+        <MediaPlayer src={stream.url} autoplay={true} {muted} {controls} />
         <div class="text-xs text-base-content/60">
           <span>channel: {stream.channel.uuid}</span>
           {#if stream.profile}
             <span> · profile: {stream.profile}</span>
-          {/if}
-          {#if stream.transport}
-            <span> · transport: {stream.transport}</span>
           {/if}
         </div>
       </div>

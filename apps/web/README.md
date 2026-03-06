@@ -23,7 +23,7 @@ Example usage:
   import LiveChannelPlayer from '$lib/components/live/LiveChannelPlayer.svelte';
 </script>
 
-<LiveChannelPlayer channel="1" transport="hls" controls muted />
+<LiveChannelPlayer channel="1" profile="webtv-h264-aac-matroska" controls muted />
 ```
 
 Server endpoints used by the component:
@@ -31,6 +31,9 @@ Server endpoints used by the component:
 - `GET /api/channel/[channel]`
 - `GET /api/channel/[channel]/url`
 - `GET /api/channel/[channel]/stream`
+- `GET /api/channel/profiles`
+
+`/api/channel/profiles` returns profile names for direct use in the `profile` query param.
 
 ### Environment Variables (`apps/web/.env`)
 
@@ -40,8 +43,7 @@ TVH_URL=http://localhost:9981
 TVH_USERNAME=admin
 TVH_PASSWORD=secret
 # optional:
-TVH_STREAM_PROFILE_MAP={"hls":"webtv-h264-aac-mpegts"}
-TVH_STREAM_DEFAULT_TRANSPORT=hls
+TVH_STREAM_DEFAULT_PROFILE=webtv-h264-aac-matroska
 TVH_STREAM_PATH_TEMPLATE=/stream/channel/{channelUuid}
 ```
 

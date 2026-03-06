@@ -6,22 +6,19 @@ export interface LiveStreamUrlPayload {
     number?: number;
   };
   profile: string | null;
-  transport: string | null;
   url: string;
 }
 
 export interface LiveStreamResolveOptions {
   channel: string;
   profile?: string;
-  transport?: string;
 }
 
 export type LiveStreamUrlResolver = (opts: LiveStreamResolveOptions) => Promise<LiveStreamUrlPayload>;
 
-export const defaultLiveStreamUrlResolver: LiveStreamUrlResolver = async ({ channel, profile, transport }) => {
+export const defaultLiveStreamUrlResolver: LiveStreamUrlResolver = async ({ channel, profile }) => {
   const params = new URLSearchParams();
   if (profile) params.set('profile', profile);
-  if (transport) params.set('transport', transport);
 
   const qs = params.toString();
   const response = await fetch(`/api/channel/${encodeURIComponent(channel)}/url${qs ? `?${qs}` : ''}`);

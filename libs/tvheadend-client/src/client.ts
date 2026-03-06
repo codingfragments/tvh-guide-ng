@@ -53,6 +53,7 @@ import type {
   ServerInfo,
   ServerCapabilities,
   ConfigSaveParams,
+  StreamProfile,
   // Status types
   ConnectionsResponse,
   SubscriptionsResponse,
@@ -541,7 +542,7 @@ export class TVHeadendClient {
   }
 
   // ========================================
-  // Config Endpoints (5)
+  // Config Endpoints (6)
   // ========================================
 
   /**
@@ -578,6 +579,29 @@ export class TVHeadendClient {
    */
   async getServerInfo(): Promise<ServerInfo> {
     return this.request<ServerInfo>('/api/serverinfo');
+  }
+
+  /**
+   * List available stream profiles for live playback
+   * Tries multiple known TVHeadend endpoints for compatibility.
+   */
+  async listStreamProfiles(): Promise<StreamProfile[]> {
+    const paths = ['/api/profile/list', '/api/stream/profile/list'];
+    let lastError: unknown = null;
+
+    for (const path of paths) {
+      try {
+        const payload = await this.request<unknown>(path);
+        return normalizeStreamProfiles(payload);
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (lastError instanceof Error) {
+      throw lastError;
+    }
+    throw new Error('Failed to load stream profiles');
   }
 
   /**
@@ -667,4 +691,63 @@ export class TVHeadendClient {
     console.warn('getServerStatus() is deprecated, use getServerInfo() instead');
     return this.getServerInfo();
   }
+}
+
+function normalizeStreamProfiles(payload: unknown): StreamProfile[] {
+  const rawEntries = extractRawEntries(payload);
+  const profiles = rawEntries
+    .map(toStreamProfile)
+    .filter((item): item is StreamProfile => item !== null);
+
+  const seen = new Set<string>();
+  return profiles.filter((profile) => {
+    if (seen.has(profile.name)) return false;
+    seen.add(profile.name);
+    return true;
+  });
+}
+
+function extractRawEntries(payload: unknown): unknown[] {
+  if (Array.isArray(payload)) return payload;
+  if (!payload || typeof payload !== 'object') return [];
+
+  const root = payload as Record<string, unknown>;
+  if (Array.isArray(root.entries)) return root.entries;
+  if (Array.isArray(root.data)) return root.data;
+  if (Array.isArray(root.profiles)) return root.profiles;
+  return [];
+}
+
+function toStreamProfile(entry: unknown): StreamProfile | null {
+  if (typeof entry === 'string') {
+    const name = normalizeString(entry);
+    if (!name) return null;
+    return { name, label: name, uuid: null };
+  }
+
+  if (!entry || typeof entry !== 'object') return null;
+  const obj = entry as Record<string, unknown>;
+
+  const name =
+    normalizeString(obj.name) ??
+    normalizeString(obj.val) ??
+    normalizeString(obj.title) ??
+    normalizeString(obj.label) ??
+    normalizeString(obj.key) ??
+    normalizeString(obj.uuid) ??
+    normalizeString(obj.id);
+  if (!name) return null;
+
+  const uuid = normalizeString(obj.uuid) ?? normalizeString(obj.key) ?? normalizeString(obj.id);
+  return {
+    name,
+    label: name,
+    uuid: uuid ?? null,
+  };
+}
+
+function normalizeString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
 }
