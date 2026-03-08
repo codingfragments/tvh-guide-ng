@@ -65,3 +65,19 @@
     },
   }}
 />
+
+<Story
+  name="NoLogo"
+  args={{
+    item: nowStoryItems[0],
+    showLogo: false,
+  }}
+/>
+
+<Story
+  name="NoProgress"
+  args={{
+    item: nowStoryItems[0],
+    showProgress: false,
+  }}
+/>

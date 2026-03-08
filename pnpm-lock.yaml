@@ -88,6 +88,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@tvh-guide/epg-cache-client':
+        specifier: workspace:*
+        version: link:../../libs/epg-cache-client
       lucide-svelte:
         specifier: ^0.564.0
         version: 0.564.0(svelte@5.53.3)

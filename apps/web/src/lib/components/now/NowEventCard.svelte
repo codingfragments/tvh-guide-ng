@@ -6,10 +6,14 @@
     item,
     selected = false,
     onSelect,
+    showLogo = true,
+    showProgress = true,
   }: {
     item: NowEventItem;
     selected?: boolean;
     onSelect?: (() => void) | undefined;
+    showLogo?: boolean;
+    showProgress?: boolean;
   } = $props();
 
   const timeRange = $derived(`${formatTime(item.start)} - ${formatTime(item.stop)}`);
@@ -62,12 +66,14 @@
     >
       <div class="grid gap-3 md:grid-cols-[6.5rem_1fr] md:gap-6">
         <div class="flex min-w-0 items-start gap-3 md:flex-col md:items-center md:gap-2">
-          <div class="md:hidden">
-            <ChannelLogo src={item.piconUrl} size="lg" alt={`Logo ${item.channelName}`} />
-          </div>
-          <div class="hidden md:block">
-            <ChannelLogo src={item.piconUrl} size="xl" alt={`Logo ${item.channelName}`} />
-          </div>
+          {#if showLogo}
+            <div class="md:hidden">
+              <ChannelLogo src={item.piconUrl} size="lg" alt={`Logo ${item.channelName}`} />
+            </div>
+            <div class="hidden md:block">
+              <ChannelLogo src={item.piconUrl} size="xl" alt={`Logo ${item.channelName}`} />
+            </div>
+          {/if}
           <div class="min-w-0 flex-1 space-y-2 md:w-full md:flex-none md:space-y-2">
             {#if showDate}
               <div class="text-xs font-medium uppercase tracking-wide text-base-content/60">
@@ -77,7 +83,9 @@
             <div class="text-sm font-medium text-base-content/80">
               {timeRange}
             </div>
-            <progress class="progress progress-warning h-2 w-full" value={item.progressPct} max="100"></progress>
+            {#if showProgress}
+              <progress class="progress progress-warning h-2 w-full" value={item.progressPct} max="100"></progress>
+            {/if}
           </div>
         </div>
 
@@ -91,12 +99,14 @@
     <div class="card-body w-full px-4 pb-4 pt-4 text-left md:px-5 md:pb-4 md:pt-4">
       <div class="grid gap-3 md:grid-cols-[6.5rem_1fr] md:gap-6">
         <div class="flex min-w-0 items-start gap-3 md:flex-col md:items-center md:gap-2">
-          <div class="md:hidden">
-            <ChannelLogo src={item.piconUrl} size="lg" alt={`Logo ${item.channelName}`} />
-          </div>
-          <div class="hidden md:block">
-            <ChannelLogo src={item.piconUrl} size="xl" alt={`Logo ${item.channelName}`} />
-          </div>
+          {#if showLogo}
+            <div class="md:hidden">
+              <ChannelLogo src={item.piconUrl} size="lg" alt={`Logo ${item.channelName}`} />
+            </div>
+            <div class="hidden md:block">
+              <ChannelLogo src={item.piconUrl} size="xl" alt={`Logo ${item.channelName}`} />
+            </div>
+          {/if}
           <div class="min-w-0 flex-1 space-y-2 md:w-full md:flex-none md:space-y-2">
             {#if showDate}
               <div class="text-xs font-medium uppercase tracking-wide text-base-content/60">
@@ -106,7 +116,9 @@
             <div class="text-sm font-medium text-base-content/80">
               {timeRange}
             </div>
-            <progress class="progress progress-warning h-2 w-full" value={item.progressPct} max="100"></progress>
+            {#if showProgress}
+              <progress class="progress progress-warning h-2 w-full" value={item.progressPct} max="100"></progress>
+            {/if}
           </div>
         </div>
 
