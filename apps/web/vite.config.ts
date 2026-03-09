@@ -11,6 +11,12 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      workbox: {
+        // Avoid default prerendered glob warning when no prerendered output exists.
+        // SvelteKitPWA injects prerendered patterns unless modifyURLPrefix is defined.
+        modifyURLPrefix: {},
+        globPatterns: ['client/**/*.{js,css,html,ico,png,svg,webp,json,txt,woff2,webmanifest}'],
+      },
       manifest: {
         name: 'TVH Guide',
         short_name: 'TVH Guide',
