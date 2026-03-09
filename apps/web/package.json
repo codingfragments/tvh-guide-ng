@@ -38,6 +38,7 @@
     "node": "24.13.1"
   },
   "dependencies": {
+    "@tvh-guide/epg-cache-client": "workspace:*",
     "lucide-svelte": "^0.564.0"
   }
 }

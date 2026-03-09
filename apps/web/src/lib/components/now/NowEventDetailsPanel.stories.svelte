@@ -79,3 +79,18 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Wide Side Image"
+  args={{
+    item: featuredNowStoryItem,
+    details: featuredNowStoryDetail,
+    sideImageOnWide: true,
+  }}
+>
+  {#snippet template(args)}
+    <div style="width: 1280px; max-width: 100%;">
+      <NowEventDetailsPanel {...args} />
+    </div>
+  {/snippet}
+</Story>
